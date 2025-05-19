@@ -1,0 +1,104 @@
+<div class="container">
+  <h2>Explore Books</h2>
+
+  <!-- Search and Sort -->
+  <div class="search-sort">
+    <mat-form-field appearance="fill">
+      <mat-label>Search Books</mat-label>
+      <input matInput [(ngModel)]="searchTerm" placeholder="Search by title, author, or genre">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Sort By</mat-label>
+      <mat-select [(ngModel)]="sortField" (selectionChange)="onSortChange($event)">
+        <mat-option *ngFor="let option of sortFieldOptions" [value]="option.value">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-button (click)="toggleSortOrder()">
+      {{ sortOrder() === 'ASC' ? 'Sort Descending' : 'Sort Ascending' }}
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <!-- Books List -->
+  <div *ngIf="!isLoading() && books().length === 0" class="no-results">
+    No books found.
+  </div>
+
+  <div *ngIf="!isLoading() && books().length > 0" class="books-grid">
+    <mat-card *ngFor="let book of books()">
+      <mat-card-header>
+        <mat-card-title>{{ book.title }}</mat-card-title>
+        <mat-card-subtitle>{{ book.author }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Genre:</strong> {{ book.genre }}</p>
+        <p><strong>Published:</strong> {{ book.publishedYear }}</p>
+        <p><strong>Status:</strong>
+          <span [ngClass]="{
+            'available': book.status === 'available',
+            'high-demand': book.status === 'in-high-demand',
+            'out-of-stock': book.status === 'out-of-stock'
+          }">
+            {{ book.status | titlecase }} ({{ book.stockQuantity }} available)
+          </span>
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- <button
+          mat-raised-button
+          [ngClass]="getButtonState(book.id).class"
+          [disabled]="getButtonState(book.id).disabled"
+          (click)="openBorrowDialog(book)"
+        >
+          <mat-spinner *ngIf="getButtonState(book.id).showSpinner" diameter="20"></mat-spinner>
+          {{ getButtonState(book.id).text }}
+        </button> -->
+
+        <button
+          mat-raised-button
+          *ngIf="getButtonState(book.id) as buttonState"
+          [ngClass]="buttonState.class"
+          [disabled]="buttonState.disabled || book.stockQuantity <= 0"
+          (click)="openBorrowDialog(book)"
+        >
+          <mat-spinner *ngIf="buttonState.showSpinner" diameter="20"></mat-spinner>
+          {{
+            book.stockQuantity <= 0 ? 'Out of Stock' :
+            buttonState.text
+          }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!isLoading() && books().length > 0" class="pagination">
+    <mat-form-field appearance="fill">
+      <mat-label>Books per page</mat-label>
+      <mat-select [(ngModel)]="pageSize" (selectionChange)="onPageSizeChange($event)">
+        <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
+          {{ size }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-button [disabled]="currentPage() === 1" (click)="previousPage()">Previous</button>
+    <button
+      mat-button
+      *ngFor="let page of getPageNumbers()"
+      [ngClass]="{ 'active-page': currentPage() === page }"
+      (click)="goToPage(page)"
+    >
+      {{ page }}
+    </button>
+    <button mat-button [disabled]="currentPage() === totalPages" (click)="nextPage()">Next</button>
+  </div>
+</div>

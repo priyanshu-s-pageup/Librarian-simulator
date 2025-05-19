@@ -1,0 +1,513 @@
+{
+  "books": [
+    {
+      "id": "a1f9d3e2",
+      "title": "Whispers of the Forgotten",
+      "author": "Rachel Moore",
+      "genre": "romance",
+      "publishedYear": 2003,
+      "stockQuantity": 17,
+      "status": "available"
+    },
+    {
+      "id": "b3472ce1",
+      "title": "Journey Through Shadows",
+      "author": "Tara Lin",
+      "genre": "historical",
+      "publishedYear": 2011,
+      "stockQuantity": 15,
+      "status": "available"
+    },
+    {
+      "id": "c5b47a11",
+      "title": "Echoes of the Past",
+      "author": "Frank Lambert",
+      "genre": "fantasy",
+      "publishedYear": 1994,
+      "stockQuantity": 13,
+      "status": "available"
+    },
+    {
+      "id": "d8a90f32",
+      "title": "The Silent Voyager",
+      "author": "Grace Holloway",
+      "genre": "mystery",
+      "publishedYear": 2023,
+      "stockQuantity": 16,
+      "status": "available"
+    },
+    {
+      "id": "e23a1bce",
+      "title": "Legends of the Ancients",
+      "author": "Nathan Cross",
+      "genre": "non-fiction",
+      "publishedYear": 2000,
+      "stockQuantity": 12,
+      "status": "available"
+    },
+    {
+      "id": "f4b2d61f",
+      "title": "The Crystal Prophecy",
+      "author": "Ella Vance",
+      "genre": "fiction",
+      "publishedYear": 1998,
+      "stockQuantity": 8,
+      "status": "available"
+    },
+    {
+      "id": "g5f61b91",
+      "title": "Voices in the Wind",
+      "author": "David Stone",
+      "genre": "mystery",
+      "publishedYear": 2018,
+      "stockQuantity": 19,
+      "status": "available"
+    },
+    {
+      "id": "h983cc01",
+      "title": "Beneath the Crimson Sky",
+      "author": "Paul Rivers",
+      "genre": "fiction",
+      "publishedYear": 1997,
+      "stockQuantity": 4,
+      "status": "available"
+    },
+    {
+      "id": "i1e28bf3",
+      "title": "The Clockwork Dagger",
+      "author": "Liam Archer",
+      "genre": "fantasy",
+      "publishedYear": 2007,
+      "stockQuantity": 18,
+      "status": "available"
+    },
+    {
+      "id": "j2836c21",
+      "title": "A Dance of Blades",
+      "author": "Charlotte Grey",
+      "genre": "fantasy",
+      "publishedYear": 2025,
+      "stockQuantity": 7,
+      "status": "available"
+    },
+    {
+      "id": "k3741afc",
+      "title": "Tales from the Hollow",
+      "author": "Ulysses Grant",
+      "genre": "fiction",
+      "publishedYear": 1992,
+      "stockQuantity": 11,
+      "status": "available"
+    },
+    {
+      "id": "l4827b9e",
+      "title": "Chronicles of the Veil",
+      "author": "Yvonne Blake",
+      "genre": "sci-fi",
+      "publishedYear": 2019,
+      "stockQuantity": 6,
+      "status": "available"
+    },
+    {
+      "id": "m591bcee",
+      "title": "Maze of Mirrors",
+      "author": "Zachary Miles",
+      "genre": "mystery",
+      "publishedYear": 2001,
+      "stockQuantity": 14,
+      "status": "available"
+    },
+    {
+      "id": "n623a1d2",
+      "title": "Dreams in Ashes",
+      "author": "Samuel Kent",
+      "genre": "historical",
+      "publishedYear": 1996,
+      "stockQuantity": 20,
+      "status": "available"
+    },
+    {
+      "id": "o74cc931",
+      "title": "The Hollow Crown",
+      "author": "Xander Poe",
+      "genre": "non-fiction",
+      "publishedYear": 2012,
+      "stockQuantity": 17,
+      "status": "available"
+    },
+    {
+      "id": "p8b1e1c4",
+      "title": "Empire of Light",
+      "author": "Brian Keller",
+      "genre": "romance",
+      "publishedYear": 2006,
+      "stockQuantity": 10,
+      "status": "available"
+    },
+    {
+      "id": "q92af3cd",
+      "title": "Windswept Shores",
+      "author": "Alice Morgan",
+      "genre": "fiction",
+      "publishedYear": 1999,
+      "stockQuantity": 9,
+      "status": "available"
+    },
+    {
+      "id": "r10b57ef",
+      "title": "The Obsidian Mirror",
+      "author": "Kara Benson",
+      "genre": "fantasy",
+      "publishedYear": 2020,
+      "stockQuantity": 16,
+      "status": "available"
+    },
+    {
+      "id": "s1f4cdef",
+      "title": "City of Whispers",
+      "author": "Mia Durant",
+      "genre": "mystery",
+      "publishedYear": 2016,
+      "stockQuantity": 11,
+      "status": "available"
+    },
+    {
+      "id": "t23fabe0",
+      "title": "Feathers and Flames",
+      "author": "Henry Talbot",
+      "genre": "sci-fi",
+      "publishedYear": 2014,
+      "stockQuantity": 5,
+      "status": "available"
+    },
+    {
+      "id": "u3d4f1aa",
+      "title": "The Emerald Enclave",
+      "author": "Olivia Frost",
+      "genre": "fiction",
+      "publishedYear": 1995,
+      "stockQuantity": 14,
+      "status": "available"
+    },
+    {
+      "id": "v4e61cbb",
+      "title": "Song of the Phoenix",
+      "author": "Vera King",
+      "genre": "fantasy",
+      "publishedYear": 2008,
+      "stockQuantity": 13,
+      "status": "available"
+    },
+    {
+      "id": "w56aa3fe",
+      "title": "The Shadow Thief",
+      "author": "Jack Flynn",
+      "genre": "historical",
+      "publishedYear": 1993,
+      "stockQuantity": 15,
+      "status": "available"
+    },
+    {
+      "id": "x67abf09",
+      "title": "Blood and Stardust",
+      "author": "Rachel Moore",
+      "genre": "sci-fi",
+      "publishedYear": 2021,
+      "stockQuantity": 18,
+      "status": "available"
+    },
+    {
+      "id": "y78abcde",
+      "title": "Forest of Illusions",
+      "author": "Tara Lin",
+      "genre": "fantasy",
+      "publishedYear": 2002,
+      "stockQuantity": 6,
+      "status": "available"
+    },
+    {
+      "id": "z89bcdf1",
+      "title": "The Iron Pact",
+      "author": "Zachary Miles",
+      "genre": "romance",
+      "publishedYear": 1991,
+      "stockQuantity": 7,
+      "status": "available"
+    },
+    {
+      "id": "a90bc123",
+      "title": "A World Between",
+      "author": "Paul Rivers",
+      "genre": "non-fiction",
+      "publishedYear": 2004,
+      "stockQuantity": 11,
+      "status": "available"
+    },
+    {
+      "id": "b01cdf34",
+      "title": "Grimoire of Secrets",
+      "author": "Liam Archer",
+      "genre": "fiction",
+      "publishedYear": 2022,
+      "stockQuantity": 19,
+      "status": "available"
+    },
+    {
+      "id": "c12def45",
+      "title": "Ashes of Tomorrow",
+      "author": "Charlotte Grey",
+      "genre": "mystery",
+      "publishedYear": 1990,
+      "stockQuantity": 5,
+      "status": "available"
+    }
+  ],
+  "users": [
+    {
+      "name": "Priyanshu Sinha",
+      "contact": "9334390475",
+      "email": "singularplasma@gmail.com",
+      "password": "Pwd123",
+      "image": "profile.jpg",
+      "id": "0501US25260",
+      "createdAt": "2025-05-01T07:47:24.010Z"
+    },
+    {
+      "name": "Priyanshu",
+      "contact": "1234567890",
+      "email": "iampriyanshu327@gmail.com",
+      "password": "Pwd987654",
+      "id": "0501US25279",
+      "createdAt": "2025-05-01T08:15:18.468Z"
+    },
+    {
+      "name": "Priyanshu Sinha",
+      "contact": "9334390475",
+      "email": "singularplasma@gmail.com",
+      "password": "Pwd123",
+      "image": "profile.jpg",
+      "id": "0501US25280",
+      "createdAt": "2025-05-01T08:47:47.424Z"
+    },
+    {
+      "name": "Priyanshu Sinha",
+      "contact": "9334390475",
+      "email": "jacalom735@rabitex.com",
+      "password": "Pwd123",
+      "id": "0501US25281",
+      "createdAt": "2025-05-01T08:51:44.584Z"
+    },
+    {
+      "name": "Otto Von Bismark",
+      "contact": "9334390475",
+      "email": "texidi1338@cxnlab.com",
+      "password": "Pwd123",
+      "image": "profile.jpg",
+      "id": "0501US25282",
+      "createdAt": "2025-05-01T09:49:44.066Z"
+    },
+    {
+      "name": "Anuj",
+      "contact": "9876543212",
+      "email": "jacalom735@rabitex.com",
+      "password": "Pwd123fdW",
+      "id": "0501US25284",
+      "createdAt": "2025-05-01T10:54:01.479Z"
+    },
+    {
+      "name": "Priyanshu",
+      "contact": "9334390475",
+      "email": "iampriyanshu327@gmail.com",
+      "password": "Pwd123",
+      "id": "0501US25285",
+      "createdAt": "2025-05-01T11:13:32.744Z"
+    },
+    {
+      "name": "HashMap",
+      "contact": "1121212125",
+      "email": "texidi1338@cxnlab.com",
+      "password": "Pwd123",
+      "id": "0501US25286",
+      "createdAt": "2025-05-01T11:18:47.198Z"
+    },
+    {
+      "name": "HashMap",
+      "contact": "1121212125",
+      "email": "thisispriyanshusinha@gmail.com",
+      "password": "Pwd123",
+      "id": "0502US25101",
+      "createdAt": "2025-05-02T06:24:22.659Z"
+    },
+    {
+      "name": "Priyanshu Sinha",
+      "contact": "1234567890",
+      "email": "texidi1338@cxnlab.com",
+      "password": "Pwd123",
+      "id": "0502US25102",
+      "createdAt": "2025-05-02T10:09:33.274Z"
+    },
+    {
+      "name": "Priyanshu Sinha",
+      "contact": "1234567890",
+      "email": "texidi1338@cxnlab.com",
+      "password": "Pwd123",
+      "id": "0502US25103",
+      "createdAt": "2025-05-02T10:10:40.019Z"
+    },
+    {
+      "name": "HashMap",
+      "contact": "9334390475",
+      "email": "iampriyanshu327@gmail.com",
+      "password": "Pwd123",
+      "id": "0502US25104",
+      "createdAt": "2025-05-02T10:10:56.021Z"
+    },
+    {
+      "name": "Parv",
+      "contact": "1234567895",
+      "email": "monkeydxgarp@gmail.com",
+      "password": "Pwd1231234",
+      "id": "0513US25101",
+      "createdAt": "2025-05-13T07:22:59.357Z"
+    }
+  ],
+  "images": [
+    {
+      "name": "John"
+    }
+  ],
+  "borrowRequests": [
+    {
+      "id": 1,
+      "bookId": 1,
+      "duration": 14,
+      "status": "denied"
+    },
+    {
+      "bookId": "1",
+      "duration": 7,
+      "status": "approved",
+      "id": 2
+    },
+    {
+      "bookId": "1",
+      "duration": 7,
+      "status": "approved",
+      "id": 3
+    },
+    {
+      "bookId": "1",
+      "duration": 7,
+      "status": "denied",
+      "id": 4
+    },
+    {
+      "bookId": "1",
+      "duration": 7,
+      "status": "approved",
+      "id": 5
+    },
+    {
+      "bookId": "1",
+      "duration": 7,
+      "status": "denied",
+      "id": 6
+    },
+    {
+      "bookId": "1aVPHPQ",
+      "duration": 7,
+      "status": "approved",
+      "id": 7
+    },
+    {
+      "bookId": "1aVPHPQ",
+      "duration": 7,
+      "status": "denied",
+      "id": 8
+    },
+    {
+      "bookId": "1",
+      "duration": 7,
+      "status": "approved",
+      "id": 9
+    },
+    {
+      "bookId": "1",
+      "duration": 7,
+      "status": "approved",
+      "id": 10
+    },
+    {
+      "bookId": "1",
+      "duration": 6,
+      "status": "denied",
+      "id": 11
+    },
+    {
+      "bookId": "1",
+      "duration": 7,
+      "status": "approved",
+      "id": 12
+    },
+    {
+      "bookId": "1aVPHPQ",
+      "duration": 7,
+      "status": "approved",
+      "id": 13
+    },
+    {
+      "bookId": "1aVPHPQ",
+      "duration": 7,
+      "status": "approved",
+      "id": 14
+    },
+    {
+      "bookId": "1aVPHPQ",
+      "duration": 3,
+      "status": "approved",
+      "id": 15
+    },
+    {
+      "bookId": "1aVPHPQ",
+      "duration": 3,
+      "status": "denied",
+      "id": 16
+    },
+    {
+      "bookId": "1aVPHPQ",
+      "duration": 3,
+      "status": "approved",
+      "id": 17
+    },
+    {
+      "bookId": "1aVPHPQ",
+      "duration": 3,
+      "status": "approved",
+      "id": 18
+    },
+    {
+      "bookId": "h983cc01",
+      "duration": 7,
+      "status": "denied",
+      "id": 19
+    },
+    {
+      "bookId": "h983cc01",
+      "duration": 5,
+      "status": "approved",
+      "id": 20
+    },
+    {
+      "bookId": "h983cc01",
+      "duration": 6,
+      "status": "denied",
+      "id": 21
+    },
+    {
+      "bookId": "s1f4cdef",
+      "duration": 7,
+      "status": "approved",
+      "id": 22
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+<div class="container">
+  <h2>Pending Borrow Requests</h2>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <!-- No Requests -->
+  <div *ngIf="!isLoading() && borrowRequests().length === 0" class="no-results">
+    No pending borrow requests.
+  </div>
+
+  <!-- Requests List -->
+  <div *ngIf="!isLoading() && borrowRequests().length > 0" class="requests-grid">
+    <mat-card *ngFor="let request of borrowRequests()">
+      <mat-card-header>
+        <mat-card-title>{{ request.book.title }}</mat-card-title>
+        <mat-card-subtitle>{{ request.book.author }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Duration:</strong> {{ request.duration }} days</p>
+        <p><strong>Status:</strong> {{ request.status | titlecase }}</p>
+        <p><strong>Stock:</strong> {{ request.book.stockQuantity }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          *ngIf="getButtonState(request).lend.visible"
+          [ngClass]="getButtonState(request).lend.class"
+          [disabled]="getButtonState(request).lend.disabled || processingRequests().has(request.bookId)"
+          (click)="openConfirmDialog('lend', request.bookId, request.book.title)"
+        >
+          <mat-spinner *ngIf="processingRequests().has(request.bookId)" diameter="20"></mat-spinner>
+          {{ getButtonState(request).lend.text }}
+        </button>
+        <button
+          mat-raised-button
+          *ngIf="getButtonState(request).deny.visible"
+          [ngClass]="getButtonState(request).deny.class"
+          [disabled]="getButtonState(request).deny.disabled || processingRequests().has(request.bookId)"
+          (click)="openConfirmDialog('deny', request.bookId, request.book.title)"
+        >
+          {{ getButtonState(request).deny.text }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

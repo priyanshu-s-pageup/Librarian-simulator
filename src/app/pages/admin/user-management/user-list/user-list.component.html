@@ -1,0 +1,127 @@
+<!-- Main division -->
+
+<div class="user-list-container">
+  <div class="header">
+    <h2>User Management</h2>
+
+    <div class="sorting-container">
+      <label for="sortFieldSelect">Sort by:</label>
+      <select id="sortFieldSelect" [(ngModel)]="selectedSortField" (change)="onSortChange()">
+        <option *ngFor="let option of sortFieldOptions" [value]="option.value">
+          {{ option.label }}
+        </option>
+      </select>
+
+      <button class="sort-order-toggle" (click)="toggleSortOrder()" [title]="'Sort ' + sortOrder">
+        <span *ngIf="sortOrder === 'ASC'">↑ Ascending</span>
+        <span *ngIf="sortOrder === 'DESC'">↓ Descending</span>
+      </button>
+    </div>
+
+
+    <!-- Search Box -->
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search users..."
+        (input)="onSearchInput()"
+        [disabled]="isLoading"
+      />
+      <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+    </div>
+
+    <!-- Route to User-Upsert -->
+    <button mat-raised-button color="primary" routerLink="/user-upsert">
+      Add New User
+    </button>
+  </div>
+
+  <!-- Load Spinner -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <div *ngIf="!isLoading && filteredUsers.length === 0" class="empty-state">
+    <mat-icon>people_outline</mat-icon>
+    <p>No users found</p>
+    <button mat-raised-button color="primary" routerLink="/user-upsert">
+      Create First User
+    </button>
+  </div>
+
+  <!-- UI display cards -->
+  <div class="user-cards" *ngIf="!isLoading && filteredUsers.length > 0">
+    <mat-card *ngFor="let user of filteredUsers" class="user-card">
+      <div class="card-header">
+        <div class="user-avatar">
+          <img
+            *ngIf="user.image; else avatarPlaceholder"
+            [src]="getSafeImageUrl(user.image)"
+            alt="User avatar"
+            (error)="handleImageError($event)"
+          />
+          <ng-template #avatarPlaceholder>
+            <img [src]="getDefaultAvatar()" alt="Default avatar" />
+          </ng-template>
+        </div>
+        <div class="user-info">
+          <h3>{{ user.name }}</h3>
+          <p class="user-id">{{ user.id }}</p>
+        </div>
+      </div>
+
+      <mat-card-content>
+        <div class="user-detail">
+          <mat-icon>email</mat-icon>
+          <span>{{ user.email }}</span>
+        </div>
+        <div class="user-detail">
+          <mat-icon>phone</mat-icon>
+          <span>{{ user.contact }}</span>
+        </div>
+        <div class="user-detail">
+          <mat-icon>calendar_today</mat-icon>
+          <span>Joined {{ user.createdAt | date }}</span>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          [routerLink]="['/user-upsert', user.id]"
+        >
+          Edit
+        </button>
+        <button mat-raised-button color="warn" (click)="deleteUser(user.id)">
+          Delete
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="pagination">
+    <div class="pagination-container">
+      <button class="pagination-btn2" (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+      <button
+        *ngFor="let page of pageNumbers"
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)"
+        class="pagination-btn page-btn"
+      >
+        {{ page }}
+      </button>
+      <button class="pagination-btn2" (click)="nextPage()" [disabled]="currentPage >= totalPages">Next</button>
+    </div>
+
+    <div class="left-controls">
+      <label for="pageSize" class="page-label">Items per page:</label>
+      <div class="custom-select-wrapper">
+        <select id="pageSize" [(ngModel)]="pageSize" (change)="onPageSizeChange()" class="custom-select">
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

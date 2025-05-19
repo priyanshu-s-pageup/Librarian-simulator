@@ -1,0 +1,41 @@
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { BookData } from '../../pages/user/explore-books/explore-books.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+
+export interface BorrowDialogData {
+  book: BookData;
+  maxDuration: number;
+}
+
+@Component({
+  selector: 'app-borrow-dialog',
+  imports: [CommonModule, FormsModule, MatFormField, MatLabel],
+  templateUrl: './borrow-dialog.component.html',
+  styleUrls: ['./borrow-dialog.component.css']
+})
+export class BorrowDialogComponent {
+  selectedDuration: number;
+  isSubmitting = false;
+
+  constructor(
+    public dialogRef: MatDialogRef<BorrowDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: BorrowDialogData
+  ) {
+    this.selectedDuration = Math.floor(data.maxDuration / 2);
+  }
+
+  onCancel(): void {
+    this.dialogRef.close();
+  }
+
+  onBorrow(): void {
+    this.isSubmitting = true;
+    this.dialogRef.close({
+      duration: this.selectedDuration,
+      bookId: this.data.book.id
+    });
+  }
+}

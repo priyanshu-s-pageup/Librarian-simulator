@@ -1,0 +1,26 @@
+<div class="dialog-container">
+  <h2>Borrow "{{ data.book.title }}"</h2>
+  <p>Enter the number of days you want to borrow this book:</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Duration (days)</mat-label>
+    <input
+      matInput
+      type="number"
+      [(ngModel)]="selectedDuration"
+      min="1"
+      [max]="data.maxDuration"
+      required
+    />
+  </mat-form-field>
+  <div class="dialog-actions">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button
+      mat-button
+      class="borrow-btn"
+      (click)="onBorrow()"
+      [disabled]="!selectedDuration || selectedDuration <= 0 || selectedDuration > data.maxDuration"
+    >
+      Borrow
+    </button>
+  </div>
+</div>

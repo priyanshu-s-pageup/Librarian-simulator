@@ -1,0 +1,259 @@
+.table-container {
+  margin: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.spinner {
+  border: 6px solid #ccc;
+  border-top: 6px solid #4caf50;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* Container flexes space between left and right controls */
+.filter-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
+}
+
+/* Label styling */
+.page-label {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Styled dropdown */
+.page-select {
+  appearance: none;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 0.4rem 2rem 0.4rem 0.5rem;
+  font-size: 14px;
+  border-radius: 4px;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><path fill="%23333" d="M0 2l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 0.6rem;
+  cursor: pointer;
+}
+
+/* Right section for search and button */
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Search box style */
+.search-input {
+  padding: 8px 12px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 220px;
+
+}
+
+/* Add new button style */
+.add-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 16px;
+  font-size: 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.add-btn:hover {
+  background-color: #45a049;
+}
+
+.data-table th {
+  cursor: pointer;
+}
+
+.data-table th:hover {
+  background-color:rgb(19, 50, 68);
+}
+
+.data-table td, .data-table th {
+  padding: 10px;
+  text-align: left;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.data-table th, .data-table td {
+  padding: 12px;
+  text-align:  left;
+  border-bottom: 1px solid #ddd;
+}
+
+.data-table th {
+  background-color:rgb(27, 115, 135);
+  color: white;
+}
+
+.data-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.edit-btn, .delete-btn {
+  padding: 5px 10px;
+  margin: 2px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.edit-btn {
+  /* background-color: #4CAF50; */
+  background-color:rgb(95, 148, 193);
+  color: white;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #45a049;
+}
+
+.delete-btn:hover {
+  background-color: #e53935;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 12px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Shared button styles */
+.pagination-btn {
+  padding: 6px 14px;
+  background-color:rgb(115, 183, 255); /* green like 'Edit' */
+  border: none;
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-btn2 {
+  padding: 6px 14px;
+  background-color: #28a745; /* green like 'Edit' */
+  border: none;
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect */
+.pagination-btn:hover:not(:disabled) {
+  background-color:rgb(0, 75, 155);
+}
+
+/* Disabled buttons */
+.pagination-btn:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.pagination-btn2:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: pointer;
+}
+
+/* Active page style (like selected state) */
+.page-btn.active {
+  background-color: #007bff; /* blue like primary button */
+  font-weight: bold;
+}
+
+/* Left section for dropdown */
+.left-controls {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  gap: 0.5rem;
+  margin-left: 1rem;
+  margin-top: 0.8rem;
+  font-size: 14px;
+}
+
+/* Dropdown wrapper for custom style */
+.custom-select-wrapper {
+  position: relative;
+}
+
+/* Styled dropdown */
+.custom-select {
+  appearance: none;
+  padding: 6px 30px 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+/* On focus */
+.custom-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.low-stock {
+  color: orange;
+  font-weight: bold;
+}
+
+.warning-icon {
+  color: red;
+  margin-left: 5px;
+}

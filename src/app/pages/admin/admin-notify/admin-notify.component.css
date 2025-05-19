@@ -1,0 +1,60 @@
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #666;
+}
+
+.requests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card-content {
+  flex-grow: 1;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px;
+}
+
+.lend-btn {
+  background-color: #1976d2;
+  color: white;
+}
+
+.deny-btn {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.borrowed-btn {
+  background-color: #26a69a;
+  color: white;
+}
+
+.denied-btn {
+  background-color: #d32f2f;
+  color: white;
+}

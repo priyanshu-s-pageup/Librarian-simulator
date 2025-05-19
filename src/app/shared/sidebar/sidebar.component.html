@@ -1,0 +1,22 @@
+<nav [class.collapsed]="isCollapsed()" class="sidebar">
+  <div class="sidebar-header">
+    <h3>Librarian Simulator</h3>
+    <button (click)="toggleSidebar()" class="toggle-btn" [class.rotated]="isCollapsed()">
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </button>
+  </div>
+  <ul class="menu-items">
+    <li *ngFor="let item of menuItems()">
+      <a [routerLink]="item.route"
+        routerLinkActive="active"
+        [attr.title]="isCollapsed() ? item.title : null">
+        <span class="material-icons">{{ item.icon }}</span>
+        <span class="menu-title">{{ item.title }}</span>
+      </a>
+    </li>
+  </ul>
+</nav>

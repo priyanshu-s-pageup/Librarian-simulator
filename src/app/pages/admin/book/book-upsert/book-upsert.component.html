@@ -1,0 +1,127 @@
+<div class="book-form-container">
+  <button class="back-btn" (click)="goBack()">
+    <i class="fas fa-arrow-left"></i>
+  </button>
+
+  <h2>Book Details</h2>
+
+  <form (ngSubmit)="onSubmit()" #bookForm="ngForm">
+    <div class="form-group">
+      <label for="title">Book Title:</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        class="form-control"
+        [(ngModel)]="book.title"
+        required
+        #title="ngModel"
+      />
+      <div *ngIf="title.invalid && title.touched" class="error">
+        Book title is required.
+      </div>
+    </div>
+
+    <!-- Author -->
+    <div class="form-group">
+      <label for="author">Author:</label>
+      <input
+        type="text"
+        id="author"
+        name="author"
+        class="form-control"
+        [(ngModel)]="book.author"
+        required
+        #author="ngModel"
+      />
+      <div *ngIf="author.invalid && author.touched" class="error">
+        Author name is required.
+      </div>
+    </div>
+
+    <!-- Genre -->
+    <div class="form-group">
+      <label for="genre">Genre:</label>
+      <select
+        id="genre"
+        name="genre"
+        class="form-control"
+        [(ngModel)]="book.genre"
+        required
+        #genre="ngModel"
+      >
+        <option value="">Select Genre</option>
+        <option value="fiction">Fiction</option>
+        <option value="non-fiction">Non-fiction</option>
+        <option value="mystery">Mystery</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="biography">Biography</option>
+      </select>
+      <div *ngIf="genre.invalid && genre.touched" class="error">
+        Please select a genre.
+      </div>
+    </div>
+
+    <!-- Published Year -->
+    <div class="form-group">
+      <label for="publishedYear">Published Year:</label>
+      <input
+        type="number"
+        id="publishedYear"
+        name="publishedYear"
+        class="form-control"
+        [(ngModel)]="book.publishedYear"
+        required
+        min="1900"
+        max="2025"
+        #publishedYear="ngModel"
+      />
+      <div *ngIf="publishedYear.invalid && publishedYear.touched" class="error">
+        Please enter a valid year (between 1900 and 2025).
+      </div>
+    </div>
+
+    <!-- Stock Quantity -->
+    <div class="form-group">
+      <label for="stockQuantity">Number of Copies Available:</label>
+      <input
+        type="number"
+        id="stockQuantity"
+        name="stockQuantity"
+        class="form-control"
+        [(ngModel)]="book.stockQuantity"
+        required
+        min="0"
+        #stockQuantity="ngModel"
+      />
+      <div *ngIf="stockQuantity.invalid && stockQuantity.touched" class="error">
+        Please enter a valid quantity (minimum 0).
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="form-group">
+      <label for="status">Status:</label>
+      <select
+        id="status"
+        name="status"
+        class="form-control"
+        [(ngModel)]="book.status"
+        #status="ngModel"
+      >
+        <option value="available">Available</option>
+        <option value="in-high-demand">In High Demand</option>
+        <option value="out-of-stock">Out of Stock</option>
+      </select>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="bookForm.invalid || (isEditMode && !hasChanges())"
+    >
+      Submit
+    </button>
+  </form>
+</div>
