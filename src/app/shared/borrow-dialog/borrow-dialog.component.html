@@ -8,7 +8,6 @@
       type="number"
       [(ngModel)]="selectedDuration"
       min="1"
-      [max]="data.maxDuration"
       required
     />
   </mat-form-field>
@@ -18,7 +17,7 @@
       mat-button
       class="borrow-btn"
       (click)="onBorrow()"
-      [disabled]="!selectedDuration || selectedDuration <= 0 || selectedDuration > data.maxDuration"
+      [disabled]="!selectedDuration || selectedDuration <= 0"
     >
       Borrow
     </button>

@@ -1,0 +1,29 @@
+<div class="notifications-container">
+  <h2>User Notifications</h2>
+
+  <mat-card
+    *ngFor="let notification of notifications()"
+    [ngClass]="{ 'read': notification.isRead }"
+    class="notification-card"
+    (click)="markAsRead(notification.id)"
+  >
+    <mat-card-title>
+      {{ notification.bookTitle }} -
+      <span [ngClass]="notification.status">{{ notification.status | titlecase }}</span>
+    </mat-card-title>
+
+    <mat-card-content *ngIf="notification.message">
+      <p class="user-message">Your message: {{ notification.message }}</p>
+    </mat-card-content>
+
+    <mat-card-actions *ngIf="!notification.hasReRequested">
+      <button mat-button color="primary" (click)="openReRequestDialog(notification)">
+        Re-request
+      </button>
+    </mat-card-actions>
+
+    <mat-card-footer *ngIf="notification.hasReRequested">
+      <p class="text-muted">Re-request sent</p>
+    </mat-card-footer>
+  </mat-card>
+</div>

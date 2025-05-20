@@ -1,49 +1,75 @@
-<div class="container">
-  <h2>Pending Borrow Requests</h2>
-
-  <!-- Loading State -->
-  <div *ngIf="isLoading()" class="loading">
-    <mat-spinner></mat-spinner>
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Librarian Simulator</h1>
+    <div class="user-info">
+      <h2>Welcome, {{ currentUser()?.name || 'Admin' }}</h2>
+      <button mat-button (click)="logout()">Logout</button>
+    </div>
   </div>
 
-  <!-- No Requests -->
-  <div *ngIf="!isLoading() && borrowRequests().length === 0" class="no-results">
-    No pending borrow requests.
-  </div>
+  <div class="admin-content">
+    <!-- Loading State -->
+    <div *ngIf="isLoading()" class="loading">
+      <mat-spinner></mat-spinner>
+    </div>
 
-  <!-- Requests List -->
-  <div *ngIf="!isLoading() && borrowRequests().length > 0" class="requests-grid">
-    <mat-card *ngFor="let request of borrowRequests()">
-      <mat-card-header>
-        <mat-card-title>{{ request.book.title }}</mat-card-title>
-        <mat-card-subtitle>{{ request.book.author }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p><strong>Duration:</strong> {{ request.duration }} days</p>
-        <p><strong>Status:</strong> {{ request.status | titlecase }}</p>
-        <p><strong>Stock:</strong> {{ request.book.stockQuantity }}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button
-          mat-raised-button
-          *ngIf="getButtonState(request).lend.visible"
-          [ngClass]="getButtonState(request).lend.class"
-          [disabled]="getButtonState(request).lend.disabled || processingRequests().has(request.bookId)"
-          (click)="openConfirmDialog('lend', request.bookId, request.book.title)"
-        >
-          <mat-spinner *ngIf="processingRequests().has(request.bookId)" diameter="20"></mat-spinner>
-          {{ getButtonState(request).lend.text }}
-        </button>
-        <button
-          mat-raised-button
-          *ngIf="getButtonState(request).deny.visible"
-          [ngClass]="getButtonState(request).deny.class"
-          [disabled]="getButtonState(request).deny.disabled || processingRequests().has(request.bookId)"
-          (click)="openConfirmDialog('deny', request.bookId, request.book.title)"
-        >
-          {{ getButtonState(request).deny.text }}
-        </button>
-      </mat-card-actions>
-    </mat-card>
+    <!-- No Requests -->
+    <div *ngIf="!isLoading() && borrowRequests().length === 0" class="no-requests">
+      <mat-icon>check_circle</mat-icon>
+      <p>No pending borrow requests</p>
+    </div>
+
+    <!-- Requests List -->
+    <div *ngIf="!isLoading() && borrowRequests().length > 0">
+      <h2 class="section-title">Pending Borrow Requests</h2>
+
+      <div class="requests-grid">
+        <mat-card *ngFor="let request of borrowRequests()" class="request-card">
+          <mat-card-header>
+            <mat-card-title>{{ request.book.title || 'Unknown Book' }}</mat-card-title>
+            <mat-card-subtitle>{{ request.book.author || 'Unknown Author' }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="request-details">
+              <div class="detail-item">
+                <!-- <mat-icon>person</mat-icon> -->
+                <span><strong>Requested By:</strong> {{ request.user.name || 'Unknown User' }}</span>
+              </div>
+              <div class="detail-item">
+                <!-- <mat-icon>calendar_today</mat-icon> -->
+                <span><strong>Duration:</strong> {{ request.duration }} days</span>
+              </div>
+              <div class="detail-item">
+                <!-- <mat-icon [ngClass]="request.status">{{ getStatusIcon(request.status) }}</mat-icon> -->
+                <span><strong>Status:</strong> {{ request.status | titlecase }}</span>
+              </div>
+              <div class="detail-item">
+                <!-- <mat-icon>library_books</mat-icon> -->
+                <span><strong>Stock:</strong> {{ request.book.stockQuantity || 0 }} available</span>
+              </div>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-raised-button color="primary"
+                    *ngIf="getButtonState(request).lend.visible"
+                    [disabled]="getButtonState(request).lend.disabled"
+                    (click)="openConfirmDialog('lend', request.bookId, request.book.title)">
+              <mat-icon>check_circle</mat-icon>
+              {{ getButtonState(request).lend.text }}
+            </button>
+
+            <button mat-raised-button color="warn"
+                    *ngIf="getButtonState(request).deny.visible"
+                    [disabled]="getButtonState(request).deny.disabled"
+                    (click)="openConfirmDialog('deny', request.bookId, request.book.title)">
+              <mat-icon>cancel</mat-icon>
+              {{ getButtonState(request).deny.text }}
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
   </div>
 </div>

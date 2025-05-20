@@ -1,3 +1,4 @@
+import { User } from './../../../auth/user.model';
 import { Component, DestroyRef, EnvironmentInjector, OnInit, inject, runInInjectionContext, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +18,7 @@ import { BorrowNotificationService } from '../../../borrow-notification.service'
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, finalize, timeout } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { AuthService } from '../../../auth/auth.service';
 
 export interface BookData {
   id: number;
@@ -26,7 +28,7 @@ export interface BookData {
   publishedYear: number;
   stockQuantity: number;
   status: 'available' | 'in-high-demand' | 'out-of-stock';
-  isProcessing?: boolean; // Add this optional property
+  isProcessing?: boolean; //optional property
 }
 
 export interface BorrowDialogData {
@@ -60,18 +62,24 @@ export class ExploreBooksComponent implements OnInit {
   private borrowService = inject(BorrowNotificationService);
   private injector = inject(EnvironmentInjector);
 
-  books = signal<BookData[]>([]);
-  isLoading = signal(true);
-  totalBooks = signal(0);
-  searchTerm = signal('');
-  currentPage = signal(1);
-  pageSize = signal(10);
-  pageSizeOptions = [5, 10, 15, 20, 50];
-  sortField = signal('title');
-  sortOrder = signal<'ASC' | 'DESC'>('ASC');
-  booksWaitingForApproval = signal(new Set<number>());
-  borrowedBooks = signal(new Set<number>());
-  deniedBooks = signal(new Set<number>());
+  public books = signal<BookData[]>([]);
+  public isLoading = signal(true);
+  public totalBooks = signal(0);
+  public searchTerm = signal('');
+  public currentPage = signal(1);
+  public pageSize = signal(10);
+  public pageSizeOptions = [5, 10, 15, 20, 50];
+  public sortField = signal('title');
+  public sortOrder = signal<'ASC' | 'DESC'>('ASC');
+  public booksWaitingForApproval = signal(new Set<number>());
+  public borrowedBooks = signal(new Set<number>());
+  public deniedBooks = signal(new Set<number>());
+  // public currentUserId = signal('');
+  private authService = inject(AuthService);
+
+  get currentUserId(): string | null {
+    return this.authService.getCurrentUser()?.id || null;
+  }
 
   private readonly snackBarConfig: MatSnackBarConfig = {
     duration: 5000,
@@ -89,6 +97,16 @@ export class ExploreBooksComponent implements OnInit {
     this.setupSearchListener();
     this.setupBorrowListeners();
     this.loadBooks();
+
+    this.authService.currentUser$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(user => {
+        if (!user) {
+          // User logged out - clear any user-specific state
+          this.booksWaitingForApproval.set(new Set());
+          this.borrowedBooks.set(new Set());
+        }
+      });
   }
 
   private loadInitialBorrowStates(): void {
@@ -289,50 +307,94 @@ export class ExploreBooksComponent implements OnInit {
 //     });
 // }
 
+// openBorrowDialog(book: BookData): void {
+//   if (book.stockQuantity <= 0) {
+//     this.snackBar.open('This book is currently out of stock', 'Close', this.snackBarConfig);
+//     return;
+//   }
+
+//   this.books.update((books) =>
+//     books.map((b) => (b.id === book.id ? { ...b, isProcessing: true } : b))
+//   );
+
+//   const dialogRef = this.dialog.open(BorrowDialogComponent, {
+//     width: '400px',
+//     data: {
+//       book,
+//       maxDuration: book.status === 'in-high-demand' ? 7 : 14
+//     }
+//   });
+
+//   dialogRef
+//     .afterClosed()
+//     .pipe(
+//       finalize(() => {
+//         this.books.update((books) =>
+//           books.map((b) => (b.id === book.id ? { ...b, isProcessing: false } : b))
+//         );
+//       }),
+//       takeUntilDestroyed(this.destroyRef)
+//     )
+//     .subscribe((result) => {
+//       if (result?.duration) {
+//         this.processBorrowRequest(book, result.userId, result.duration);
+//       }
+//     });
+// }
+
 openBorrowDialog(book: BookData): void {
+  const userId = this.currentUserId;
+  if (!userId) {
+    this.snackBar.open('Please login to borrow books', 'Close', this.snackBarConfig);
+    return;
+  }
   if (book.stockQuantity <= 0) {
     this.snackBar.open('This book is currently out of stock', 'Close', this.snackBarConfig);
     return;
   }
 
-  this.books.update((books) =>
-    books.map((b) => (b.id === book.id ? { ...b, isProcessing: true } : b))
+  // Get current user ID (replace with your actual auth service)
+  // const userId = 'current-user-id'; // TODO: Replace with real user ID
+
+  this.books.update(books =>
+    books.map(b => b.id === book.id ? {...b, isProcessing: true} : b)
   );
 
   const dialogRef = this.dialog.open(BorrowDialogComponent, {
     width: '400px',
     data: {
       book,
+      userId,
       maxDuration: book.status === 'in-high-demand' ? 7 : 14
     }
   });
 
-  dialogRef
-    .afterClosed()
+  dialogRef.afterClosed()
     .pipe(
       finalize(() => {
-        this.books.update((books) =>
-          books.map((b) => (b.id === book.id ? { ...b, isProcessing: false } : b))
+        this.books.update(books =>
+          books.map(b => b.id === book.id ? {...b, isProcessing: false} : b)
         );
       }),
       takeUntilDestroyed(this.destroyRef)
     )
-    .subscribe((result) => {
+    .subscribe(result => {
       if (result?.duration) {
-        this.processBorrowRequest(book, result.duration);
+        this.processBorrowRequest(book, userId, result.duration);
       }
     });
 }
 
-// private processBorrowRequest(book: BookData, duration: number): void {
-//   const updatedWaiting = new Set(this.booksWaitingForApproval());
-//   updatedWaiting.add(book.id);
-//   this.booksWaitingForApproval.set(updatedWaiting);
+// private processBorrowRequest(book: BookData, userId:string, duration: number): void {
 
-//   this.borrowService.requestBorrow(book, duration)
+//   this.borrowService
+//     .requestBorrow(book, userId, duration)
 //     .pipe(takeUntilDestroyed(this.destroyRef))
 //     .subscribe({
 //       next: () => {
+//         const updatedWaiting = new Set(this.booksWaitingForApproval());
+//         updatedWaiting.add(book.id);
+//         this.booksWaitingForApproval.set(updatedWaiting);
 //         this.snackBar.open(
 //           `Request submitted for "${book.title}". Admin will review.`,
 //           'Close',
@@ -341,8 +403,6 @@ openBorrowDialog(book: BookData): void {
 //       },
 //       error: (err) => {
 //         console.error('Error requesting borrow:', err);
-//         updatedWaiting.delete(book.id);
-//         this.booksWaitingForApproval.set(updatedWaiting);
 //         this.snackBar.open(
 //           'Failed to submit borrow request.',
 //           'Close',
@@ -352,15 +412,23 @@ openBorrowDialog(book: BookData): void {
 //     });
 // }
 
-private processBorrowRequest(book: BookData, duration: number): void {
-  this.borrowService
-    .requestBorrow(book, duration)
+private processBorrowRequest(book: BookData, userId: string, duration: number): void {
+  this.borrowService.requestBorrow(book, userId, duration)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe({
       next: () => {
+        // Update local state
         const updatedWaiting = new Set(this.booksWaitingForApproval());
         updatedWaiting.add(book.id);
         this.booksWaitingForApproval.set(updatedWaiting);
+
+        // Update book stock locally (optimistic update)
+        this.books.update(books =>
+          books.map(b =>
+            b.id === book.id ? {...b, stockQuantity: b.stockQuantity - 1} : b
+          )
+        );
+
         this.snackBar.open(
           `Request submitted for "${book.title}". Admin will review.`,
           'Close',
@@ -368,9 +436,11 @@ private processBorrowRequest(book: BookData, duration: number): void {
         );
       },
       error: (err) => {
-        console.error('Error requesting borrow:', err);
+        console.error('Borrow request failed:', err);
         this.snackBar.open(
-          'Failed to submit borrow request.',
+          err.status === 400
+            ? 'Cannot borrow: ' + err.error.message
+            : 'Failed to submit request',
           'Close',
           this.snackBarConfig
         );
@@ -409,7 +479,7 @@ public getButtonState(bookId: number): {
     };
   }
 
-  // Rest of your existing status checks...
+  // status checks
   const status = this.getBookStatus(bookId);
   switch (status) {
     case 'pending':
@@ -420,7 +490,7 @@ public getButtonState(bookId: number): {
       return { text: 'Try Again', class: 'denied-btn', disabled: false, showSpinner: false };
     default:
       return {
-        text: book.status === 'in-high-demand' ? 'Borrow (High Demand)' : 'Borrow',
+        text: book.status === 'in-high-demand' ? 'Borrow (in High Demand)' : 'Borrow',
         class: book.status === 'in-high-demand' ? 'high-demand-btn' : 'borrow-btn',
         disabled: false,
         showSpinner: false

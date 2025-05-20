@@ -5,6 +5,8 @@ import { environment } from '../environments/environment.development';
 import { BookData } from './pages/user/explore-books/explore-books.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { timeout } from 'rxjs';
+import { BorrowRequest } from './models/borrow-request.model';
+// import { BorrowRequest } from './models/borrow-request.model';
 
 interface Book {
   id: number;
@@ -15,24 +17,21 @@ interface Book {
 // interface BorrowRequest {
 //   id: number;
 //   bookId: number;
-//   book: Book;
+//   userId: string;
+//   book: {
+//     id: number;
+//     title: string;
+//     author: string;
+//     stockQuantity: number;
+//     status: 'available' | 'in-high-demand' | 'out-of-stock';
+//   };
+//   user?: {
+//     id: string;
+//     name: string;
+//   };
 //   duration: number;
 //   status: 'pending' | 'approved' | 'denied';
 // }
-
-interface BorrowRequest {
-  id: number;
-  bookId: number;
-  book: {
-    id: number;
-    title: string;
-    author: string;
-    stockQuantity: number;
-    status: 'available' | 'in-high-demand' | 'out-of-stock';
-  };
-  duration: number;
-  status: 'pending' | 'approved' | 'denied';
-}
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +41,9 @@ export class BorrowNotificationService {
   private snackBar = inject(MatSnackBar);
   private url = environment.apiUrl;
 
-  // State Subjects
+  book: Book = <Book>{};
+
+
   private readonly borrowRequestsSubject = new BehaviorSubject<BorrowRequest[]>([]);
   private readonly borrowedBooksSubject = new BehaviorSubject<Set<number>>(new Set());
 
@@ -72,7 +73,7 @@ export class BorrowNotificationService {
 
   private loadInitialRequests(): void {
     this.http
-      .get<BorrowRequest[]>(`${this.url}/borrowRequests?status=pending&_expand=book`)
+      .get<BorrowRequest[]>(`${this.url}/borrowRequests?status=pending&_expand=book&_expand=user`)
       .pipe(timeout(10000))
       .subscribe({
         next: (requests) => {
@@ -94,42 +95,7 @@ export class BorrowNotificationService {
       });
   }
 
-  // requestBorrow(book: BookData, duration: number): Observable<void> {
-  //   const newRequest: BorrowRequest = {
-  //     id: Date.now(), // temporary id, solves the problem of BookId
-  //     bookId: book.id,
-  //     book: {
-  //       id: book.id,
-  //       title: book.title,
-  //       author: book.author
-  //     },
-  //     duration,
-  //     status: 'pending'
-  //   };
-
-  //   return this.http
-  //     .post<BorrowRequest>(`${this.url}/borrowRequests`, {
-  //       bookId: book.id,
-  //       duration,
-  //       status: 'pending'
-  //     })
-  //     .pipe(
-  //       tap((savedRequest) => {
-  //         const updatedRequest = { ...newRequest, id: savedRequest.id }; // Use backend ID
-  //         this.updateRequests([...this.currentRequests, updatedRequest]);
-  //         this.borrowRequestedSubject.next(updatedRequest);
-  //         this.snackBar.open(
-  //           `Borrow request for "${book.title}" submitted.`,
-  //           'Close',
-  //           this.snackBarConfig
-  //         );
-  //       }),
-  //       switchMap(() => new Observable<void>((subscriber) => subscriber.next()))
-  //     );
-  // }
-
-requestBorrow(book: BookData, duration: number): Observable<void> {
-  // Validate stock quantity upfront
+requestBorrow(book: BookData, userId: string, duration: number): Observable<void> {
   if (book.stockQuantity <= 0) {
     this.snackBar.open('Cannot borrow: Book is out of stock.', 'Close', this.snackBarConfig);
     return throwError(() => new Error('Book out of stock'));
@@ -138,6 +104,7 @@ requestBorrow(book: BookData, duration: number): Observable<void> {
   return this.http
     .post<BorrowRequest>(`${this.url}/borrowRequests`, {
       bookId: book.id,
+      userId,
       duration,
       status: 'pending'
     })
@@ -151,17 +118,17 @@ requestBorrow(book: BookData, duration: number): Observable<void> {
         const updatedRequest: BorrowRequest = {
           ...fullRequest,
           book: {
-            id: fullRequest.book.id,
-            title: fullRequest.book.title,
-            author: fullRequest.book.author,
-            stockQuantity: fullRequest.book.stockQuantity,
-            status: fullRequest.book.status
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            stockQuantity: book.stockQuantity,
+            status: book.status
           }
         };
         this.updateRequests([...this.currentRequests, updatedRequest]);
         this.borrowRequestedSubject.next(updatedRequest);
         this.snackBar.open(
-          `Borrow request for "${fullRequest.book.title}" submitted.`,
+          `Borrow request for "${book.title}" submitted.`,
           'Close',
           this.snackBarConfig
         );
@@ -173,42 +140,6 @@ requestBorrow(book: BookData, duration: number): Observable<void> {
       })
     );
 }
-
-  // requestBorrow(book: BookData, duration: number): Observable<void> {
-  //   const newRequest: BorrowRequest = {
-  //     id: Date.now(), // temporary id
-  //     bookId: book.id,
-  //     book: {
-  //       id: book.id,
-  //       title: book.title,
-  //       author: book.author,
-  //       stockQuantity: book.stockQuantity || 0, // Add default if not available
-  //       status: book.status || 'available' // Add default if not available
-  //     },
-  //     duration,
-  //     status: 'pending'
-  //   };
-
-  //   return this.http
-  //     .post<BorrowRequest>(`${this.url}/borrowRequests`, {
-  //       bookId: book.id,
-  //       duration,
-  //       status: 'pending'
-  //     })
-  //     .pipe(
-  //       tap((savedRequest) => {
-  //         const updatedRequest = { ...newRequest, id: savedRequest.id };
-  //         this.updateRequests([...this.currentRequests, updatedRequest]);
-  //         this.borrowRequestedSubject.next(updatedRequest);
-  //         this.snackBar.open(
-  //           `Borrow request for "${book.title}" submitted.`,
-  //           'Close',
-  //           this.snackBarConfig
-  //         );
-  //       }),
-  //       switchMap(() => new Observable<void>((subscriber) => subscriber.next()))
-  //     );
-  // }
 
 approveBorrow(requestId: number): Observable<void> {
   return this.http
@@ -222,6 +153,7 @@ approveBorrow(requestId: number): Observable<void> {
           this.borrowApprovedSubject.next(request.bookId);
           this.updateBorrowedBooks(request.bookId);
           this.snackBar.open('Borrow request approved.', 'Close', this.snackBarConfig);
+          this.createUserNotification(this.book.title, 'approved')
         }
       }),
       catchError((err) => {
@@ -242,6 +174,7 @@ denyBorrow(requestId: number): Observable<void> {
           this.updateRequests(this.currentRequests.filter((req) => req.id !== requestId));
           this.borrowDeniedSubject.next(request.bookId);
           this.snackBar.open('Borrow request denied.', 'Close', this.snackBarConfig);
+          this.createUserNotification(this.book.title, 'denied');
         }
       }),
       catchError((err) => {
@@ -290,6 +223,20 @@ denyBorrow(requestId: number): Observable<void> {
 
   updateBookStatus(bookId: number, status: 'available' | 'borrowed') {
     this.bookStatusUpdated.next({bookId, status});
+  }
+
+   createUserNotification(bookTitle: string, status: 'approved' | 'denied'): void {
+    const newNotif = {
+      bookTitle,
+      status,
+      isRead: false,
+      hasReRequested: false
+    };
+
+    this.http.post(`${this.url}/userNotifications`, newNotif).subscribe({
+      next: () => console.log('User notification created'),
+      error: (err) => console.error('Failed to create user notification', err)
+    });
   }
 
 }

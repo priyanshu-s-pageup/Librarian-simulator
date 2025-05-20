@@ -9,14 +9,18 @@
       </div>
     </button>
   </div>
-  <ul class="menu-items">
-    <li *ngFor="let item of menuItems()">
-      <a [routerLink]="item.route"
-        routerLinkActive="active"
-        [attr.title]="isCollapsed() ? item.title : null">
-        <span class="material-icons">{{ item.icon }}</span>
-        <span class="menu-title">{{ item.title }}</span>
-      </a>
+
+  <div *ngIf = "userName">
+    <p>Welcome, {{ user?.name }}</p>
+  </div>
+
+  <ul>
+    <li *ngFor="let route of visibleRoutes">
+      <a [routerLink]="route.path">{{ route.label }}</a>
     </li>
   </ul>
+
+  <hr />
+  <button (click)="logout()">Logout</button>
+
 </nav>

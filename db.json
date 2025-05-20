@@ -69,8 +69,8 @@
       "author": "Paul Rivers",
       "genre": "fiction",
       "publishedYear": 1997,
-      "stockQuantity": 4,
-      "status": "available"
+      "stockQuantity": 3,
+      "status": "in-high-demand"
     },
     {
       "id": "i1e28bf3",
@@ -87,8 +87,8 @@
       "author": "Charlotte Grey",
       "genre": "fantasy",
       "publishedYear": 2025,
-      "stockQuantity": 7,
-      "status": "available"
+      "stockQuantity": 2,
+      "status": "in-high-demand"
     },
     {
       "id": "k3741afc",
@@ -213,7 +213,7 @@
       "author": "Rachel Moore",
       "genre": "sci-fi",
       "publishedYear": 2021,
-      "stockQuantity": 18,
+      "stockQuantity": 17,
       "status": "available"
     },
     {
@@ -240,7 +240,7 @@
       "author": "Paul Rivers",
       "genre": "non-fiction",
       "publishedYear": 2004,
-      "stockQuantity": 11,
+      "stockQuantity": 8,
       "status": "available"
     },
     {
@@ -258,8 +258,8 @@
       "author": "Charlotte Grey",
       "genre": "mystery",
       "publishedYear": 1990,
-      "stockQuantity": 5,
-      "status": "available"
+      "stockQuantity": 3,
+      "status": "in-high-demand"
     }
   ],
   "users": [
@@ -270,105 +270,25 @@
       "password": "Pwd123",
       "image": "profile.jpg",
       "id": "0501US25260",
+      "role": "user",
       "createdAt": "2025-05-01T07:47:24.010Z"
     },
     {
-      "name": "Priyanshu",
-      "contact": "1234567890",
+      "name": "Angad",
+      "contact": "3347856376",
       "email": "iampriyanshu327@gmail.com",
       "password": "Pwd987654",
       "id": "0501US25279",
+      "role": "admin",
       "createdAt": "2025-05-01T08:15:18.468Z"
     },
     {
-      "name": "Priyanshu Sinha",
-      "contact": "9334390475",
-      "email": "singularplasma@gmail.com",
-      "password": "Pwd123",
-      "image": "profile.jpg",
-      "id": "0501US25280",
-      "createdAt": "2025-05-01T08:47:47.424Z"
-    },
-    {
-      "name": "Priyanshu Sinha",
-      "contact": "9334390475",
-      "email": "jacalom735@rabitex.com",
-      "password": "Pwd123",
-      "id": "0501US25281",
-      "createdAt": "2025-05-01T08:51:44.584Z"
-    },
-    {
-      "name": "Otto Von Bismark",
-      "contact": "9334390475",
-      "email": "texidi1338@cxnlab.com",
-      "password": "Pwd123",
-      "image": "profile.jpg",
-      "id": "0501US25282",
-      "createdAt": "2025-05-01T09:49:44.066Z"
-    },
-    {
-      "name": "Anuj",
-      "contact": "9876543212",
-      "email": "jacalom735@rabitex.com",
-      "password": "Pwd123fdW",
-      "id": "0501US25284",
-      "createdAt": "2025-05-01T10:54:01.479Z"
-    },
-    {
-      "name": "Priyanshu",
-      "contact": "9334390475",
-      "email": "iampriyanshu327@gmail.com",
-      "password": "Pwd123",
-      "id": "0501US25285",
-      "createdAt": "2025-05-01T11:13:32.744Z"
-    },
-    {
-      "name": "HashMap",
-      "contact": "1121212125",
-      "email": "texidi1338@cxnlab.com",
-      "password": "Pwd123",
-      "id": "0501US25286",
-      "createdAt": "2025-05-01T11:18:47.198Z"
-    },
-    {
-      "name": "HashMap",
-      "contact": "1121212125",
-      "email": "thisispriyanshusinha@gmail.com",
-      "password": "Pwd123",
-      "id": "0502US25101",
-      "createdAt": "2025-05-02T06:24:22.659Z"
-    },
-    {
-      "name": "Priyanshu Sinha",
-      "contact": "1234567890",
-      "email": "texidi1338@cxnlab.com",
-      "password": "Pwd123",
-      "id": "0502US25102",
-      "createdAt": "2025-05-02T10:09:33.274Z"
-    },
-    {
-      "name": "Priyanshu Sinha",
-      "contact": "1234567890",
-      "email": "texidi1338@cxnlab.com",
-      "password": "Pwd123",
-      "id": "0502US25103",
-      "createdAt": "2025-05-02T10:10:40.019Z"
-    },
-    {
-      "name": "HashMap",
-      "contact": "9334390475",
-      "email": "iampriyanshu327@gmail.com",
-      "password": "Pwd123",
-      "id": "0502US25104",
-      "createdAt": "2025-05-02T10:10:56.021Z"
-    },
-    {
       "name": "Parv",
-      "contact": "1234567895",
-      "email": "monkeydxgarp@gmail.com",
-      "password": "Pwd1231234",
-      "id": "0513US25101",
-      "createdAt": "2025-05-13T07:22:59.357Z"
+      "contact": "1234567898",
+      "email": "whitenblack@gmail.com",
+      "password": "Pwd123",
+      "id": "0519US25101",
+      "createdAt": "2025-05-19T11:01:32.887Z"
     }
   ],
   "images": [
@@ -378,136 +298,83 @@
   ],
   "borrowRequests": [
     {
-      "id": 1,
-      "bookId": 1,
-      "duration": 14,
-      "status": "denied"
-    },
-    {
-      "bookId": "1",
+      "bookId": "j2836c21",
+      "userId": "0501US25260",
       "duration": 7,
-      "status": "approved",
+      "status": "denied",
       "id": 2
     },
     {
-      "bookId": "1",
+      "bookId": "x67abf09",
+      "userId": "0501US25260",
       "duration": 7,
       "status": "approved",
       "id": 3
     },
     {
-      "bookId": "1",
+      "bookId": "j2836c21",
+      "userId": "0501US25260",
       "duration": 7,
-      "status": "denied",
+      "status": "approved",
       "id": 4
     },
     {
-      "bookId": "1",
+      "bookId": "j2836c21",
+      "userId": "0501US25260",
       "duration": 7,
+      "status": "denied",
+      "id": 5
+    }
+  ],
+  "userNotifications": [
+    {
+      "id": 1,
+      "bookTitle": "Clean Code",
       "status": "approved",
+      "isRead": true,
+      "hasReRequested": true,
+      "message": "why did you did this?"
+    },
+    {
+      "id": 2,
+      "bookTitle": "Atomic Habits",
+      "status": "denied",
+      "isRead": true,
+      "hasReRequested": true,
+      "message": "Can you please lend this to my 🥲"
+    },
+    {
+      "bookTitle": "A Dance of Blades",
+      "status": "approved",
+      "isRead": true,
+      "hasReRequested": true,
+      "id": 3,
+      "message": "sfdf"
+    },
+    {
+      "status": "approved",
+      "isRead": true,
+      "hasReRequested": true,
+      "id": 4,
+      "message": "Yoyo"
+    },
+    {
+      "status": "denied",
+      "isRead": false,
+      "hasReRequested": false,
       "id": 5
     },
     {
-      "bookId": "1",
-      "duration": 7,
-      "status": "denied",
+      "status": "approved",
+      "isRead": false,
+      "hasReRequested": false,
       "id": 6
     },
     {
-      "bookId": "1aVPHPQ",
-      "duration": 7,
-      "status": "approved",
+      "status": "denied",
+      "isRead": false,
+      "hasReRequested": false,
       "id": 7
-    },
-    {
-      "bookId": "1aVPHPQ",
-      "duration": 7,
-      "status": "denied",
-      "id": 8
-    },
-    {
-      "bookId": "1",
-      "duration": 7,
-      "status": "approved",
-      "id": 9
-    },
-    {
-      "bookId": "1",
-      "duration": 7,
-      "status": "approved",
-      "id": 10
-    },
-    {
-      "bookId": "1",
-      "duration": 6,
-      "status": "denied",
-      "id": 11
-    },
-    {
-      "bookId": "1",
-      "duration": 7,
-      "status": "approved",
-      "id": 12
-    },
-    {
-      "bookId": "1aVPHPQ",
-      "duration": 7,
-      "status": "approved",
-      "id": 13
-    },
-    {
-      "bookId": "1aVPHPQ",
-      "duration": 7,
-      "status": "approved",
-      "id": 14
-    },
-    {
-      "bookId": "1aVPHPQ",
-      "duration": 3,
-      "status": "approved",
-      "id": 15
-    },
-    {
-      "bookId": "1aVPHPQ",
-      "duration": 3,
-      "status": "denied",
-      "id": 16
-    },
-    {
-      "bookId": "1aVPHPQ",
-      "duration": 3,
-      "status": "approved",
-      "id": 17
-    },
-    {
-      "bookId": "1aVPHPQ",
-      "duration": 3,
-      "status": "approved",
-      "id": 18
-    },
-    {
-      "bookId": "h983cc01",
-      "duration": 7,
-      "status": "denied",
-      "id": 19
-    },
-    {
-      "bookId": "h983cc01",
-      "duration": 5,
-      "status": "approved",
-      "id": 20
-    },
-    {
-      "bookId": "h983cc01",
-      "duration": 6,
-      "status": "denied",
-      "id": 21
-    },
-    {
-      "bookId": "s1f4cdef",
-      "duration": 7,
-      "status": "approved",
-      "id": 22
     }
   ]
 }

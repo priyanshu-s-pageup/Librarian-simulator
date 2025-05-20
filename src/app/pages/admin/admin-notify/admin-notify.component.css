@@ -58,3 +58,29 @@ mat-card-actions {
   background-color: #d32f2f;
   color: white;
 }
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.no-access {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.no-access mat-icon {
+  font-size: 60px;
+  width: 60px;
+  height: 60px;
+  color: #f44336; /* Material red */
+}

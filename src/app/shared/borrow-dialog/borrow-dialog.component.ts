@@ -7,7 +7,11 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 
 export interface BorrowDialogData {
   book: BookData;
-  maxDuration: number;
+}
+
+export interface BorrowDialogResult {
+  duration: number;
+  userId: string;
 }
 
 @Component({
@@ -17,15 +21,13 @@ export interface BorrowDialogData {
   styleUrls: ['./borrow-dialog.component.css']
 })
 export class BorrowDialogComponent {
-  selectedDuration: number;
+  selectedDuration: number = 7; //default placeholder
   isSubmitting = false;
 
   constructor(
     public dialogRef: MatDialogRef<BorrowDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: BorrowDialogData
-  ) {
-    this.selectedDuration = Math.floor(data.maxDuration / 2);
-  }
+  ) {}
 
   onCancel(): void {
     this.dialogRef.close();
