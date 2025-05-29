@@ -1,0 +1,61 @@
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.book-card {
+  padding: 16px;
+  background-color: #fdfdfd;
+  border: 1px solid #333; /* dark border */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 6px;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.book-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.book-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.book-author {
+  margin: 4px 0 0;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.book-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.book-body p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.no-books-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2em;
+  color: #888;
+}

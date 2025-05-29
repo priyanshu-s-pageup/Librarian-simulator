@@ -11,10 +11,21 @@ import { User } from './user.model';
 
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.currentUserSubject.asObservable();
+  // currentUser$ = this.currentUserSubject.asObservable();
   private apiUrl = 'http://localhost:3000/users';
+  private borrowedBooks = new Set<number>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  currentUser$ = this.currentUserSubject = new BehaviorSubject<User | null>(
+    JSON.parse(localStorage.getItem('currentUser') || 'null')
+  );
+
+  constructor(private http: HttpClient, private router: Router) {
+    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (user) {
+      this.currentUserSubject.next(user);
+    }
+  }
+
 
   login(email: string, password: string): Observable<User | null> {
     return this.http.get<User[]>(`${this.apiUrl}?email=${email}&password=${password}`)
@@ -46,5 +57,9 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!this.getCurrentUser();
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.currentUserSubject.value;
   }
 }

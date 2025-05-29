@@ -1,0 +1,165 @@
+<div class="dashboard-container">
+  <!-- User Greeting Section -->
+  <div class="greeting-section">
+    <div class="user-info">
+      <div class="avatar" *ngIf="currentUser?.image">
+        <img [src]="'https://avatar.iran.liara.run/public/12'" alt="User Avatar">
+      </div>
+      <div class="welcome-message">
+        <h1>{{ getGreeting() }}, {{ currentUser?.name }}!</h1>
+        <p class="text-muted">Welcome back to your library dashboard</p>
+      </div>
+    </div>
+    <div class="quick-stats">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <div class="stat-info">
+          <h3>{{ approvedBooks().length }}</h3>
+          <p>Books Borrowed</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-info">
+          <h3>2</h3>
+          <p>Pending Returns</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="stat-info">
+          <h3>15</h3>
+          <p>Wishlisted</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity Charts Section -->
+  <div class="row charts-section">
+    <div class="col-md-8">
+      <div class="chart-card">
+        <h2>Your Weekly Activity</h2>
+        <div class="chart-container">
+          <highcharts-chart
+            [Highcharts]="Highcharts"
+            [options]="activityChartOptions"
+            style="width: 100%; height: 100%; display: block;">
+          </highcharts-chart>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="chart-card">
+        <h2>Favorite Genres</h2>
+        <div class="chart-container">
+          <highcharts-chart
+            [Highcharts]="Highcharts"
+            [options]="genreChartOptions"
+            style="width: 100%; height: 100%; display: block;">
+          </highcharts-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recently Added Books Section -->
+  <div class="recent-books-section">
+    <h2>Recently Added Books</h2>
+    <div class="books-grid" *ngIf="recentBooks.length > 0; else noRecentBooks">
+      <div class="book-card" *ngFor="let book of recentBooks()">
+        <div class="book-cover">
+          <div class="book-status" [ngClass]="book.status">{{ book.status }}</div>
+          <img src="book.coverUrl" alt="Book Cover">
+        </div>
+        <div class="book-info">
+          <h3>{{ book.title }}</h3>
+          <p class="author">{{ book.author }}</p>
+          <div class="book-meta">
+            <span class="genre">{{ book.genre }}</span>
+            <span class="year">{{ book.publishedYear }}</span>
+          </div>
+          <div class="stock" [ngClass]="{
+            'low-stock': book.stockQuantity <= 3,
+            'out-of-stock': book.stockQuantity === 0
+          }">
+            {{ book.stockQuantity }} available
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noRecentBooks>
+      <div class="empty-state">
+        <i class="fas fa-book-open"></i>
+        <p>No recently added books found</p>
+      </div>
+    </ng-template>
+  </div>
+
+<!-- Currently Borrowed Books Section -->
+<div class="borrowed-books-section">
+  <h2>Your Currently Borrowed Books</h2>
+
+  <div class="books-grid" *ngIf="approvedBooks().length > 0; else noBorrowedBooks">
+    <div class="book-card" *ngFor="let book of approvedBooks()">
+      <div class="book-cover">
+        <img src="assets/default-book-cover.jpg" alt="Book Cover">
+      </div>
+      <div class="book-info">
+        <h3>{{ book.title }}</h3>
+        <p class="author">{{ book.author }}</p>
+        <div class="book-meta">
+          <span class="genre">{{ book.genre }}</span>
+          <span class="year">{{ book.publishedYear }}</span>
+        </div>
+        <div class="actions">
+          <button class="btn btn-sm btn-primary">Renew</button>
+          <button class="btn btn-sm btn-outline-secondary">Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noBorrowedBooks>
+    <div class="empty-state">
+      <i class="fas fa-book"></i>
+      <p>You don't have any borrowed books at the moment</p>
+      <button class="btn btn-primary">Explore Books</button>
+    </div>
+  </ng-template>
+</div>
+
+
+  <!-- Recommendations Section -->
+  <div class="recommendations-section">
+    <h2>Recommended For You</h2>
+    <div class="recommendations-grid">
+      <!-- Recommendation cards would go here -->
+      <div class="recommendation-card">
+        <div class="rec-cover">
+          <img src="assets/book1.jpg" alt="Recommended Book">
+        </div>
+        <div class="rec-info">
+          <h3>The Silent Patient</h3>
+          <p class="author">Alex Michaelides</p>
+          <div class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <span>4.5</span>
+          </div>
+          <button class="btn btn-sm btn-outline-primary">View Details</button>
+        </div>
+      </div>
+      <!-- More recommendation cards -->
+    </div>
+  </div>
+</div>

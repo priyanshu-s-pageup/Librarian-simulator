@@ -16,6 +16,7 @@ import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../auth/user.model';
 import { MatIcon } from '@angular/material/icon';
 // import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { BookData } from '../../user/explore-books/explore-books.component';
 
 // interface BorrowRequest {
 //   id: number;
@@ -59,6 +60,7 @@ export class AdminNotifyComponent implements OnInit {
   isAdmin = signal(false);
 
   borrowRequests = signal<BorrowRequest[]>([]);
+  book = signal<BookData[]>([])
   isLoading = signal(true);
   processingRequests = signal<Set<number>>(new Set());
 
@@ -141,7 +143,7 @@ export class AdminNotifyComponent implements OnInit {
       });
   }
 
-  openConfirmDialog(action: 'lend' | 'deny', bookId: number, bookTitle: string): void {
+  openConfirmDialog(book:BookData, action: 'lend' | 'deny', bookId: number, bookTitle: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '300px',
       data: {
@@ -158,15 +160,15 @@ export class AdminNotifyComponent implements OnInit {
       .subscribe(confirmed => {
         if (confirmed) {
           if (action === 'lend') {
-            this.onLend(bookId);
+            this.onLend(book, bookId);
           } else {
-            this.onDeny(bookId);
+            this.onDeny(book, bookId);
           }
         }
       });
   }
 
-  onLend(bookId: number): void {
+  onLend(book: BookData, bookId: number): void {
     const adminId = this.currentUser()?.id;
     console.log(`Admin ${adminId} lending book ${bookId}`);
 
@@ -190,7 +192,7 @@ export class AdminNotifyComponent implements OnInit {
     this.processingRequests.update((reqs) => new Set(reqs).add(request.id));
 
     this.borrowService
-      .approveBorrow(request.id)
+      .approveBorrow(book,request.id)
       .pipe(
         switchMap(() =>
           this.commonService.updateBookStock(bookId.toString(), -1).pipe(
@@ -231,7 +233,7 @@ export class AdminNotifyComponent implements OnInit {
       });
   }
 
-  onDeny(bookId: number): void {
+  onDeny(book: BookData, bookId: number): void {
     const request = this.borrowRequests().find((req) => req.bookId === bookId);
     if (!request) {
       this.snackBar.open('Request not found!', 'Close', this.snackBarConfig);
@@ -241,7 +243,7 @@ export class AdminNotifyComponent implements OnInit {
     this.processingRequests.update((reqs) => new Set(reqs).add(request.id));
 
     this.borrowService
-      .denyBorrow(request.id)
+      .denyBorrow(book, request.id)
       .pipe(
         finalize(() => {
           this.processingRequests.update((reqs) => {

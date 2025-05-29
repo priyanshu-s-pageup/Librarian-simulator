@@ -46,29 +46,6 @@
       });
     }
 
-    // getBooks(
-    //   searchTerm: string,
-    //   page: number,
-    //   pageSize: number,
-    //   sortField: string,
-    //   sortOrder: 'ASC' | 'DESC'
-    // ): Observable<any> {
-    //   let params = new HttpParams()
-    //     .set('_page', page.toString())
-    //     .set('_limit', pageSize.toString())
-    //     .set('_sort', sortField)
-    //     .set('_order', sortOrder.toLowerCase());
-
-    //   if (searchTerm) {
-    //     params = params.set('q', searchTerm);
-    //   }
-
-    //   return this.http.get<BookData[]>(`${this.url}/books`, {
-    //     params,
-    //     observe: 'response'
-    //   });
-    // }
-
 getBooks(
   searchTerm: string,
   page: number,

@@ -87,7 +87,7 @@
       "author": "Charlotte Grey",
       "genre": "fantasy",
       "publishedYear": 2025,
-      "stockQuantity": 2,
+      "stockQuantity": 1,
       "status": "in-high-demand"
     },
     {
@@ -105,7 +105,7 @@
       "author": "Yvonne Blake",
       "genre": "sci-fi",
       "publishedYear": 2019,
-      "stockQuantity": 6,
+      "stockQuantity": 5,
       "status": "available"
     },
     {
@@ -240,7 +240,7 @@
       "author": "Paul Rivers",
       "genre": "non-fiction",
       "publishedYear": 2004,
-      "stockQuantity": 8,
+      "stockQuantity": 7,
       "status": "available"
     },
     {
@@ -258,7 +258,7 @@
       "author": "Charlotte Grey",
       "genre": "mystery",
       "publishedYear": 1990,
-      "stockQuantity": 3,
+      "stockQuantity": 1,
       "status": "in-high-demand"
     }
   ],
@@ -324,57 +324,114 @@
       "duration": 7,
       "status": "denied",
       "id": 5
+    },
+    {
+      "bookId": "c12def45",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "approved",
+      "id": 6
+    },
+    {
+      "bookId": "c12def45",
+      "userId": "0501US25260",
+      "duration": 6,
+      "status": "denied",
+      "id": 7
+    },
+    {
+      "bookId": "j2836c21",
+      "userId": "0501US25260",
+      "duration": 98,
+      "status": "approved",
+      "id": 8
+    },
+    {
+      "bookId": "l4827b9e",
+      "userId": "0501US25260",
+      "duration": 71,
+      "status": "approved",
+      "id": 9
+    },
+    {
+      "bookId": "j2836c21",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "denied",
+      "id": 10
+    },
+    {
+      "bookId": "c12def45",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "approved",
+      "id": 11
+    },
+    {
+      "bookId": "a90bc123",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "approved",
+      "id": 12
+    },
+    {
+      "bookId": "a90bc123",
+      "userId": "0501US25260",
+      "duration": 35,
+      "status": "approved",
+      "id": 13
+    },
+    {
+      "bookId": "s1f4cdef",
+      "userId": "0501US25260",
+      "duration": 79,
+      "status": "approved",
+      "id": 14
+    },
+    {
+      "bookId": "a90bc123",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "approved",
+      "id": 15
+    },
+    {
+      "bookId": "a90bc123",
+      "userId": "0501US25260",
+      "duration": 23,
+      "status": "approved",
+      "id": 16
+    },
+    {
+      "bookId": "a90bc123",
+      "userId": "0501US25260",
+      "duration": 78,
+      "status": "pending",
+      "id": 17
+    },
+    {
+      "bookId": "x67abf09",
+      "userId": "0501US25260",
+      "duration": 45,
+      "status": "pending",
+      "id": 18
+    },
+    {
+      "bookId": "s1f4cdef",
+      "userId": "0501US25260",
+      "duration": 87,
+      "status": "approved",
+      "id": 19
     }
   ],
   "userNotifications": [
     {
-      "id": 1,
-      "bookTitle": "Clean Code",
       "status": "approved",
+      "bookId": "j2836c21",
+      "userId": "0501US25260",
       "isRead": true,
-      "hasReRequested": true,
-      "message": "why did you did this?"
-    },
-    {
-      "id": 2,
-      "bookTitle": "Atomic Habits",
-      "status": "denied",
-      "isRead": true,
-      "hasReRequested": true,
-      "message": "Can you please lend this to my 🥲"
-    },
-    {
-      "bookTitle": "A Dance of Blades",
-      "status": "approved",
-      "isRead": true,
-      "hasReRequested": true,
-      "id": 3,
-      "message": "sfdf"
-    },
-    {
-      "status": "approved",
-      "isRead": true,
-      "hasReRequested": true,
-      "id": 4,
-      "message": "Yoyo"
-    },
-    {
-      "status": "denied",
-      "isRead": false,
       "hasReRequested": false,
-      "id": 5
-    },
-    {
-      "status": "approved",
-      "isRead": false,
-      "hasReRequested": false,
-      "id": 6
-    },
-    {
-      "status": "denied",
-      "isRead": false,
-      "hasReRequested": false,
-      "id": 7
+      "id": 1
     }
   ]
 }

@@ -6,12 +6,19 @@ import { BookData } from './pages/user/explore-books/explore-books.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { timeout } from 'rxjs';
 import { BorrowRequest } from './models/borrow-request.model';
+import { NotificationSyncService } from './pages/user/user-notify/notification-sync.service';
+import { AuthService } from './auth/auth.service';
 // import { BorrowRequest } from './models/borrow-request.model';
 
 interface Book {
   id: number;
   title: string;
   author: string;
+}
+
+export interface BorrowDialogData {
+  book: BookData;
+  maxDuration: number;
 }
 
 // interface BorrowRequest {
@@ -37,7 +44,7 @@ interface Book {
   providedIn: 'root',
 })
 export class BorrowNotificationService {
-  private http = inject(HttpClient);
+  // private http = inject(HttpClient);
   private snackBar = inject(MatSnackBar);
   private url = environment.apiUrl;
 
@@ -59,11 +66,15 @@ export class BorrowNotificationService {
   readonly borrowApproved$ = this.borrowApprovedSubject.asObservable();
   readonly borrowDenied$ = this.borrowDeniedSubject.asObservable();
 
+  get currentUserId(): string | null {
+    return this.authService.getCurrentUser()?.id || null;
+  }
+
   private readonly snackBarConfig: MatSnackBarConfig = {
     duration: 5000,
   };
 
-  constructor() {
+  constructor(private http: HttpClient, private notificationSync: NotificationSyncService, private authService: AuthService) {
     this.initialize();
   }
 
@@ -141,7 +152,8 @@ requestBorrow(book: BookData, userId: string, duration: number): Observable<void
     );
 }
 
-approveBorrow(requestId: number): Observable<void> {
+approveBorrow(book: BookData,requestId: number): Observable<void> {
+  const userId = this.currentUserId;
   return this.http
     .patch<void>(`${this.url}/borrowRequests/${requestId}`, { status: 'approved' })
     .pipe(
@@ -153,7 +165,7 @@ approveBorrow(requestId: number): Observable<void> {
           this.borrowApprovedSubject.next(request.bookId);
           this.updateBorrowedBooks(request.bookId);
           this.snackBar.open('Borrow request approved.', 'Close', this.snackBarConfig);
-          this.createUserNotification(this.book.title, 'approved')
+          this.createUserNotification(book, 'approved', userId)
         }
       }),
       catchError((err) => {
@@ -163,7 +175,8 @@ approveBorrow(requestId: number): Observable<void> {
     );
 }
 
-denyBorrow(requestId: number): Observable<void> {
+denyBorrow(book: BookData, requestId: number): Observable<void> {
+  const userId = this.currentUserId;
   return this.http
     .patch<void>(`${this.url}/borrowRequests/${requestId}`, { status: 'denied' })
     .pipe(
@@ -174,7 +187,7 @@ denyBorrow(requestId: number): Observable<void> {
           this.updateRequests(this.currentRequests.filter((req) => req.id !== requestId));
           this.borrowDeniedSubject.next(request.bookId);
           this.snackBar.open('Borrow request denied.', 'Close', this.snackBarConfig);
-          this.createUserNotification(this.book.title, 'denied');
+          this.createUserNotification(book, 'denied', userId);
         }
       }),
       catchError((err) => {
@@ -225,9 +238,11 @@ denyBorrow(requestId: number): Observable<void> {
     this.bookStatusUpdated.next({bookId, status});
   }
 
-   createUserNotification(bookTitle: string, status: 'approved' | 'denied'): void {
+   createUserNotification(book: BookData, status: 'approved' | 'denied', userId: string | null): void {
     const newNotif = {
-      bookTitle,
+      // bookTitle,
+      bookId: book.id,
+      userId,
       status,
       isRead: false,
       hasReRequested: false
@@ -237,6 +252,14 @@ denyBorrow(requestId: number): Observable<void> {
       next: () => console.log('User notification created'),
       error: (err) => console.error('Failed to create user notification', err)
     });
+  }
+
+  updateRequestStatus(requestId: number, newStatus: 'approved' | 'denied') {
+    return this.http.patch(`${this.url}/borrowRequests/${requestId}`, { status: newStatus }).pipe(
+      switchMap(updatedRequest =>
+        this.notificationSync.syncBorrowRequestToNotification(updatedRequest)
+      )
+    );
   }
 
 }

@@ -1,7 +1,10 @@
+import { BookData } from "../pages/user/explore-books/explore-books.component";
+
 export interface BorrowRequest {
   id: number;
   bookId: number;
   userId: string;
+  books: BookData;
   book: {
     id: number;
     title: string;

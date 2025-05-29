@@ -1,7 +1,20 @@
-<div class="app-container">
-  <app-sidebar></app-sidebar>
+<div class="app-container" [class.sidebar-collapsed]="sidebarCollapsed">
+  <div class="content-wrapper">
+    <app-sidebar
+      *ngIf="isAuthenticated"
+      [class.collapsed]="sidebarCollapsed"
+      (collapsedChange)="sidebarCollapsed = $event"
+    ></app-sidebar>
 
-  <main >
+  </div>
+  <main class = "main-content">
     <router-outlet></router-outlet>
   </main>
+  <!-- <app-settings-panel
+   *ngIf ="isAuthenticated"
+   (layoutChange)="onLayoutChange($event)"
+   (sidebarChange)="onSidebarColorChange($event)">
+  </app-settings-panel> -->
+
+  <footer></footer>
 </div>

@@ -1,29 +1,96 @@
 <div class="notifications-container">
-  <h2>User Notifications</h2>
+  <div class="header-section">
+    <h2>My Requests</h2>
 
-  <mat-card
-    *ngFor="let notification of notifications()"
-    [ngClass]="{ 'read': notification.isRead }"
-    class="notification-card"
-    (click)="markAsRead(notification.id)"
-  >
-    <mat-card-title>
-      {{ notification.bookTitle }} -
-      <span [ngClass]="notification.status">{{ notification.status | titlecase }}</span>
-    </mat-card-title>
-
-    <mat-card-content *ngIf="notification.message">
-      <p class="user-message">Your message: {{ notification.message }}</p>
-    </mat-card-content>
-
-    <mat-card-actions *ngIf="!notification.hasReRequested">
-      <button mat-button color="primary" (click)="openReRequestDialog(notification)">
-        Re-request
+    <div class="filter-buttons">
+      <button mat-button
+              [class.active]="currentFilter() === 'all'"
+              (click)="setFilter('all')">
+        All Requests
       </button>
-    </mat-card-actions>
+      <button mat-button
+              [class.active]="currentFilter() === 'approved'"
+              (click)="setFilter('approved')">
+        Approved
+      </button>
+      <button mat-button
+              [class.active]="currentFilter() === 'denied'"
+              (click)="setFilter('denied')">
+        Denied
+      </button>
+      <button mat-button
+              [class.active]="currentFilter() === 'pending'"
+              (click)="setFilter('pending')">
+        Pending
+      </button>
+    </div>
+  </div>
 
-    <mat-card-footer *ngIf="notification.hasReRequested">
-      <p class="text-muted">Re-request sent</p>
-    </mat-card-footer>
-  </mat-card>
+  <div *ngIf="filteredNotifications().length === 0" class="empty-state">
+    <mat-icon>notifications_off</mat-icon>
+    <p>No {{currentFilter() === 'all' ? '' : currentFilter + ' '}}notifications found</p>
+  </div>
+
+  <div class="notification-grid">
+    <mat-card
+      *ngFor="let notification of filteredNotifications()"
+      [ngClass]="{
+        'read': notification.isRead,
+        'approved': notification.status === 'approved',
+        'denied': notification.status === 'denied',
+        'pending': notification.status === 'pending'
+      }"
+      class="notification-card"
+      (click)="markAsRead(notification.id)"
+    >
+      <mat-card-header>
+        <div mat-card-avatar class="status-icon">
+          <mat-icon>
+            {{ notification.status === 'approved' ? 'check_circle' :
+               notification.status === 'denied' ? 'cancel' : 'schedule' }}
+          </mat-icon>
+        </div>
+      <mat-card-title>{{ notification.book.title }}</mat-card-title>
+      <mat-card-subtitle>
+        by {{ notification.book.author }}
+        <span class="date">{{ notification.date | date:'mediumDate' }}</span>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="book-details">
+        <div class="detail-item">
+          <mat-icon>category</mat-icon>
+          <span>{{ notification.book.genre | titlecase }}</span>
+        </div>
+      </div>
+
+        <div *ngIf="notification.message" class="user-message">
+          <mat-icon>message</mat-icon>
+          <p>Your request message: "{{ notification.message }}"</p>
+        </div>
+
+        <div *ngIf="notification.adminComment" class="admin-comment">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <p>Admin response: "{{ notification.adminComment }}"</p>
+        </div>
+      </mat-card-content>
+
+      <!-- <mat-card-actions *ngIf="!notification.hasReRequested && notification.status === 'denied'">
+        <button mat-stroked-button
+                color="primary"
+                (click)="$event.stopPropagation(); openReRequestDialog(notification)">
+          <mat-icon>refresh</mat-icon>
+          Re-request
+        </button>
+      </mat-card-actions> -->
+
+      <mat-card-footer *ngIf="notification.hasReRequested">
+        <div class="footer-note">
+          <mat-icon>done_all</mat-icon>
+          <span>Re-request sent to admin</span>
+        </div>
+      </mat-card-footer>
+    </mat-card>
+  </div>
 </div>

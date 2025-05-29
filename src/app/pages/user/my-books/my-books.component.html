@@ -1,0 +1,26 @@
+<div class="header-section">
+  <h2>My Books</h2>
+</div>
+
+<div class="book-grid" *ngIf="myApprovedBooks().length > 0; else noBooks">
+  <mat-card class="book-card" *ngFor="let book of myApprovedBooks()">
+    <div class="book-header">
+      <div class="book-info">
+        <h2 class="book-title">{{ book.title }}</h2>
+        <p class="book-author">by {{ book.author }}</p>
+      </div>
+      <div class="book-meta">
+        <mat-icon color="primary">book</mat-icon>
+        <span class="book-genre">{{ book.genre }}</span>
+      </div>
+    </div>
+
+    <div class="book-body">
+      <p><strong>Published:</strong> {{ book.publishedYear }}</p>
+    </div>
+  </mat-card>
+</div>
+
+<ng-template #noBooks>
+  <p class="no-books-message">No approved books found.</p>
+</ng-template>

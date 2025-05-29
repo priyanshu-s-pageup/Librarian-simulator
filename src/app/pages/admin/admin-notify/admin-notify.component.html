@@ -55,7 +55,7 @@
             <button mat-raised-button color="primary"
                     *ngIf="getButtonState(request).lend.visible"
                     [disabled]="getButtonState(request).lend.disabled"
-                    (click)="openConfirmDialog('lend', request.bookId, request.book.title)">
+                    (click)="openConfirmDialog(request.books, 'lend', request.bookId, request.book.title)">
               <mat-icon>check_circle</mat-icon>
               {{ getButtonState(request).lend.text }}
             </button>
@@ -63,7 +63,7 @@
             <button mat-raised-button color="warn"
                     *ngIf="getButtonState(request).deny.visible"
                     [disabled]="getButtonState(request).deny.disabled"
-                    (click)="openConfirmDialog('deny', request.bookId, request.book.title)">
+                    (click)="openConfirmDialog(request.books, 'deny', request.bookId, request.book.title)">
               <mat-icon>cancel</mat-icon>
               {{ getButtonState(request).deny.text }}
             </button>

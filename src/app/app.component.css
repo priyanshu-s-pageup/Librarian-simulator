@@ -1,15 +1,96 @@
+/* App container sets up full-height flex layout */
 .app-container {
   display: flex;
+  flex-direction: row;
   min-height: 100vh;
+  width: 100%;
 }
 
+/* Sidebar wrapper handled via component tag */
+app-sidebar {
+  width: 250px;
+  transition: width 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* Sidebar collapsed version */
+app-sidebar.collapsed {
+  width: 60px;
+}
+
+/* Main content adjusts its margin to match sidebar width */
 main {
-  margin-left: 250px;
-  padding: 20px;
   flex-grow: 1;
-  transition: margin-left 0.3s ease;
+  padding: 10px;
+  transition: margin-left 0.3s ease, width 0.3s ease;
+  background-color: #f9f9f9;
+  min-width: 0; /* Prevent shrinking */
+  margin-left: 10px; /* Default when sidebar is expanded */
 }
 
-main.collapsed {
+/* When sidebar is collapsed */
+.app-container.sidebar-collapsed main {
   margin-left: 60px;
 }
+
+/* Base theme variables */
+:root {
+  --theme-color: #343a40;
+}
+
+/* Use theme color */
+/* body {
+  background-color: var(--theme-color);
+  transition: background-color 0.4s;
+} */
+
+/* Light/Dark Themes */
+/* body.light-theme {
+  background-color: #f4f4f4;
+  color: #000;
+}
+
+body.dark-theme {
+  background-color: #121212;
+  color: #fff;
+} */
+
+/* Wrapper Themes */
+.light-theme {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+.dark-theme {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+/* Sidebar Styling via data attribute */
+[data-sidebar-color='light'] app-sidebar {
+  background-color: #ffffff;
+  color: #000;
+}
+
+[data-sidebar-color='dark'] app-sidebar {
+  background-color: #1f1f2e;
+  color: #fff;
+}
+
+/* Main Content */
+.main-content {
+  padding: 20px;
+  transition: background-color 0.3s ease;
+}
+
+/* Optional additional styling */
+.light-theme .main-content {
+  background-color: #ffffff;
+  color: #000;
+}
+
+.dark-theme .main-content {
+  background-color: #1a1a2e;
+  color: #fff;
+}
+

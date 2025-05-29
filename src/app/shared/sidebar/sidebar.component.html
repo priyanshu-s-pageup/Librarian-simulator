@@ -1,6 +1,15 @@
 <nav [class.collapsed]="isCollapsed()" class="sidebar">
-  <div class="sidebar-header">
-    <h3>Librarian Simulator</h3>
+  <div class="topbar">
+
+    <div class="logo-section">
+      <img
+        src="https://icon2.cleanpng.com/lnd/20241012/yz/93a5a24fc736575da02f2e08cf2f75.webp"
+        alt="UnTold"
+        class="logo-img"
+      />
+      <span class="logo-text" *ngIf="!isCollapsed()">UnTold</span>
+    </div>
+
     <button (click)="toggleSidebar()" class="toggle-btn" [class.rotated]="isCollapsed()">
       <div class="hamburger">
         <span></span>
@@ -10,17 +19,46 @@
     </button>
   </div>
 
-  <div *ngIf = "userName">
+  <!-- <div *ngIf = "userName">
     <p>Welcome, {{ user?.name }}</p>
+  </div> -->
+
+  <!-- <div *ngIf="user" class="user-info">
+    <img [src]="'https://avatar.iran.liara.run/public/18'" alt="{{ user.name }}" class="user-avatar" />
+    <div class="user-name">{{ user.name }}</div>
+    <div class="user-role">{{ user.role || 'User' }}</div>
   </div>
+
+  <div class="sidebar-main-label">MAIN</div> -->
+
+  <div class="sidebar-top">
+    <div *ngIf="user && !isCollapsed()" class="user-info">
+      <img [src]="'https://avatar.iran.liara.run/public/18'" alt="{{ user.name }}" class="user-avatar" />
+      <div class="user-name">{{ user.name }}</div>
+      <div class="user-role">{{ user.role || 'User' }}</div>
+    </div>
+
+    <div class="sidebar-main-label" [class.shifted]="isCollapsed()">MAIN</div>
+  </div>
+
+
 
   <ul>
     <li *ngFor="let route of visibleRoutes">
-      <a [routerLink]="route.path">{{ route.label }}</a>
+      <a [routerLink]="route.path">
+        <mat-icon class="material-icon">{{ route.icon }}</mat-icon>
+        <span class="menu-title" *ngIf="!isCollapsed()">{{ route.label }}</span>
+      </a>
     </li>
   </ul>
 
+
   <hr />
-  <button (click)="logout()">Logout</button>
+  <!-- <button (click)="logout()">Logout</button> -->
+  <button (click)="logout()" class="logout-btn">
+    <mat-icon>logout</mat-icon>
+    <span class="logout-text" *ngIf="!isCollapsed()">Logout</span>
+  </button>
+
 
 </nav>

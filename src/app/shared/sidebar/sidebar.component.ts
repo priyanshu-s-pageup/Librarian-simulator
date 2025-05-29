@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, EventEmitter, OnInit, signal, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -17,23 +17,27 @@ interface MenuItem {
 
 @Component({
   selector: 'app-sidebar',
-  imports: [CommonModule, RouterModule, FormsModule, RouterLink],
+  imports: [CommonModule, RouterModule, FormsModule, RouterLink, MatIcon],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
   role: string | null = null;
-  user: User |null = null;
+  user: User| null = null;
   visibleRoutes: any[] = [];
   userName: string | null = null;
   private userSubscription: Subscription = new Subscription();
 
   routes = [
-    {path: '/user-list', label: 'User List', icon: 'person', roles: ['admin']},
+    {path: '/app-user-homepage', label: 'Home', icon: 'home', roles: ['user']},
+    {path: '/user-list', label: 'User List', icon: 'group', roles: ['admin']},
     {path: '/book-list', label: 'Book List', icon: 'book', roles: ['admin']},
-    {path: '/app-admin-notify', label: 'Admin Notification', icon: 'book', roles: ['admin']},
-    {path: '/explore-books', label: 'Explore Books', icon: 'menu_book', roles: ['user']},
-    {path: '/app-user-notify', label: 'User Notification', icon: 'book', roles: ['user']}
+    {path: '/app-admin-notify', label: 'Admin Notification', icon: 'sms', roles: ['admin']},
+    {path: '/explore-books', label: 'Explore Books', icon: 'explore', roles: ['user']},
+    {path: '/app-my-books', label: 'My Books', icon: 'menu_book', roles: ['user']},
+    {path: '/app-user-notify', label: 'User Notification', icon: 'sms', roles: ['user']},
+    {path: '/app-settings-panel', label: 'Settings', icon: 'settings', roles: ['user']},
+
   ]
 
   constructor(private authService: AuthService) {}
@@ -66,12 +70,21 @@ export class SidebarComponent implements OnInit {
 
   isCollapsed = signal(false);
 
-  toggleSidebar() {
-    this.isCollapsed.update(value => !value);
-  }
+  // toggleSidebar() {
+  //   this.isCollapsed.update(value => !value);
+  // }
 
   logout() {
     this.authService.logout();
+  }
+
+  @Output() collapsedChange = new EventEmitter<boolean>();
+  public collapsed = false;
+
+  toggleSidebar() {
+    this.collapsed = !this.collapsed;
+    this.isCollapsed.update(value => !value);
+    this.collapsedChange.emit(this.collapsed); // boolean not event
   }
 
 
