@@ -55,6 +55,7 @@ export class UserUpsertComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('Pwd123', [Validators.required, Validators.minLength(6)]),
       image:new FormControl (''),
+      role: new FormControl('user', Validators.required)
     });
   }
 

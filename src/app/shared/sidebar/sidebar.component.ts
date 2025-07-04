@@ -32,11 +32,11 @@ export class SidebarComponent implements OnInit {
     {path: '/app-user-homepage', label: 'Home', icon: 'home', roles: ['user']},
     {path: '/user-list', label: 'User List', icon: 'group', roles: ['admin']},
     {path: '/book-list', label: 'Book List', icon: 'book', roles: ['admin']},
-    {path: '/app-admin-notify', label: 'Admin Notification', icon: 'sms', roles: ['admin']},
+    {path: '/app-admin-notify', label: 'Borrow Requests', icon: 'sms', roles: ['admin']},
     {path: '/explore-books', label: 'Explore Books', icon: 'explore', roles: ['user']},
     {path: '/app-my-books', label: 'My Books', icon: 'menu_book', roles: ['user']},
-    {path: '/app-user-notify', label: 'User Notification', icon: 'sms', roles: ['user']},
-    {path: '/app-settings-panel', label: 'Settings', icon: 'settings', roles: ['user']},
+    {path: '/app-user-notify', label: 'My Requests', icon: 'sms', roles: ['user']},
+    {path: '/app-user-homepage', label: 'Settings', icon: 'settings', roles: ['user']},
 
   ]
 

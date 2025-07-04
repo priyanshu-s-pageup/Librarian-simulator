@@ -24,6 +24,7 @@ export class BookUpsertComponent implements OnInit {
 
   isEditMode = false;
   bookId: string | null = null;
+  isStatusManuallySet = false;
 
   constructor(
     private service: CommonService,
@@ -41,12 +42,51 @@ export class BookUpsertComponent implements OnInit {
           this.book = { ...data };
 
           //initializations of some extent!
-          if (!this.book.stockQuantity) this.book.stockQuantity = 1;
-          if (!this.book.status) this.book.status = 'available';
-          this.originalBook = { ...this.book };
+          // if (!this.book.stockQuantity) this.book.stockQuantity = 1;
+          // if (!this.book.status) this.book.status = 'available';
+          // this.originalBook = { ...this.book };
+
+          if(this.book.status){
+            this.isStatusManuallySet = true;
+          }
+
+          if (!this.book.stockQuantitiy) this.book.stockQuantity;
+
+          if(!this.book.status){
+            this.book.status = this.calculateStatus(this.book.stockQuantity);
+          }
         })
       }
     });
+  }
+
+  // Calculate status based on stock quantity
+  private calculateStatus(quantity: number): string {
+    if (quantity <= 0) {
+      return 'out-of-stock';
+    } else if (quantity < 3) {
+      return 'in-high-demand';
+    } else {
+      return 'available';
+    }
+  }
+
+  // Handle stock quantity changes
+  onStockQuantityChange(): void {
+    if (!this.isStatusManuallySet) {
+      this.book.status = this.calculateStatus(this.book.stockQuantity);
+    }
+  }
+
+  // Handle manual status selection
+  onStatusChange(): void {
+    this.isStatusManuallySet = !!this.book.status;
+  }
+
+  // Clear manual status (fall back to calculated)
+  clearManualStatus(): void {
+    this.isStatusManuallySet = false;
+    this.book.status = this.calculateStatus(this.book.stockQuantity);
   }
 
   goBack() {
@@ -55,12 +95,16 @@ export class BookUpsertComponent implements OnInit {
 
   onSubmit() {
     // Update status based on stock quantity
-    if (this.book.stockQuantity <= 0) {
-      this.book.status = 'out-of-stock';
-    } else if (this.book.stockQuantity < 3) {
-      this.book.status = 'in-high-demand';
-    } else {
-      this.book.status = 'available';
+    // if (this.book.stockQuantity <= 0) {
+    //   this.book.status = 'out-of-stock';
+    // } else if (this.book.stockQuantity < 3) {
+    //   this.book.status = 'in-high-demand';
+    // } else {
+    //   this.book.status = 'available';
+    // }
+
+    if (!this.isStatusManuallySet) {
+      this.book.status = this.calculateStatus(this.book.stockQuantity);
     }
 
     if (this.isEditMode && this.bookId !== null) {

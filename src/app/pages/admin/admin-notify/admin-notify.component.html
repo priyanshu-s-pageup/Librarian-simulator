@@ -1,75 +1,27 @@
-<div class="admin-container">
-  <div class="admin-header">
-    <h1>Librarian Simulator</h1>
-    <div class="user-info">
-      <h2>Welcome, {{ currentUser()?.name || 'Admin' }}</h2>
-      <button mat-button (click)="logout()">Logout</button>
-    </div>
+<div *ngIf="isLoading()" class="spinner-container">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="!isLoading()">
+  <h2>Borrow Requests</h2>
+
+  <div *ngIf="borrowRequests().length === 0">
+    No borrow requests available.
   </div>
 
-  <div class="admin-content">
-    <!-- Loading State -->
-    <div *ngIf="isLoading()" class="loading">
-      <mat-spinner></mat-spinner>
-    </div>
-
-    <!-- No Requests -->
-    <div *ngIf="!isLoading() && borrowRequests().length === 0" class="no-requests">
-      <mat-icon>check_circle</mat-icon>
-      <p>No pending borrow requests</p>
-    </div>
-
-    <!-- Requests List -->
-    <div *ngIf="!isLoading() && borrowRequests().length > 0">
-      <h2 class="section-title">Pending Borrow Requests</h2>
-
-      <div class="requests-grid">
-        <mat-card *ngFor="let request of borrowRequests()" class="request-card">
-          <mat-card-header>
-            <mat-card-title>{{ request.book.title || 'Unknown Book' }}</mat-card-title>
-            <mat-card-subtitle>{{ request.book.author || 'Unknown Author' }}</mat-card-subtitle>
-          </mat-card-header>
-
-          <mat-card-content>
-            <div class="request-details">
-              <div class="detail-item">
-                <!-- <mat-icon>person</mat-icon> -->
-                <span><strong>Requested By:</strong> {{ request.user.name || 'Unknown User' }}</span>
-              </div>
-              <div class="detail-item">
-                <!-- <mat-icon>calendar_today</mat-icon> -->
-                <span><strong>Duration:</strong> {{ request.duration }} days</span>
-              </div>
-              <div class="detail-item">
-                <!-- <mat-icon [ngClass]="request.status">{{ getStatusIcon(request.status) }}</mat-icon> -->
-                <span><strong>Status:</strong> {{ request.status | titlecase }}</span>
-              </div>
-              <div class="detail-item">
-                <!-- <mat-icon>library_books</mat-icon> -->
-                <span><strong>Stock:</strong> {{ request.book.stockQuantity || 0 }} available</span>
-              </div>
-            </div>
-          </mat-card-content>
-
-          <mat-card-actions>
-            <button mat-raised-button color="primary"
-                    *ngIf="getButtonState(request).lend.visible"
-                    [disabled]="getButtonState(request).lend.disabled"
-                    (click)="openConfirmDialog(request.books, 'lend', request.bookId, request.book.title)">
-              <mat-icon>check_circle</mat-icon>
-              {{ getButtonState(request).lend.text }}
-            </button>
-
-            <button mat-raised-button color="warn"
-                    *ngIf="getButtonState(request).deny.visible"
-                    [disabled]="getButtonState(request).deny.disabled"
-                    (click)="openConfirmDialog(request.books, 'deny', request.bookId, request.book.title)">
-              <mat-icon>cancel</mat-icon>
-              {{ getButtonState(request).deny.text }}
-            </button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+  <div class="user-grid">
+    <div *ngFor="let userId of uniqueUserIds()" class="user-card-wrapper">
+      <mat-card class="user-card" (click)="openUserDialog(userId)">
+        <ng-container *ngIf="userMap().get(userId) as user">
+          <div class="badge" *ngIf="getUserRequestCount(userId) > 0">
+            {{ getUserRequestCount(userId) }}
+          </div>
+          <img src="https://avatar.iran.liara.run/public/18" alt="User Avatar" class="avatar" />
+          <h3>{{ user.name }}</h3>
+          <p>{{ user.email }}</p>
+          <p><strong>Contact:</strong> {{ user.contact }}</p>
+        </ng-container>
+      </mat-card>
     </div>
   </div>
 </div>

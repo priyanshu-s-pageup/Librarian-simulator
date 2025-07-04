@@ -69,8 +69,8 @@
       "author": "Paul Rivers",
       "genre": "fiction",
       "publishedYear": 1997,
-      "stockQuantity": 3,
-      "status": "in-high-demand"
+      "stockQuantity": 50,
+      "status": "out-of-stock"
     },
     {
       "id": "i1e28bf3",
@@ -87,7 +87,7 @@
       "author": "Charlotte Grey",
       "genre": "fantasy",
       "publishedYear": 2025,
-      "stockQuantity": 1,
+      "stockQuantity": 100,
       "status": "in-high-demand"
     },
     {
@@ -258,8 +258,17 @@
       "author": "Charlotte Grey",
       "genre": "mystery",
       "publishedYear": 1990,
-      "stockQuantity": 1,
-      "status": "in-high-demand"
+      "stockQuantity": 2,
+      "status": "available"
+    },
+    {
+      "title": "AAABBB",
+      "author": "Myself",
+      "genre": "non-fiction",
+      "publishedYear": 2001,
+      "stockQuantity": 22,
+      "status": "in-high-demand",
+      "id": "3w-lbV6"
     }
   ],
   "users": [
@@ -288,7 +297,17 @@
       "email": "whitenblack@gmail.com",
       "password": "Pwd123",
       "id": "0519US25101",
+      "role": "user",
       "createdAt": "2025-05-19T11:01:32.887Z"
+    },
+    {
+      "name": "Mohit",
+      "contact": "8798448971",
+      "email": "one@one.com",
+      "password": "admin123",
+      "role": "admin",
+      "id": "0630US25101",
+      "createdAt": "2025-06-30T11:05:46.989Z"
     }
   ],
   "images": [
@@ -301,14 +320,20 @@
       "bookId": "j2836c21",
       "userId": "0501US25260",
       "duration": 7,
-      "status": "denied",
+      "newDuration": 7,
+      "status": "approved",
+      "reRequest": "pending",
+      "createdAt": 1751615383336,
       "id": 2
     },
     {
       "bookId": "x67abf09",
       "userId": "0501US25260",
-      "duration": 7,
+      "duration": 11,
+      "newDuration": 11,
       "status": "approved",
+      "reRequest": "denied",
+      "createdAt": 1751550240297,
       "id": 3
     },
     {
@@ -316,112 +341,44 @@
       "userId": "0501US25260",
       "duration": 7,
       "status": "approved",
+      "createdAt": 1751549613869,
       "id": 4
     },
     {
-      "bookId": "j2836c21",
+      "bookId": "a90bc123",
+      "userId": "0501US25260",
+      "duration": 18,
+      "status": "approved",
+      "createdAt": 1751550385697,
+      "id": 5,
+      "reRequest": "approved",
+      "newDuration": 18
+    },
+    {
+      "bookId": "3w-lbV6",
       "userId": "0501US25260",
       "duration": 7,
-      "status": "denied",
-      "id": 5
+      "status": "approved",
+      "createdAt": 1751615418950,
+      "id": 6,
+      "reRequest": "pending",
+      "newDuration": 100
     },
     {
       "bookId": "c12def45",
       "userId": "0501US25260",
       "duration": 7,
       "status": "approved",
-      "id": 6
-    },
-    {
-      "bookId": "c12def45",
-      "userId": "0501US25260",
-      "duration": 6,
-      "status": "denied",
+      "createdAt": 1751550447221,
       "id": 7
     },
     {
       "bookId": "j2836c21",
       "userId": "0501US25260",
-      "duration": 98,
-      "status": "approved",
+      "duration": 7,
+      "status": "pending",
+      "createdAt": 1751615492550,
       "id": 8
-    },
-    {
-      "bookId": "l4827b9e",
-      "userId": "0501US25260",
-      "duration": 71,
-      "status": "approved",
-      "id": 9
-    },
-    {
-      "bookId": "j2836c21",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "denied",
-      "id": 10
-    },
-    {
-      "bookId": "c12def45",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "approved",
-      "id": 11
-    },
-    {
-      "bookId": "a90bc123",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "approved",
-      "id": 12
-    },
-    {
-      "bookId": "a90bc123",
-      "userId": "0501US25260",
-      "duration": 35,
-      "status": "approved",
-      "id": 13
-    },
-    {
-      "bookId": "s1f4cdef",
-      "userId": "0501US25260",
-      "duration": 79,
-      "status": "approved",
-      "id": 14
-    },
-    {
-      "bookId": "a90bc123",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "approved",
-      "id": 15
-    },
-    {
-      "bookId": "a90bc123",
-      "userId": "0501US25260",
-      "duration": 23,
-      "status": "approved",
-      "id": 16
-    },
-    {
-      "bookId": "a90bc123",
-      "userId": "0501US25260",
-      "duration": 78,
-      "status": "pending",
-      "id": 17
-    },
-    {
-      "bookId": "x67abf09",
-      "userId": "0501US25260",
-      "duration": 45,
-      "status": "pending",
-      "id": 18
-    },
-    {
-      "bookId": "s1f4cdef",
-      "userId": "0501US25260",
-      "duration": 87,
-      "status": "approved",
-      "id": 19
     }
   ],
   "userNotifications": [
@@ -429,9 +386,14 @@
       "status": "approved",
       "bookId": "j2836c21",
       "userId": "0501US25260",
-      "isRead": true,
+      "isRead": false,
       "hasReRequested": false,
-      "id": 1
+      "id": 1,
+      "bookTitle": {
+        "__zone_symbol__state": null,
+        "__zone_symbol__value": []
+      },
+      "date": "2025-07-03T13:48:56.276Z"
     }
   ]
 }

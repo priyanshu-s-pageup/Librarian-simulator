@@ -47,7 +47,7 @@
             'high-demand': book.status === 'in-high-demand',
             'out-of-stock': book.status === 'out-of-stock'
           }">
-            {{ book.status | titlecase }} ({{ book.stockQuantity }} available)
+            {{ book.status | titlecase }} <!--({{ book.stockQuantity }} available)-->
           </span>
         </p>
       </mat-card-content>
@@ -57,12 +57,12 @@
           mat-raised-button
           *ngIf="getButtonState(book.id) as buttonState"
           [ngClass]="buttonState.class"
-          [disabled]="buttonState.disabled || book.stockQuantity <= 0"
+          [disabled]="buttonState.disabled || book.status ==='out-of-stock'"
           (click)="openBorrowDialog(book)"
         >
           <mat-spinner *ngIf="buttonState.showSpinner" diameter="20"></mat-spinner>
           {{
-            book.stockQuantity <= 0 ? 'Out of Stock' :
+            book.status === 'out-of-stock' ? 'Out of Stock' :
             buttonState.text
           }}
         </button>

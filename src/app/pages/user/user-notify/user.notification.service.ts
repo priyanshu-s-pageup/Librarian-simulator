@@ -35,34 +35,40 @@ export class UserNotificationService {
   //   );
   // }
 
-  getUserNotifications(userId: string | void) {
-    return this.http.get<any[]>(`${this.url}/userNotifications?userId=${userId}`).pipe(
-      switchMap(notifications => {
-        // Get all unique book IDs from notifications
-        const bookIds = [...new Set(notifications.map(n => n.bookId))];
+getUserNotifications(userId: string | void) {
+  return this.http.get<any[]>(`${this.url}/userNotifications?userId=${userId}`).pipe(
+    switchMap(notifications => {
+      const bookIds = [...new Set(notifications.map(n => n.bookId))];
+      return this.http.get<any[]>(`${this.url}/books?id=${bookIds.join('&id=')}`).pipe(
+        map(books => {
+          return notifications.map(notification => {
+            const book = books.find(b => b.id === notification.bookId);
+            return {
+              ...notification,
+              book: {
+                id: book?.id || '',
+                title: book?.title || 'Unknown Book',
+                author: book?.author || 'Unknown Author',
+                genre: book?.genre || 'Unknown Genre'
+              },
+              date: new Date(notification.date || notification.createdAt || Date.now())
+            } as UserNotification;
+          }).sort((a, b) => b.date.getTime() - a.date.getTime()); // Sort here as well
+        })
+      );
+    })
+  );
+}
 
-        // Fetch all related books in one request
-        return this.http.get<any[]>(`${this.url}/books?id=${bookIds.join('&id=')}`).pipe(
-          map(books => {
-            // Map books to notifications
-            return notifications.map(notification => {
-              const book = books.find(b => b.id === notification.bookId);
-              return {
-                ...notification,
-                book: {
-                  id: book?.id || '',
-                  title: book?.title || 'Unknown Book',
-                  author: book?.author || 'Unknown Author',
-                  genre: book?.genre || 'Unknown Genre'
-                },
-                date: new Date(notification.date || Date.now())
-              } as UserNotification;
-            });
-          })
-        );
-      })
-    );
+  saveUserNotification(notification: UserNotification): Observable<UserNotification> {
+    // Ensure the date is set if not already
+    if (!notification.date) {
+      notification.date = new Date(); // Store the current timestamp as the date
+    }
+
+    return this.http.post<UserNotification>(`${this.url}/userNotifications`, notification);
   }
+
 
   markAsRead(notificationId: number): Observable<void> {
     return this.http.patch<void>(`${this.baseUrl}/userNotifications/${notificationId}`, {

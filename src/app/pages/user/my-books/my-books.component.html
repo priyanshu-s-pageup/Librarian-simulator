@@ -2,23 +2,73 @@
   <h2>My Books</h2>
 </div>
 
-<div class="book-grid" *ngIf="myApprovedBooks().length > 0; else noBooks">
-  <mat-card class="book-card" *ngFor="let book of myApprovedBooks()">
-    <div class="book-header">
-      <div class="book-info">
-        <h2 class="book-title">{{ book.title }}</h2>
-        <p class="book-author">by {{ book.author }}</p>
+<!-- Expired Books section! -->
+<div *ngIf="myExpiredBooks().length > 0">
+  <h2 class="book-grid">Borrow Request Expired:</h2>
+  <div class="book-grid" *ngFor="let book of myApprovedBooks()">
+    <mat-card class="book-card" (click)="openRequestDialog(book)">
+      <div class="book-header">
+        <div class="book-info">
+          <h2 class="book-title">{{ book.title }}</h2>
+          <p class="book-author">by {{ book.author }}</p>
+        </div>
+        <div class="book-meta">
+          <mat-icon color="primary">book</mat-icon>
+          <span class="book-genre">{{ book.genre }}</span>
+        </div>
       </div>
-      <div class="book-meta">
-        <mat-icon color="primary">book</mat-icon>
-        <span class="book-genre">{{ book.genre }}</span>
-      </div>
-    </div>
 
-    <div class="book-body">
-      <p><strong>Published:</strong> {{ book.publishedYear }}</p>
-    </div>
-  </mat-card>
+      <div class="book-body">
+        <p><strong>Published:</strong> {{ book.publishedYear }}</p>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+<!-- Deadline this week section! -->
+<div *ngIf="myDeadlineAlerts().length > 0">
+  <h2 class="book-grid">Deadline this week:</h2>
+  <div class="book-grid">
+    <mat-card class="book-card" *ngFor="let book of myDeadlineAlerts()" (click)="openRequestDialog(book)">
+      <div class="book-header">
+        <div class="book-info">
+          <h2 class="book-title">{{ book.title }}</h2>
+          <p class="book-author">by {{ book.author }}</p>
+        </div>
+        <div class="book-meta">
+          <mat-icon color="primary">book</mat-icon>
+          <span class="book-genre">{{ book.genre }}</span>
+        </div>
+      </div>
+
+      <div class="book-body">
+        <p><strong>Published:</strong> {{ book.publishedYear }}</p>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+<!-- Approved Books section! -->
+<div *ngIf="myApprovedBooks().length > 0">
+  <h2 class="book-grid">Read Here:</h2>
+  <div class="book-grid" *ngIf="myApprovedBooks().length > 0; else noBooks">
+    <mat-card class="book-card" *ngFor="let book of myApprovedBooks()" (click)="openRequestDialog(book)">
+      <div class="book-header">
+        <div class="book-info">
+          <h2 class="book-title">{{ book.title }}</h2>
+          <p class="book-author">by {{ book.author }}</p>
+        </div>
+        <div class="book-meta">
+          <mat-icon color="primary">book</mat-icon>
+          <span class="book-genre">{{ book.genre }}</span>
+        </div>
+      </div>
+
+      <div class="book-body">
+        <p><strong>Published:</strong> {{ book.publishedYear }}</p>
+      </div>
+    </mat-card>
+  </div>
 </div>
 
 <ng-template #noBooks>

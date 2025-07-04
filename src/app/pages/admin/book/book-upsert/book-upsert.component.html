@@ -90,6 +90,7 @@
         name="stockQuantity"
         class="form-control"
         [(ngModel)]="book.stockQuantity"
+        (change)="onStockQuantityChange()"
         required
         min="0"
         #stockQuantity="ngModel"
@@ -109,10 +110,14 @@
         [(ngModel)]="book.status"
         #status="ngModel"
       >
+        <option value="">Clear</option>
         <option value="available">Available</option>
         <option value="in-high-demand">In High Demand</option>
         <option value="out-of-stock">Out of Stock</option>
       </select>
+      <div class="status-hint" *ngIf="!isStatusManuallySet">
+        (Auto-calculated based on stock)
+      </div>
     </div>
 
     <!-- Submit Button -->

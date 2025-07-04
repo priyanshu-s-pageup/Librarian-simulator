@@ -61,36 +61,6 @@ export class BookListComponent implements OnInit {
     return this.totalBooks>0 ? Math.ceil(this.totalBooks / this.pageSize) : 1;
   }
 
-
-
-  // fetchBooks(): void {
-
-  //   this.CommonService
-  //     .getBookDetails(
-  //       this.currentPage,
-  //       this.pageSize,
-  //       this.currentSortField,
-  //       this.currentSortOrder,
-  //       this.searchTerm
-  //     )
-
-  //     .subscribe(response => {
-  //       const data = response.body as Book[];
-  //       this.books = data;
-
-  //       const totalCount = response.headers.get('X-Total-Count');
-  //       this.totalBooks = totalCount ? + totalCount : 0;
-
-  //       this.calculatePagination();
-  //       this.loading = false;
-  //     }
-  //     , error => {
-  //       console.error('Error fetching books', error);
-  //       this.loading = false;
-
-  //     });
-  // }
-
   fetchBooks(): void {
     this.loading = true;
     this.CommonService
@@ -116,6 +86,25 @@ export class BookListComponent implements OnInit {
           this.loading = false;
         }
       });
+  }
+
+  // Status display helper methods
+  getStatusDisplay(status: string): string {
+    const statusMap: {[key: string]: string} = {
+      'available': 'Available',
+      'in-high-demand': 'High Demand',
+      'out-of-stock': 'Out of Stock'
+    };
+    return statusMap[status] || status;
+  }
+
+  getStatusClass(status: string): string {
+    const classMap: {[key: string]: string} = {
+      'available': 'status-available',
+      'in-high-demand': 'status-high-demand',
+      'out-of-stock': 'status-out-of-stock'
+    };
+    return classMap[status] || '';
   }
 
   calculatePagination(): void {
@@ -176,7 +165,6 @@ export class BookListComponent implements OnInit {
       console.log("No more pages to load");
     }
   }
-
 
   addNewBook(): void {
     this.router.navigate(['/book-upsert']);

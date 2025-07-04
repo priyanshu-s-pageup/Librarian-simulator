@@ -31,6 +31,7 @@
         <th (click)="sort('publishedYear')">Published Year<i class="fa-solid" [ngClass]="getSortIcon('publishedYear')"></i></th>
 
         <th>Stock</th>
+        <th>Status</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -45,6 +46,7 @@
           {{ item.stockQuantity }}
           <span *ngIf="item.stockQuantity <= 2" class="warning-icon">!</span>
         </td>
+        <td>{{ item.status }}</td>
         <td>
           <button class="edit-btn" (click)="editItem(item)">Edit</button>
           <button

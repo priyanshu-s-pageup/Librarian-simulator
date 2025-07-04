@@ -40,6 +40,18 @@
         </div>
       </div>
 
+      <!-- Role selection -->
+      <div class="form-group">
+        <label for="role">Role *</label>
+        <select id="role" formControlName="role">
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+        <div *ngIf="userForm.get('role')?.invalid && userForm.get('role')?.touched" class="error-message">
+          Please select a role
+        </div>
+      </div>
+
       <!-- Password -->
       <div class="form-group password-group">
         <label for="password">Password *</label>

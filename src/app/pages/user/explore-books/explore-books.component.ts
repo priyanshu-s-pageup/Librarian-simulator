@@ -19,6 +19,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, finalize, timeout } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { AuthService } from '../../../auth/auth.service';
+import { Book } from '../../admin/book/book.component';
 
 export interface BookData {
   id: number;
@@ -272,76 +273,6 @@ export class ExploreBooksComponent implements OnInit {
     this.loadBooks();
   }
 
-// openBorrowDialog(book: BookData): void {
-//   if (book.stockQuantity <= 0) {
-//     this.snackBar.open('This book is currently out of stock', 'Close', this.snackBarConfig);
-//     return;
-//   }
-
-//   // Create a new book object with isProcessing set to true
-//   const processingBook = { ...book, isProcessing: true };
-
-//   // Update the books array
-//   this.books.update(books =>
-//     books.map(b => b.id === book.id ? processingBook : b)
-//   );
-
-//   const dialogRef = this.dialog.open(BorrowDialogComponent, {
-//     width: '400px',
-//     data: {
-//       book: processingBook,
-//       maxDuration: book.status === 'in-high-demand' ? 7 : 14
-//     }
-//   });
-
-//   dialogRef.afterClosed().pipe(takeUntilDestroyed(this.destroyRef))
-//     .subscribe((result) => {
-//       // Reset processing state
-//       this.books.update(books =>
-//         books.map(b => b.id === book.id ? { ...b, isProcessing: false } : b)
-//       );
-
-//       if (result?.duration) {
-//         this.processBorrowRequest(book, result.duration);
-//       }
-//     });
-// }
-
-// openBorrowDialog(book: BookData): void {
-//   if (book.stockQuantity <= 0) {
-//     this.snackBar.open('This book is currently out of stock', 'Close', this.snackBarConfig);
-//     return;
-//   }
-
-//   this.books.update((books) =>
-//     books.map((b) => (b.id === book.id ? { ...b, isProcessing: true } : b))
-//   );
-
-//   const dialogRef = this.dialog.open(BorrowDialogComponent, {
-//     width: '400px',
-//     data: {
-//       book,
-//       maxDuration: book.status === 'in-high-demand' ? 7 : 14
-//     }
-//   });
-
-//   dialogRef
-//     .afterClosed()
-//     .pipe(
-//       finalize(() => {
-//         this.books.update((books) =>
-//           books.map((b) => (b.id === book.id ? { ...b, isProcessing: false } : b))
-//         );
-//       }),
-//       takeUntilDestroyed(this.destroyRef)
-//     )
-//     .subscribe((result) => {
-//       if (result?.duration) {
-//         this.processBorrowRequest(book, result.userId, result.duration);
-//       }
-//     });
-// }
-
 openBorrowDialog(book: BookData): void {
   const userId = this.currentUserId;
   if (!userId) {
@@ -352,9 +283,6 @@ openBorrowDialog(book: BookData): void {
     this.snackBar.open('This book is currently out of stock', 'Close', this.snackBarConfig);
     return;
   }
-
-  // Get current user ID (replace with your actual auth service)
-  // const userId = 'current-user-id'; // TODO: Replace with real user ID
 
   this.books.update(books =>
     books.map(b => b.id === book.id ? {...b, isProcessing: true} : b)
@@ -384,33 +312,6 @@ openBorrowDialog(book: BookData): void {
       }
     });
 }
-
-// private processBorrowRequest(book: BookData, userId:string, duration: number): void {
-
-//   this.borrowService
-//     .requestBorrow(book, userId, duration)
-//     .pipe(takeUntilDestroyed(this.destroyRef))
-//     .subscribe({
-//       next: () => {
-//         const updatedWaiting = new Set(this.booksWaitingForApproval());
-//         updatedWaiting.add(book.id);
-//         this.booksWaitingForApproval.set(updatedWaiting);
-//         this.snackBar.open(
-//           `Request submitted for "${book.title}". Admin will review.`,
-//           'Close',
-//           this.snackBarConfig
-//         );
-//       },
-//       error: (err) => {
-//         console.error('Error requesting borrow:', err);
-//         this.snackBar.open(
-//           'Failed to submit borrow request.',
-//           'Close',
-//           this.snackBarConfig
-//         );
-//       }
-//     });
-// }
 
 private processBorrowRequest(book: BookData, userId: string, duration: number): void {
   this.borrowService.requestBorrow(book, userId, duration)

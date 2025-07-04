@@ -7,11 +7,13 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 
 export interface BorrowDialogData {
   book: BookData;
+  userId: string;
 }
 
 export interface BorrowDialogResult {
   duration: number;
-  userId: string;
+  newDuration: number;
+  userId: number;
 }
 
 @Component({
@@ -37,7 +39,9 @@ export class BorrowDialogComponent {
     this.isSubmitting = true;
     this.dialogRef.close({
       duration: this.selectedDuration,
-      bookId: this.data.book.id
+      newDuration: this.selectedDuration,
+      bookId: this.data.book.id,
+      userId: this.data.userId,
     });
   }
 }

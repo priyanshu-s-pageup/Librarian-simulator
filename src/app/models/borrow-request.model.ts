@@ -6,16 +6,20 @@ export interface BorrowRequest {
   userId: string;
   books: BookData;
   book: {
-    id: number;
+    id?: string;
     title: string;
     author: string;
-    stockQuantity: number;
-    status: 'available' | 'in-high-demand' | 'out-of-stock';
+    stockQuantity?: number;
+    status?: 'available' | 'in-high-demand' | 'out-of-stock';
   };
   user: {
     id: string;
     name: string;
   };
   duration: number;
+  newDuration?: number;
+  timeLeft: number;
   status: 'pending' | 'approved' | 'denied';
+  reRequest?: 'pending' | 'approved' | 'denied';
+  createdAt: "2025-06-30T08:00:00.000Z",
 }

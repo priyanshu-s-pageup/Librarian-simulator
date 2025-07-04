@@ -14,6 +14,8 @@ import { BorrowRequestService } from '../../../borrow-request.service';
 import { BorrowRequest } from '../../../models/borrow-request.model';
 import { BookService } from '../../admin/book/book.service';
 import { Book } from '../../admin/book/book.component';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatOption, MatSelect } from '@angular/material/select';
 
 
 export interface BookReference {
@@ -40,7 +42,7 @@ export interface UserNotification {
   standalone: true,
   templateUrl: './user-notify.component.html',
   styleUrls: ['./user-notify.component.css'],
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatDialogModule, MatIcon]
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatDialogModule, MatIcon, MatFormField, MatLabel, MatSelect, MatOption]
 })
 export class UserNotifyComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
@@ -55,13 +57,28 @@ export class UserNotifyComponent implements OnInit {
   books = signal<Book[]>([]);
   borrowRequests = signal<BorrowRequest[]>([]);
   notifications = signal<UserNotification[]>([]);
+  sortDirection = signal<'desc' | 'asc'> ('desc');
   currentFilter = signal<'all' | 'approved' | 'denied' | 'pending'>('all');
+  currentPage = signal(1);
+  itemsPerPage = signal(5);
+  itemsPerPageOptions = [5,10,15,20,50];
   private readonly snackBarConfig: MatSnackBarConfig = { duration: 3000 };
+
+  toggleSortDirection(): void {
+    this.sortDirection.update(current => current === 'desc' ? 'asc' : 'desc');
+  }
 
   filteredNotifications = computed(() => {
     const filter = this.currentFilter();
     const all = this.borrowRequestNotifications();
-    return filter === 'all' ? all : all.filter(n => n.status === filter);
+    const filtered = filter === 'all' ? all : all.filter(n => n.status === filter);
+
+    // Apply sorting based on current direction
+    return [...filtered].sort((a, b) => {
+      return this.sortDirection() === 'desc'
+        ? b.date.getTime() - a.date.getTime()
+        : a.date.getTime() - b.date.getTime();
+    });
   });
 
 
@@ -130,24 +147,26 @@ export class UserNotifyComponent implements OnInit {
   }
 
 borrowRequestNotifications = computed<UserNotification[]>(() =>
-  this.borrowRequests().map((br) => {
-    const book = this.books().find(b => b.id === String(br.bookId));
+  this.borrowRequests()
+    .map((br) => {
+      const book = this.books().find(b => b.id === String(br.bookId));
 
-    return {
-      id: br.id,
-      bookId: String(br.bookId),
-      status: br.status as 'approved' | 'denied' | 'pending',
-      isRead: true,
-      hasReRequested: false,
-      book: {
-        id: book?.id ?? String(br.bookId),
-        title: book?.title ?? 'Unknown Title',
-        author: book?.author ?? 'Unknown Author',
-        genre: book?.genre ?? 'Unknown Genre',
-      },
-      date: new Date(), // Or use actual date if available
-    };
-  })
+      return {
+        id: br.id,
+        bookId: String(br.bookId),
+        status: br.status as 'approved' | 'denied' | 'pending',
+        isRead: true,
+        hasReRequested: false,
+        book: {
+          id: book?.id ?? String(br.bookId),
+          title: book?.title ?? 'Unknown Title',
+          author: book?.author ?? 'Unknown Author',
+          genre: book?.genre ?? 'Unknown Genre',
+        },
+        date: new Date(br.createdAt), // Use the createdAt field from borrowRequests
+      };
+    })
+    .sort((a, b) => b.date.getTime() - a.date.getTime()) // Sort by date descending
 );
 
 
@@ -171,4 +190,36 @@ borrowRequestNotifications = computed<UserNotification[]>(() =>
       }
     });
   }
+
+  showPagination = computed(() => {
+    return this.filteredNotifications().length > this.itemsPerPage() ||
+           this.currentPage() > 1;
+  });
+
+  paginatedNotifications = computed(() => {
+    const startIndex = (this.currentPage() - 1) * this.itemsPerPage();
+    const endIndex = startIndex + this.itemsPerPage();
+    return this.filteredNotifications().slice(startIndex, endIndex);
+  });
+
+  // Add these methods for pagination control
+  totalPages = computed(() => {
+    return Math.ceil(this.filteredNotifications().length / this.itemsPerPage());
+  });
+
+  setPage(page: number): void {
+    this.currentPage.set(Math.max(1, Math.min(page, this.totalPages())));
+  }
+
+  // onItemsPerPageChange(newValue: number): void {
+  //   this.itemsPerPage.set(newValue);
+  //   this.currentPage.set(1);
+  // }
+
+  onItemsPerPageChange(newValue: number): void {
+    this.itemsPerPage.set(newValue);
+    const maxPage = Math.ceil(this.filteredNotifications().length / newValue);
+    this.currentPage.set(Math.min(this.currentPage(), maxPage));
+  }
+
 }

@@ -23,7 +23,7 @@ export class LoginComponent {
         if (user.role === 'admin') {
           this.router.navigate(['/book-list']);
         } else {
-          this.router.navigate(['/explore-books']);
+          this.router.navigate(['/app-user-homepage']);
         }
       } else {
         this.errorMessage = 'Invalid credentials!';
