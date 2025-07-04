@@ -49,8 +49,10 @@ export class ViewUserRequestsDialogComponent implements OnInit {
   }
 
 onLend(request: BorrowRequest): void {
-  this.borrowService.updateRequestStatus(request.id, 'approved').subscribe({
+  console.log('Lending request for bookId:', request.bookId);
+  this.borrowService.updateRequestStatus(request.bookId, 'approved').subscribe({
     next: () => {
+      console.log('Request status updated to approved');
       this.removeRequestFromUI(request.id);
     },
     error: (err) => {
@@ -71,7 +73,7 @@ onLendB(request: BorrowRequest): void {
 }
 
 onDeny(request: BorrowRequest): void {
-  this.borrowService.updateRequestStatus(request.id, 'denied').subscribe({
+  this.borrowService.updateRequestStatus(request.bookId, 'denied').subscribe({
     next: () => {
       this.removeRequestFromUI(request.id);
     },

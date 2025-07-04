@@ -29,7 +29,7 @@ export interface UserNotification {
   id: number;
   bookId: string;
   book: BookReference;
-  status: 'approved' | 'denied' | 'pending';
+  status: 'approved' | 'denied' | 'pending' | 'returned';
   isRead: boolean;
   hasReRequested: boolean;
   message?: string;
@@ -58,7 +58,7 @@ export class UserNotifyComponent implements OnInit {
   borrowRequests = signal<BorrowRequest[]>([]);
   notifications = signal<UserNotification[]>([]);
   sortDirection = signal<'desc' | 'asc'> ('desc');
-  currentFilter = signal<'all' | 'approved' | 'denied' | 'pending'>('all');
+  currentFilter = signal<'all' | 'approved' | 'denied' | 'pending' | 'returned'>('all');
   currentPage = signal(1);
   itemsPerPage = signal(5);
   itemsPerPageOptions = [5,10,15,20,50];
@@ -124,7 +124,7 @@ export class UserNotifyComponent implements OnInit {
     });
   }
 
-  setFilter(filter: 'all' | 'approved' | 'denied' | 'pending'): void {
+  setFilter(filter: 'all' | 'approved' | 'denied' | 'pending' | 'returned'): void {
     this.currentFilter.set(filter);
   }
 

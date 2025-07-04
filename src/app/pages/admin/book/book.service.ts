@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Book } from './book.component';
-import { BookData } from '../../user/explore-books/explore-books.component';
 
 @Injectable({ providedIn: 'root' })
 export class BookService {
@@ -14,4 +13,11 @@ export class BookService {
   getAllBooks(): Observable<Book[]> {
     return this.http.get<Book[]>(this.apiUrl);
   }
+
+  updateBookStock(bookId: string | undefined, stockQuantity: number): Observable<Book> {
+    const url = `${this.apiUrl}/${bookId}`;
+
+    return this.http.put<Book>(url, {stockQuantity});
+  }
+
 }

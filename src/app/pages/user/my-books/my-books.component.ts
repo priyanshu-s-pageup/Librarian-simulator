@@ -14,6 +14,7 @@ import { BookData } from '../explore-books/explore-books.component';
 import { finalize } from 'rxjs';
 import { BorrowNotificationService } from '../../../borrow-notification.service';
 import { Book } from '../../admin/book/book.component';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog.component';
 
 @Component({
   selector: 'app-my-books',
@@ -143,4 +144,93 @@ export class MyBooksComponent implements OnInit {
         }
       });
   }
+
+  public returnBookie(){
+    // stock = stock + 1;
+    // clear and delete the notification
+  }
+
+  // public returnBook(requestId: string | undefined): void {
+  //   const updatedRequests = this.borrowRequests().map(br => {
+  //     if (br.status === 'approved' && String(br.bookId) === requestId) {
+  //       return { ...br, status: 'returned' as 'returned' };
+  //     }
+  //     return br;
+  //   });
+
+  //   this.borrowRequests.update(() => updatedRequests);
+
+  //   this.borrowService.updateRequestStatus(requestId, 'returned').subscribe({
+  //     next: () => {
+  //       console.log('Request status updated successfully in the backend');
+  //     },
+  //     error: (err) => {
+  //       console.error('Failed to update status in the backend:', err);
+  //     }
+  //   });
+
+  //   console.log('Book returned, updated request list:', updatedRequests);
+  // }
+
+  public returnBook(requestId: string | undefined): void {
+    // Open the confirmation dialog
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirm Book Return',
+        message: 'Are you sure you want to return this book?'
+      }
+    });
+
+    // Handle the result of the dialog (whether user confirms or cancels)
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // User confirmed, proceed with the work
+        const updatedRequests = this.borrowRequests().map(br => {
+          if (br.status === 'approved' && String(br.bookId) === requestId) {
+            return { ...br, status: 'returned' as 'returned' };
+          }
+          return br;
+        });
+
+      const books = this.books(); // This is the current value of the signal
+
+      // Find the book associated with this request
+      const bookToUpdate = books.find(book => book.id === requestId);
+
+      if (bookToUpdate) {
+        // Update stock of the book (stock + 1)
+        bookToUpdate.stockQuantity = bookToUpdate.stockQuantity + 1;
+
+        // Update the book's stock in the backend (via a service call)
+        this.bookService.updateBookStock(bookToUpdate.id, bookToUpdate.stockQuantity).subscribe({
+          next: () => {
+            console.log('Stock updated successfully in the backend');
+          },
+          error: (err) => {
+            console.error('Failed to update stock in the backend:', err);
+          }
+        });
+      }
+
+        this.borrowRequests.update(() => updatedRequests);
+
+        // Call your backend service to update the request status
+        this.borrowService.updateRequestStatus(requestId, 'returned').subscribe({
+          next: () => {
+            console.log('Request status updated successfully in the backend');
+          },
+          error: (err) => {
+            console.error('Failed to update status in the backend:', err);
+          }
+        });
+
+        console.log('Book returned, updated request list:', updatedRequests);
+      } else {
+        // User canceled, no action taken
+        console.log('Return action canceled.');
+      }
+    });
+  }
+
+
 }

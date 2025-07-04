@@ -21,6 +21,8 @@
       <div class="book-body">
         <p><strong>Published:</strong> {{ book.publishedYear }}</p>
       </div>
+      <button (click)="openRequestDialog(book)">Re-Issue</button>
+      <button (click)="returnBook(book.id)">Return</button>
     </mat-card>
   </div>
 </div>
@@ -44,6 +46,8 @@
       <div class="book-body">
         <p><strong>Published:</strong> {{ book.publishedYear }}</p>
       </div>
+      <button (click)="openRequestDialog(book)">Re-Issue</button>
+      <button (click)="returnBook(book.id)">Return</button>
     </mat-card>
   </div>
 </div>
@@ -52,7 +56,7 @@
 <div *ngIf="myApprovedBooks().length > 0">
   <h2 class="book-grid">Read Here:</h2>
   <div class="book-grid" *ngIf="myApprovedBooks().length > 0; else noBooks">
-    <mat-card class="book-card" *ngFor="let book of myApprovedBooks()" (click)="openRequestDialog(book)">
+    <mat-card class="book-card" *ngFor="let book of myApprovedBooks()">
       <div class="book-header">
         <div class="book-info">
           <h2 class="book-title">{{ book.title }}</h2>
@@ -67,6 +71,9 @@
       <div class="book-body">
         <p><strong>Published:</strong> {{ book.publishedYear }}</p>
       </div>
+
+      <button (click)="openRequestDialog(book)">Re-Issue</button>
+      <button (click)="returnBook(book.id)">Return</button>
     </mat-card>
   </div>
 </div>

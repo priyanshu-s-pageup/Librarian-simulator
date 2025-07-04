@@ -15,7 +15,7 @@
       "author": "Tara Lin",
       "genre": "historical",
       "publishedYear": 2011,
-      "stockQuantity": 15,
+      "stockQuantity": 13,
       "status": "available"
     },
     {
@@ -87,7 +87,7 @@
       "author": "Charlotte Grey",
       "genre": "fantasy",
       "publishedYear": 2025,
-      "stockQuantity": 100,
+      "stockQuantity": 99,
       "status": "in-high-demand"
     },
     {
@@ -163,13 +163,8 @@
       "status": "available"
     },
     {
-      "id": "s1f4cdef",
-      "title": "City of Whispers",
-      "author": "Mia Durant",
-      "genre": "mystery",
-      "publishedYear": 2016,
-      "stockQuantity": 11,
-      "status": "available"
+      "stockQuantity": 12,
+      "id": "s1f4cdef"
     },
     {
       "id": "t23fabe0",
@@ -244,13 +239,8 @@
       "status": "available"
     },
     {
-      "id": "b01cdf34",
-      "title": "Grimoire of Secrets",
-      "author": "Liam Archer",
-      "genre": "fiction",
-      "publishedYear": 2022,
-      "stockQuantity": 19,
-      "status": "available"
+      "stockQuantity": 20,
+      "id": "b01cdf34"
     },
     {
       "id": "c12def45",
@@ -312,7 +302,8 @@
   ],
   "images": [
     {
-      "name": "John"
+      "name": "John",
+      "id": "ce7d"
     }
   ],
   "borrowRequests": [
@@ -322,9 +313,9 @@
       "duration": 7,
       "newDuration": 7,
       "status": "approved",
-      "reRequest": "pending",
-      "createdAt": 1751615383336,
-      "id": 2
+      "reRequest": "approved",
+      "createdAt": 1751620898883,
+      "id": "2"
     },
     {
       "bookId": "x67abf09",
@@ -334,66 +325,122 @@
       "status": "approved",
       "reRequest": "denied",
       "createdAt": 1751550240297,
-      "id": 3
+      "id": "3"
     },
     {
-      "bookId": "j2836c21",
+      "bookId": "b01cdf34",
+      "userId": "0501US25260",
+      "duration": 20,
+      "status": "returned",
+      "createdAt": 1751630708102,
+      "id": "QQ9QEXI",
+      "reRequest": "approved",
+      "newDuration": 20
+    },
+    {
+      "bookId": "s1f4cdef",
       "userId": "0501US25260",
       "duration": 7,
-      "status": "approved",
-      "createdAt": 1751549613869,
-      "id": 4
+      "status": "returned",
+      "createdAt": 1751633269222,
+      "id": "EAsnVEC",
+      "reRequest": "pending",
+      "newDuration": 7
     },
     {
       "bookId": "a90bc123",
       "userId": "0501US25260",
-      "duration": 18,
-      "status": "approved",
-      "createdAt": 1751550385697,
-      "id": 5,
-      "reRequest": "approved",
-      "newDuration": 18
-    },
-    {
-      "bookId": "3w-lbV6",
-      "userId": "0501US25260",
       "duration": 7,
       "status": "approved",
-      "createdAt": 1751615418950,
-      "id": 6,
-      "reRequest": "pending",
-      "newDuration": 100
+      "createdAt": 1751630826167,
+      "id": "D0-IUJx"
+    },
+    {
+      "bookId": "a90bc123",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "pending",
+      "createdAt": 1751632617822,
+      "id": "IREDnR2"
     },
     {
       "bookId": "c12def45",
       "userId": "0501US25260",
       "duration": 7,
+      "status": "denied",
+      "createdAt": 1751632620914,
+      "id": "DG24L1x"
+    },
+    {
+      "bookId": "l4827b9e",
+      "userId": "0501US25260",
+      "duration": 7,
       "status": "approved",
-      "createdAt": 1751550447221,
-      "id": 7
+      "createdAt": 1751632622588,
+      "id": "i0bn0Lj"
+    },
+    {
+      "bookId": "x67abf09",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "pending",
+      "createdAt": 1751632624581,
+      "id": "XUwWsfh"
+    },
+    {
+      "bookId": "n623a1d2",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "approved",
+      "createdAt": 1751632626915,
+      "id": "nObvTId"
+    },
+    {
+      "bookId": "s1f4cdef",
+      "userId": "0501US25260",
+      "duration": 20,
+      "status": "pending",
+      "createdAt": 1751632632698,
+      "id": "JQ8yV1P"
+    },
+    {
+      "bookId": "c5b47a11",
+      "userId": "0501US25260",
+      "duration": 30,
+      "status": "approved",
+      "createdAt": 1751632639695,
+      "id": "deY8udR"
     },
     {
       "bookId": "j2836c21",
       "userId": "0501US25260",
-      "duration": 7,
+      "duration": 15,
       "status": "pending",
-      "createdAt": 1751615492550,
-      "id": 8
+      "createdAt": 1751632646611,
+      "id": "eIcno6m"
+    },
+    {
+      "bookId": "3w-lbV6",
+      "userId": "0501US25260",
+      "duration": 15,
+      "status": "approved",
+      "createdAt": 1751632653380,
+      "id": "4lxO9-g"
     }
   ],
   "userNotifications": [
     {
-      "status": "approved",
+      "status": "returned",
       "bookId": "j2836c21",
       "userId": "0501US25260",
       "isRead": false,
       "hasReRequested": false,
-      "id": 1,
+      "id": "1",
       "bookTitle": {
         "__zone_symbol__state": null,
         "__zone_symbol__value": []
       },
-      "date": "2025-07-03T13:48:56.276Z"
+      "date": "2025-07-04T12:47:53.076Z"
     }
   ]
 }

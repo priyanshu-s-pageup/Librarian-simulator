@@ -23,6 +23,11 @@
               (click)="setFilter('pending')">
         Pending
       </button>
+      <button mat-button
+              [class.active]="currentFilter() === 'returned'"
+              (click)="setFilter('returned')">
+        Returned
+      </button>
     </div>
 
     <button mat-button
@@ -48,7 +53,8 @@
         'read': notification.isRead,
         'approved': notification.status === 'approved',
         'denied': notification.status === 'denied',
-        'pending': notification.status === 'pending'
+        'pending': notification.status === 'pending',
+        'returned': notification.status === 'returned'
       }"
       class="notification-card"
       (click)="markAsRead(notification.id)"
@@ -57,7 +63,8 @@
         <div mat-card-avatar class="status-icon">
           <mat-icon>
             {{ notification.status === 'approved' ? 'check_circle' :
-               notification.status === 'denied' ? 'cancel' : 'schedule' }}
+               notification.status === 'denied' ? 'cancel' :
+               notification.status === 'pending' ? 'schedule': 'home' }}
           </mat-icon>
         </div>
       <mat-card-title>{{ notification.book.title }}</mat-card-title>

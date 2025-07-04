@@ -19,10 +19,9 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, finalize, timeout } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { AuthService } from '../../../auth/auth.service';
-import { Book } from '../../admin/book/book.component';
 
 export interface BookData {
-  id: number;
+  id: string | undefined;
   title: string;
   author: string;
   genre: string;
@@ -72,9 +71,9 @@ export class ExploreBooksComponent implements OnInit {
   public pageSizeOptions = [5, 10, 15, 20, 50];
   public sortField = signal('title');
   public sortOrder = signal<'ASC' | 'DESC'>('ASC');
-  public booksWaitingForApproval = signal(new Set<number>());
-  public borrowedBooks = signal(new Set<number>());
-  public deniedBooks = signal(new Set<number>());
+  public booksWaitingForApproval = signal(new Set<string | undefined>());
+  public borrowedBooks = signal(new Set<string | undefined>());
+  public deniedBooks = signal(new Set<string | undefined>());
   // public currentUserId = signal('');
   private authService = inject(AuthService);
 
@@ -116,9 +115,9 @@ export class ExploreBooksComponent implements OnInit {
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: (requests) => {
-        const waiting = new Set<number>();
-        const borrowed = new Set<number>();
-        const denied = new Set<number>();
+        const waiting = new Set<string | undefined>();
+        const borrowed = new Set<string | undefined>();
+        const denied = new Set<string | undefined>();
 
         requests.forEach((req) => {
           if (req.status === 'pending') {
@@ -160,7 +159,7 @@ export class ExploreBooksComponent implements OnInit {
   private setupBorrowListeners(): void {
     this.borrowService.borrowApproved$
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((bookId: number) => {
+      .subscribe((bookId: string | undefined) => {
         const updatedWaiting = new Set(this.booksWaitingForApproval());
         updatedWaiting.delete(bookId);
         this.booksWaitingForApproval.set(updatedWaiting);
@@ -174,7 +173,7 @@ export class ExploreBooksComponent implements OnInit {
 
     this.borrowService.borrowDenied$
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((bookId: number) => {
+      .subscribe((bookId: string | undefined) => {
         const updatedWaiting = new Set(this.booksWaitingForApproval());
         updatedWaiting.delete(bookId);
         this.booksWaitingForApproval.set(updatedWaiting);
@@ -349,7 +348,7 @@ private processBorrowRequest(book: BookData, userId: string, duration: number): 
     });
 }
 
-public getButtonState(bookId: number): {
+public getButtonState(bookId: string | undefined): {
   text: string;
   class: string;
   disabled: boolean;
@@ -398,7 +397,7 @@ public getButtonState(bookId: number): {
       };
   }
 }
-  private getBookStatus(bookId: number): string {
+  private getBookStatus(bookId: string | undefined): string {
     if (this.booksWaitingForApproval().has(bookId)) return 'pending';
     if (this.borrowedBooks().has(bookId)) return 'borrowed';
     if (this.deniedBooks().has(bookId)) return 'denied';

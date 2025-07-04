@@ -2,7 +2,7 @@ import { BookData } from "../pages/user/explore-books/explore-books.component";
 
 export interface BorrowRequest {
   id: number;
-  bookId: number;
+  bookId?: string;
   userId: string;
   books: BookData;
   book: {
@@ -19,7 +19,7 @@ export interface BorrowRequest {
   duration: number;
   newDuration?: number;
   timeLeft: number;
-  status: 'pending' | 'approved' | 'denied';
-  reRequest?: 'pending' | 'approved' | 'denied';
+  status: 'pending' | 'approved' | 'denied' | 'returned';
+  reRequest?: 'pending' | 'approved' | 'denied' | 'returned';
   createdAt: "2025-06-30T08:00:00.000Z",
 }
