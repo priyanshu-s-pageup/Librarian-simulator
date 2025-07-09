@@ -19,6 +19,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, finalize, timeout } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { AuthService } from '../../../auth/auth.service';
+import { BookService } from '../../admin/book/book.service';
 
 export interface BookData {
   id: string | undefined;
@@ -29,6 +30,7 @@ export interface BookData {
   stockQuantity: number;
   status: 'available' | 'in-high-demand' | 'out-of-stock';
   isProcessing?: boolean; //optional property
+  userId: string;
 }
 
 export interface BorrowDialogData {
@@ -74,6 +76,7 @@ export class ExploreBooksComponent implements OnInit {
   public booksWaitingForApproval = signal(new Set<string | undefined>());
   public borrowedBooks = signal(new Set<string | undefined>());
   public deniedBooks = signal(new Set<string | undefined>());
+  private bookService = inject(BookService);
   // public currentUserId = signal('');
   private authService = inject(AuthService);
 
@@ -328,6 +331,20 @@ private processBorrowRequest(book: BookData, userId: string, duration: number): 
             b.id === book.id ? {...b, stockQuantity: b.stockQuantity - 1} : b
           )
         );
+
+        const updatedBook = {...book, stockQuantity: book.stockQuantity - 1};
+        this.bookService.updateBookStock(updatedBook.id, updatedBook).subscribe({
+          next: () => console.log('Stock updated in backend'),
+          error: (err) => {
+            console.error('Failed to update stock in backend:', err);
+            // Revert local changes if backend update fails
+            this.books.update(books =>
+              books.map(b =>
+                b.id === book.id ? {...b, stockQuantity: b.stockQuantity + 1} : b
+              )
+            );
+          }
+        });
 
         this.snackBar.open(
           `Request submitted for "${book.title}". Admin will review.`,

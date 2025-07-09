@@ -11,6 +11,8 @@ import { RoleGuard } from './auth/role.guard';
 import { UserNotifyComponent } from './pages/user/user-notify/user-notify.component';
 import { MyBooksComponent } from './pages/user/my-books/my-books.component';
 import { UserHomepageComponent } from './pages/user/user-homepage/user-homepage.component';
+import { AdminHomepageComponent } from './pages/admin/admin-homepage/admin-homepage.component';
+import { UserActivityComponent } from './pages/admin/user-activity/user-activity.component';
 // import { MyBooksComponent } from './pages/user/my-books/my-books.component';
 // import { UserHomepageComponent } from './pages/user/user-homepage/user-homepage.component';
 // import { SettingsPanelComponent } from './shared/settings-panel/settings-panel.component';
@@ -32,6 +34,9 @@ export const routes: Routes = [
 
     {path: 'app-my-books', component: MyBooksComponent, canActivate: [AuthGuard, RoleGuard], data: {role: 'user'}},
     // { path: 'app-settings-panel', component: SettingsPanelComponent},
+
+    {path: 'app-admin-homepage', component: AdminHomepageComponent, canActivate: [AuthGuard, RoleGuard], data: {role: 'admin'}},
+    {path: 'app-user-activity', component: UserActivityComponent, canActivate: [AuthGuard, RoleGuard], data: {role: 'admin'}},
 
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];

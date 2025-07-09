@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>User Details</h2>
+<mat-dialog-content>
+  <div class="user-details">
+    <div class="user-avatar">
+      <img *ngIf="user.image; else avatarPlaceholder" [src]="user.image" alt="User avatar" />
+      <ng-template #avatarPlaceholder>
+        <img src="assets/default-avatar.png" alt="Default avatar" />
+      </ng-template>
+    </div>
+    <div class="user-info">
+      <h3>{{ user.name }}</h3>
+      <p><strong>Role:</strong> {{ user.role }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Joined:</strong> {{ user.createdAt | date }}</p>
+      <p><strong>Status:</strong> {{ user.status }}</p>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="checkActivity()">Check Activity</button>
+    <button mat-raised-button color="accent" (click)="openPermissions()">View Permissions</button>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onClose()">Close</button>
+</mat-dialog-actions>

@@ -21,7 +21,7 @@
       <div class="book-body">
         <p><strong>Published:</strong> {{ book.publishedYear }}</p>
       </div>
-      <button (click)="openRequestDialog(book)">Re-Issue</button>
+      <button (click)="openRequestDialog(book)" [disabled]="isReIssueClicked || (book?.disabledReIssueUsers?.includes(currentUser?.id || ''))">Re-Issue</button>
       <button (click)="returnBook(book.id)">Return</button>
     </mat-card>
   </div>
@@ -46,7 +46,7 @@
       <div class="book-body">
         <p><strong>Published:</strong> {{ book.publishedYear }}</p>
       </div>
-      <button (click)="openRequestDialog(book)">Re-Issue</button>
+      <button (click)="openRequestDialog(book)" [disabled]="isReIssueClicked || (book?.disabledReIssueUsers?.includes(currentUser?.id || ''))">Re-Issue</button>
       <button (click)="returnBook(book.id)">Return</button>
     </mat-card>
   </div>
@@ -72,7 +72,7 @@
         <p><strong>Published:</strong> {{ book.publishedYear }}</p>
       </div>
 
-      <button (click)="openRequestDialog(book)">Re-Issue</button>
+      <button (click)="openRequestDialog(book)" [disabled]="isReIssueClicked || (book?.disabledReIssueUsers?.includes(currentUser?.id || ''))">Re-Issue</button>
       <button (click)="returnBook(book.id)">Return</button>
     </mat-card>
   </div>

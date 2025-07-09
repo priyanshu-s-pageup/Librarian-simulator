@@ -10,14 +10,19 @@ import { User } from './user.model';
 })
 
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  private currentUserSubject = new BehaviorSubject<User | null>(
+    JSON.parse(localStorage.getItem('currentUser') || 'null')
+  );
+  // Observable to expose to other components
+  currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
+
   // currentUser$ = this.currentUserSubject.asObservable();
   private apiUrl = 'http://localhost:3000/users';
   private borrowedBooks = new Set<number>();
 
-  currentUser$ = this.currentUserSubject = new BehaviorSubject<User | null>(
-    JSON.parse(localStorage.getItem('currentUser') || 'null')
-  );
+  // currentUser$ = this.currentUserSubject = new BehaviorSubject<User | null>(
+  //   JSON.parse(localStorage.getItem('currentUser') || 'null')
+  // );
 
   constructor(private http: HttpClient, private router: Router) {
     const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
@@ -61,5 +66,9 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.currentUserSubject.value;
+  }
+
+  get currentUserValue(): User | null {
+    return this.currentUserSubject.value;
   }
 }

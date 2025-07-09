@@ -4,43 +4,6 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* .topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  height: 60px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.logo-section {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo-img {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  object-fit: contain;
-}
-
-.logo-text {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #ecf0f1;
-}
-
-.sidebar.collapsed .logo-text {
-  display: none;
-}
-
-.sidebar.collapsed .logo-img {
-  margin: 0 auto;
-} */
-
-
 .topbar {
   display: flex;
   align-items: center;
@@ -251,18 +214,6 @@
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* .toggle-btn.rotated .hamburger span:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
-}
-
-.toggle-btn.rotated .hamburger span:nth-child(2) {
-  opacity: 0;
-}
-
-.toggle-btn.rotated .hamburger span:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
-} */
-
 .sidebar p {
   padding: 20px;
   margin: 0;
@@ -375,6 +326,30 @@ button:hover {
   width: 0;
   pointer-events: none; /* Prevent interaction when hidden */
 }
+
+/* Sidebar styles for active tabs */
+.sidebar a.active-tab {
+  background-color: #38496b; /* Change background color when active */
+  color: white; /* Change text color when active */
+}
+
+.sidebar a.active-tab mat-icon {
+  color: white; /* Change icon color when active */
+}
+
+.sidebar a.active-tab .menu-title {
+  font-weight: bold; /* Optional: Make text bold */
+}
+
+.sidebar a.active-tab:hover {
+  background-color: #29364f; /* Slightly darker green on hover for active tab */
+}
+
+/* Add transition for smooth color change */
+.sidebar a.active-tab {
+  transition: background-color 0.3s, color 0.3s;
+}
+
 
 
 @media (max-width: 768px) {

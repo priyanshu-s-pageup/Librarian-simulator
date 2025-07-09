@@ -14,6 +14,7 @@ import { CommonService } from '../../../../common.service';
 import { ConfirmDialogComponent } from '../../../../shared/confirm-dialog.component';
 import { environment } from '../../../../../environments/environment.development';
 import { HttpResponse } from '@angular/common/http';
+import { UserDialogComponent } from '../../../../shared/user-dialog/user-dialog.component';
 
 @Component({
   selector: 'app-user-list',
@@ -257,5 +258,17 @@ export class UserListComponent implements OnInit, OnDestroy {
     }
 
     imgElement.src = this.getDefaultAvatar();
+  }
+
+  openUserDialog(user: any): void {
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width: '1000px',  // You can adjust the size of the dialog
+      data: user       // Pass the user data to the dialog
+    });
+
+    // Optionally, subscribe to the dialog close event if you need to perform any action on close
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 }

@@ -1,0 +1,112 @@
+<div class="admin-dashboard-container">
+  <!-- Admin Greeting Section -->
+  <div class="greeting-section">
+    <div class="admin-info">
+      <div class="avatar" *ngIf="currentUser?.image">
+        <img [src]="currentUser?.image" alt="Admin Avatar">
+      </div>
+      <div class="welcome-message">
+        <h1>Welcome, {{ currentUser?.name }}!</h1>
+        <p class="text-muted">Your Library Dashboard</p>
+      </div>
+    </div>
+    <div class="quick-stats">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+          <h3>{{ totalUsers() }}</h3>
+          <p>Total Users</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-book"></i>
+        </div>
+        <div class="stat-info">
+          <h3>{{ totalBooks() }}</h3>
+          <p>Total Books</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-info">
+          <h3>{{ pendingRequests() }}</h3>
+          <p>Pending Requests</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity Charts Section -->
+  <div class="row charts-section">
+    <div class="col-md-8">
+      <div class="chart-card">
+        <h2>User Engagement Activity</h2>
+        <div class="chart-container">
+          <highcharts-chart
+            [Highcharts]="Highcharts"
+            [options]="activityChartOptions"
+            style="width: 100%; height: 100%; display: block;">
+          </highcharts-chart>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="chart-card">
+        <h2>Top Book Genres</h2>
+        <div class="chart-container">
+          <highcharts-chart
+            [Highcharts]="Highcharts"
+            [options]="genreChartOptions"
+            style="width: 100%; height: 100%; display: block;">
+          </highcharts-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recently Added Books Section -->
+  <div class="recent-books-section">
+    <h2>Recently Added Books</h2>
+    <div class="books-grid" *ngIf="recentBooks.length > 0; else noRecentBooks">
+      <div class="book-card" *ngFor="let book of recentBooks()">
+        <div class="book-cover">
+          <img [src]="'https://cdn.venngage.com/template/thumbnail/small/003681fb-175a-4465-b5a8-de28f2517a6b.webp'" alt="Book Cover">
+        </div>
+        <div class="book-info">
+          <h3>{{ book.title }}</h3>
+          <p class="author">{{ book.author }}</p>
+          <p class="stock">{{ book.stockQuantity }} Available</p>
+        </div>
+      </div>
+    </div>
+    <ng-template #noRecentBooks>
+      <div class="empty-state">
+        <i class="fas fa-book-open"></i>
+        <p>No recently added books found</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- User Management Section -->
+  <div class="user-management-section">
+    <h2>User Management</h2>
+    <div class="user-list">
+      <div class="user-card" *ngFor="let user of users">
+        <div class="user-info">
+          <h3>{{ user.name }}</h3>
+          <p>Email: {{ user.email }}</p>
+          <p>Role: {{ user.role }}</p>
+        </div>
+        <div class="actions">
+          <button class="btn btn-sm btn-primary">View Details</button>
+          <button class="btn btn-sm btn-outline-secondary">Deactivate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+/* Dialog container */
+.mat-dialog-container {
+  padding: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Title */
+h2[mat-dialog-title] {
+  margin-top: 15px;
+  margin-left: 18px;
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Content styling */
+mat-dialog-content {
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 1rem;
+}
+
+/* Each paragraph */
+mat-dialog-content p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Strong labels */
+mat-dialog-content p strong {
+  color: #555;
+}
+
+/* Quoted message */
+mat-dialog-content p strong + span,
+mat-dialog-content p strong + em {
+  font-style: italic;
+  color: #666;
+}
+
+/* Dialog actions */
+mat-dialog-actions {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Button style */
+button[mat-button] {
+  background-color: #156cd1;
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[mat-button]:hover {
+  background-color: #0d488c;
+}

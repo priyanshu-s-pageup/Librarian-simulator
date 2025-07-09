@@ -50,14 +50,13 @@
     <mat-card
       *ngFor="let notification of paginatedNotifications()"
       [ngClass]="{
-        'read': notification.isRead,
         'approved': notification.status === 'approved',
         'denied': notification.status === 'denied',
         'pending': notification.status === 'pending',
         'returned': notification.status === 'returned'
       }"
       class="notification-card"
-      (click)="markAsRead(notification.id)"
+      (click)="openNotificationDialog(notification)"
     >
       <mat-card-header>
         <div mat-card-avatar class="status-icon">
@@ -84,21 +83,15 @@
 
         <div *ngIf="notification.message" class="user-message">
           <mat-icon>message</mat-icon>
-          <p>Your request message: "{{ notification.message }}"</p>
+          <p>Message: "{{ notification.message }}"</p>
         </div>
 
-        <div *ngIf="notification.adminComment" class="admin-comment">
+        <!-- <div *ngIf="notification.adminComment" class="admin-comment">
           <mat-icon>admin_panel_settings</mat-icon>
           <p>Admin response: "{{ notification.adminComment }}"</p>
-        </div>
-      </mat-card-content>
+        </div> -->
 
-      <mat-card-footer *ngIf="notification.hasReRequested">
-        <div class="footer-note">
-          <mat-icon>done_all</mat-icon>
-          <span>Re-request sent to admin</span>
-        </div>
-      </mat-card-footer>
+      </mat-card-content>
     </mat-card>
   </div>
 
@@ -117,12 +110,6 @@
           </mat-select>
         </mat-form-field>
       </div>
-
-      <!-- <button mat-button
-              (click)="setPage(1)"
-              [disabled]="currentPage() === 1">
-        First
-      </button> -->
 
       <button mat-button
               (click)="setPage(currentPage() - 1)"
@@ -144,12 +131,6 @@
               [disabled]="currentPage() === totalPages()">
         Next
       </button>
-
-      <!-- <button mat-button
-              (click)="setPage(totalPages())"
-              [disabled]="currentPage() === totalPages()">
-        Last
-      </button> -->
     </div>
   </div>
 

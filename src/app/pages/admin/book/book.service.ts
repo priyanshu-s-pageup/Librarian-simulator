@@ -1,7 +1,7 @@
 // book.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { Book } from './book.component';
 
 @Injectable({ providedIn: 'root' })
@@ -14,10 +14,34 @@ export class BookService {
     return this.http.get<Book[]>(this.apiUrl);
   }
 
-  updateBookStock(bookId: string | undefined, stockQuantity: number): Observable<Book> {
-    const url = `${this.apiUrl}/${bookId}`;
-
-    return this.http.put<Book>(url, {stockQuantity});
+  getBookById(bookId: string): Observable<Book> {
+    return this.http.get<Book>(`${this.apiUrl}/${bookId}`);
   }
+
+  updateBookStock(bookId: string | undefined, book: Book): Observable<Book> {
+    const url = `${this.apiUrl}/${bookId}`;
+    return this.http.put<Book>(url, book);
+  }
+
+  updateBook(bookId: string | undefined, updatedData: Partial<Book>): Observable<Book> {
+    return this.http.put<Book>(`${this.apiUrl}/${bookId}`, updatedData);
+  }
+
+  updateDisabledReIssueUsers(bookId: string | undefined, userIdA: string): Observable<any> {
+    return this.http.get<Book>(`${this.apiUrl}/books/${bookId}`).pipe(
+      switchMap((book) => {
+        if (!book.disabledReIssueUsers) {
+          book.disabledReIssueUsers = [];
+        }
+
+        book.disabledReIssueUsers.push(userIdA);
+
+        return this.http.patch<Book>(`${this.apiUrl}/books/${book.id}`, {
+          disabledReIssueUsers: book.disabledReIssueUsers
+        });
+      }),
+    );
+  }
+
 
 }

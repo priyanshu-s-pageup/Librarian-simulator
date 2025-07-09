@@ -13,4 +13,10 @@ export class BorrowRequestService {
   getBorrowRequestsByUser(userId: string): Observable<BorrowRequest[]> {
     return this.http.get<BorrowRequest[]>(`${this.apiUrl}?userId=${userId}`);
   }
+
+
+  createBorrowRequest(request: BorrowRequest) {
+    return this.http.post<BorrowRequest>('http://localhost:3000/borrowRequests', request);
+  }
+
 }

@@ -16,6 +16,8 @@ import { BookService } from '../../admin/book/book.service';
 import { Book } from '../../admin/book/book.component';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
+import { ViewNotificationDialogComponent } from '../../../shared/view-notification-dialog/view-notification-dialog.component';
+import { DialogRef } from '@angular/cdk/dialog';
 
 
 export interface BookReference {
@@ -25,15 +27,20 @@ export interface BookReference {
   genre: string;
 }
 
-export interface UserNotification {
+interface BorrowRequestNotification {
   id: number;
   bookId: string;
-  book: BookReference;
   status: 'approved' | 'denied' | 'pending' | 'returned';
-  isRead: boolean;
   hasReRequested: boolean;
+  // isRead: boolean;
   message?: string;
   adminComment?: string;
+  book: {
+    id: string;
+    title: string;
+    author: string;
+    genre: string;
+  };
   date: Date;
 }
 
@@ -46,17 +53,16 @@ export interface UserNotification {
 })
 export class UserNotifyComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
-  private dialog = inject(MatDialog);
+  // private dialog = inject(MatDialog);
   private notificationService = inject(UserNotificationService);
   private destroyRef = inject(DestroyRef);
   private borrowRequestService = inject(BorrowRequestService);
   private bookService = inject(BookService);
 
-
+  notifications = signal<BorrowRequestNotification[]>([]);
+  borrowRequests = signal<BorrowRequest[]>([]);
 
   books = signal<Book[]>([]);
-  borrowRequests = signal<BorrowRequest[]>([]);
-  notifications = signal<UserNotification[]>([]);
   sortDirection = signal<'desc' | 'asc'> ('desc');
   currentFilter = signal<'all' | 'approved' | 'denied' | 'pending' | 'returned'>('all');
   currentPage = signal(1);
@@ -71,20 +77,14 @@ export class UserNotifyComponent implements OnInit {
   filteredNotifications = computed(() => {
     const filter = this.currentFilter();
     const all = this.borrowRequestNotifications();
-    const filtered = filter === 'all' ? all : all.filter(n => n.status === filter);
-
-    // Apply sorting based on current direction
-    return [...filtered].sort((a, b) => {
-      return this.sortDirection() === 'desc'
-        ? b.date.getTime() - a.date.getTime()
-        : a.date.getTime() - b.date.getTime();
-    });
+    return filter === 'all' ? all : all.filter((n) => n.status === filter);
   });
 
 
   constructor(
     private notificationSync: NotificationSyncService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -130,11 +130,24 @@ export class UserNotifyComponent implements OnInit {
 
   markAsRead(notificationId: number): void {
     this.notificationService.markAsRead(notificationId).subscribe(() => {
-      this.notifications.update(n =>
+      this.borrowRequests.update(n =>
         n.map(notif => notif.id === notificationId ? { ...notif, isRead: true } : notif)
       );
     });
   }
+
+  openNotificationDialog(notification: BorrowRequestNotification): void {
+    const dialogRef = this.dialog.open(ViewNotificationDialogComponent, {
+      width: '400px',
+      data: notification,
+    });
+
+    dialogRef.afterClosed().subscribe(result =>{
+      console.log('Dialog closed', result);
+    });
+  }
+
+
 
   private loadNotifications() {
     const userId = this.authService.getCurrentUser()?.id;
@@ -146,31 +159,65 @@ export class UserNotifyComponent implements OnInit {
       });
   }
 
-borrowRequestNotifications = computed<UserNotification[]>(() =>
-  this.borrowRequests()
-    .map((br) => {
-      const book = this.books().find(b => b.id === String(br.bookId));
+  // borrowRequestNotifications = computed<BorrowRequestNotification[]>(() =>
+  //   this.borrowRequests().map((br) => {
+  //     const book = this.books().find(b => b.id === String(br.bookId));
 
-      return {
-        id: br.id,
-        bookId: String(br.bookId),
-        status: br.status as 'approved' | 'denied' | 'pending',
-        isRead: true,
-        hasReRequested: false,
-        book: {
-          id: book?.id ?? String(br.bookId),
-          title: book?.title ?? 'Unknown Title',
-          author: book?.author ?? 'Unknown Author',
-          genre: book?.genre ?? 'Unknown Genre',
-        },
-        date: new Date(br.createdAt), // Use the createdAt field from borrowRequests
-      };
-    })
-    .sort((a, b) => b.date.getTime() - a.date.getTime()) // Sort by date descending
+  //     return {
+  //       id: br.id,
+  //       bookId: String(br.bookId),
+  //       status: br.status,
+  //       isRead: br.isRead ?? false,
+  //       hasReRequested: br.reRequest === 'approved',
+  //       message: br.message,
+  //       adminComment: br.adminComment,
+  //       book: {
+  //         id: book?.id ?? String(br.bookId),
+  //         title: book?.title ?? 'Unknown Title',
+  //         author: book?.author ?? 'Unknown Author',
+  //         genre: book?.genre ?? 'Unknown Genre',
+  //       },
+  //       date: new Date(br.createdAt),
+  //     };
+  //     })
+  //     .sort((a, b) =>
+  //       this.sortDirection() === 'desc'
+  //         ? b.date.getTime() - a.date.getTime()
+  //         : a.date.getTime() - b.date.getTime()
+  //     )
+  // );
+
+borrowRequestNotifications = computed<BorrowRequestNotification[]>(() =>
+  this.borrowRequests().map((br) => {
+    const book = this.books().find(b => b.id === String(br.bookId));
+
+    return {
+      id: br.id,
+      bookId: String(br.bookId),
+      status: br.status,
+      // isRead: br.isRead ?? false,
+      hasReRequested: br.reRequest === 'approved',
+      message: br.message,
+      // adminComment: br.adminComment,
+      book: {
+        id: book?.id ?? String(br.bookId),
+        title: book?.title ?? 'Unknown Title',
+        author: book?.author ?? 'Unknown Author',
+        genre: book?.genre ?? 'Unknown Genre',
+      },
+      date: new Date(br.createdAt),
+    };
+  })
+  .sort((a, b) =>
+    this.sortDirection() === 'desc'
+      ? b.date.getTime() - a.date.getTime()
+      : a.date.getTime() - b.date.getTime()
+  )
 );
 
 
-  openReRequestDialog(notification: UserNotification): void {
+
+  openReRequestDialog(notification: BorrowRequest): void {
     const dialogRef = this.dialog.open(ReRequestDialogComponent, {
       width: '350px',
       data: {
@@ -182,7 +229,7 @@ borrowRequestNotifications = computed<UserNotification[]>(() =>
     dialogRef.afterClosed().subscribe((message: string | undefined) => {
       if (message) {
         this.notificationService.sendReRequest(notification.id, message).subscribe(() => {
-          this.notifications.update(n =>
+          this.borrowRequests.update(n =>
             n.map(notif => notif.id === notification.id ? { ...notif, hasReRequested: true } : notif)
           );
           this.snackBar.open('Re-request sent to admin', 'Close', this.snackBarConfig);

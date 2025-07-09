@@ -6,8 +6,12 @@
       "author": "Rachel Moore",
       "genre": "romance",
       "publishedYear": 2003,
-      "stockQuantity": 17,
-      "status": "available"
+      "stockQuantity": 13,
+      "status": "available",
+      "disabledReIssueUsers": [
+        "0501US25260",
+        "0519US25101"
+      ]
     },
     {
       "id": "b3472ce1",
@@ -15,7 +19,7 @@
       "author": "Tara Lin",
       "genre": "historical",
       "publishedYear": 2011,
-      "stockQuantity": 13,
+      "stockQuantity": 11,
       "status": "available"
     },
     {
@@ -24,7 +28,7 @@
       "author": "Frank Lambert",
       "genre": "fantasy",
       "publishedYear": 1994,
-      "stockQuantity": 13,
+      "stockQuantity": 12,
       "status": "available"
     },
     {
@@ -78,7 +82,7 @@
       "author": "Liam Archer",
       "genre": "fantasy",
       "publishedYear": 2007,
-      "stockQuantity": 18,
+      "stockQuantity": 17,
       "status": "available"
     },
     {
@@ -87,8 +91,9 @@
       "author": "Charlotte Grey",
       "genre": "fantasy",
       "publishedYear": 2025,
-      "stockQuantity": 99,
-      "status": "in-high-demand"
+      "stockQuantity": 98,
+      "status": "in-high-demand",
+      "isProcessing": false
     },
     {
       "id": "k3741afc",
@@ -96,7 +101,7 @@
       "author": "Ulysses Grant",
       "genre": "fiction",
       "publishedYear": 1992,
-      "stockQuantity": 11,
+      "stockQuantity": 12,
       "status": "available"
     },
     {
@@ -105,7 +110,7 @@
       "author": "Yvonne Blake",
       "genre": "sci-fi",
       "publishedYear": 2019,
-      "stockQuantity": 5,
+      "stockQuantity": 2,
       "status": "available"
     },
     {
@@ -115,15 +120,6 @@
       "genre": "mystery",
       "publishedYear": 2001,
       "stockQuantity": 14,
-      "status": "available"
-    },
-    {
-      "id": "n623a1d2",
-      "title": "Dreams in Ashes",
-      "author": "Samuel Kent",
-      "genre": "historical",
-      "publishedYear": 1996,
-      "stockQuantity": 20,
       "status": "available"
     },
     {
@@ -141,17 +137,17 @@
       "author": "Brian Keller",
       "genre": "romance",
       "publishedYear": 2006,
-      "stockQuantity": 10,
+      "stockQuantity": 8,
       "status": "available"
     },
     {
-      "id": "q92af3cd",
       "title": "Windswept Shores",
       "author": "Alice Morgan",
       "genre": "fiction",
       "publishedYear": 1999,
-      "stockQuantity": 9,
-      "status": "available"
+      "stockQuantity": 8,
+      "status": "available",
+      "id": "q92af3cd"
     },
     {
       "id": "r10b57ef",
@@ -159,21 +155,18 @@
       "author": "Kara Benson",
       "genre": "fantasy",
       "publishedYear": 2020,
-      "stockQuantity": 16,
+      "stockQuantity": 15,
       "status": "available"
     },
     {
-      "stockQuantity": 12,
-      "id": "s1f4cdef"
-    },
-    {
-      "id": "t23fabe0",
       "title": "Feathers and Flames",
       "author": "Henry Talbot",
       "genre": "sci-fi",
       "publishedYear": 2014,
       "stockQuantity": 5,
-      "status": "available"
+      "status": "available",
+      "id": "t23fabe0",
+      "isProcessing": false
     },
     {
       "id": "u3d4f1aa",
@@ -181,7 +174,7 @@
       "author": "Olivia Frost",
       "genre": "fiction",
       "publishedYear": 1995,
-      "stockQuantity": 14,
+      "stockQuantity": 13,
       "status": "available"
     },
     {
@@ -203,24 +196,6 @@
       "status": "available"
     },
     {
-      "id": "x67abf09",
-      "title": "Blood and Stardust",
-      "author": "Rachel Moore",
-      "genre": "sci-fi",
-      "publishedYear": 2021,
-      "stockQuantity": 17,
-      "status": "available"
-    },
-    {
-      "id": "y78abcde",
-      "title": "Forest of Illusions",
-      "author": "Tara Lin",
-      "genre": "fantasy",
-      "publishedYear": 2002,
-      "stockQuantity": 6,
-      "status": "available"
-    },
-    {
       "id": "z89bcdf1",
       "title": "The Iron Pact",
       "author": "Zachary Miles",
@@ -235,12 +210,9 @@
       "author": "Paul Rivers",
       "genre": "non-fiction",
       "publishedYear": 2004,
-      "stockQuantity": 7,
-      "status": "available"
-    },
-    {
-      "stockQuantity": 20,
-      "id": "b01cdf34"
+      "stockQuantity": 3,
+      "status": "available",
+      "isProcessing": false
     },
     {
       "id": "c12def45",
@@ -248,15 +220,16 @@
       "author": "Charlotte Grey",
       "genre": "mystery",
       "publishedYear": 1990,
-      "stockQuantity": 2,
-      "status": "available"
+      "stockQuantity": 1,
+      "status": "available",
+      "isProcessing": false
     },
     {
       "title": "AAABBB",
       "author": "Myself",
       "genre": "non-fiction",
       "publishedYear": 2001,
-      "stockQuantity": 22,
+      "stockQuantity": 20,
       "status": "in-high-demand",
       "id": "3w-lbV6"
     }
@@ -298,139 +271,72 @@
       "role": "admin",
       "id": "0630US25101",
       "createdAt": "2025-06-30T11:05:46.989Z"
-    }
-  ],
-  "images": [
+    },
     {
-      "name": "John",
-      "id": "ce7d"
+      "name": "CarbonBot",
+      "contact": "9988776655",
+      "email": "ai.carbon@botmail.com",
+      "password": "Pwd123",
+      "role": "user",
+      "id": "0708US25101",
+      "createdAt": "2025-07-08T07:37:49.774Z"
     }
   ],
   "borrowRequests": [
     {
+      "bookId": "t23fabe0",
+      "userId": "0501US25260",
+      "duration": 26,
+      "status": "returned",
+      "createdAt": 1752039830538,
+      "id": "IY4XZsx",
+      "reRequest": "returned",
+      "newDuration": 26,
+      "message": "No more borrow.. Sorry!"
+    },
+    {
       "bookId": "j2836c21",
-      "userId": "0501US25260",
-      "duration": 7,
-      "newDuration": 7,
-      "status": "approved",
-      "reRequest": "approved",
-      "createdAt": 1751620898883,
-      "id": "2"
-    },
-    {
-      "bookId": "x67abf09",
-      "userId": "0501US25260",
-      "duration": 11,
-      "newDuration": 11,
-      "status": "approved",
-      "reRequest": "denied",
-      "createdAt": 1751550240297,
-      "id": "3"
-    },
-    {
-      "bookId": "b01cdf34",
-      "userId": "0501US25260",
-      "duration": 20,
-      "status": "returned",
-      "createdAt": 1751630708102,
-      "id": "QQ9QEXI",
-      "reRequest": "approved",
-      "newDuration": 20
-    },
-    {
-      "bookId": "s1f4cdef",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "returned",
-      "createdAt": 1751633269222,
-      "id": "EAsnVEC",
-      "reRequest": "pending",
-      "newDuration": 7
-    },
-    {
-      "bookId": "a90bc123",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "approved",
-      "createdAt": 1751630826167,
-      "id": "D0-IUJx"
-    },
-    {
-      "bookId": "a90bc123",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "pending",
-      "createdAt": 1751632617822,
-      "id": "IREDnR2"
-    },
-    {
-      "bookId": "c12def45",
       "userId": "0501US25260",
       "duration": 7,
       "status": "denied",
-      "createdAt": 1751632620914,
-      "id": "DG24L1x"
+      "createdAt": 1751882449338,
+      "id": "QsKx-Fp",
+      "reRequest": "approved",
+      "newDuration": 7,
+      "message": "No more borrow.. Sorry again!"
     },
     {
-      "bookId": "l4827b9e",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "approved",
-      "createdAt": 1751632622588,
-      "id": "i0bn0Lj"
-    },
-    {
-      "bookId": "x67abf09",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "pending",
-      "createdAt": 1751632624581,
-      "id": "XUwWsfh"
-    },
-    {
-      "bookId": "n623a1d2",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "approved",
-      "createdAt": 1751632626915,
-      "id": "nObvTId"
-    },
-    {
-      "bookId": "s1f4cdef",
-      "userId": "0501US25260",
-      "duration": 20,
-      "status": "pending",
-      "createdAt": 1751632632698,
-      "id": "JQ8yV1P"
-    },
-    {
-      "bookId": "c5b47a11",
-      "userId": "0501US25260",
-      "duration": 30,
-      "status": "approved",
-      "createdAt": 1751632639695,
-      "id": "deY8udR"
-    },
-    {
-      "bookId": "j2836c21",
-      "userId": "0501US25260",
-      "duration": 15,
-      "status": "pending",
-      "createdAt": 1751632646611,
-      "id": "eIcno6m"
+      "bookId": "a90bc123",
+      "userId": "0519US25101",
+      "duration": 14,
+      "status": "denied",
+      "createdAt": 1751969036796,
+      "id": "_Wrrf15",
+      "reRequest": "approved",
+      "newDuration": 14,
+      "message": "Why do you even want to know about the third world??"
     },
     {
       "bookId": "3w-lbV6",
       "userId": "0501US25260",
-      "duration": 15,
+      "duration": 5,
+      "status": "denied",
+      "createdAt": 1752040758772,
+      "id": "Xc8BDjJ",
+      "message": "This is during a test"
+    },
+    {
+      "bookId": "u3d4f1aa",
+      "userId": "0501US25260",
+      "duration": 24,
       "status": "approved",
-      "createdAt": 1751632653380,
-      "id": "4lxO9-g"
+      "createdAt": 1752040851740,
+      "id": "rzxeqiX"
     }
   ],
   "userNotifications": [
     {
-      "status": "returned",
+      "status": "denied",
       "bookId": "j2836c21",
       "userId": "0501US25260",
       "isRead": false,
@@ -440,7 +346,7 @@
         "__zone_symbol__state": null,
         "__zone_symbol__value": []
       },
-      "date": "2025-07-04T12:47:53.076Z"
+      "date": "2025-07-09T06:22:25.409Z"
     }
   ]
 }

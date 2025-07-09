@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, catchError, map, Observable, Subject, switchMap, tap, throwError, lastValueFrom, forkJoin } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, Subject, switchMap, tap, throwError, lastValueFrom, forkJoin, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment.development';
 import { BookData } from './pages/user/explore-books/explore-books.component';
@@ -8,6 +8,7 @@ import { timeout } from 'rxjs';
 import { BorrowRequest } from './models/borrow-request.model';
 import { NotificationSyncService } from './pages/user/user-notify/notification-sync.service';
 import { AuthService } from './auth/auth.service';
+import { BorrowStatus } from './models/borrow-status.enum';
 // import { BorrowRequest } from './models/borrow-request.model';
 
 interface Book{
@@ -21,25 +22,6 @@ export interface BorrowDialogData {
   book: BookData;
   maxDuration: number;
 }
-
-// interface BorrowRequest {
-//   id: number;
-//   bookId: number;
-//   userId: string;
-//   book: {
-//     id: number;
-//     title: string;
-//     author: string;
-//     stockQuantity: number;
-//     status: 'available' | 'in-high-demand' | 'out-of-stock';
-//   };
-//   user?: {
-//     id: string;
-//     name: string;
-//   };
-//   duration: number;
-//   status: 'pending' | 'approved' | 'denied';
-// }
 
 @Injectable({
   providedIn: 'root',
@@ -116,7 +98,7 @@ applyreRequest(book: Book, userId: string | null, newDuration: number): Observab
           const approvedRequest = existingRequests[0];
           // Mark as re-requested
           return this.http.patch<BorrowRequest>(`${this.url}/borrowRequests/${approvedRequest.id}`, {
-            reRequest: 'pending',
+            reRequest: BorrowStatus.Pending,
             newDuration,
             createdAt: Date.now()
           });
@@ -126,8 +108,8 @@ applyreRequest(book: Book, userId: string | null, newDuration: number): Observab
             bookId: book.id,
             userId,
             newDuration,
-            reRequest: 'pending',
-            status: 'approved',
+            reRequest: BorrowStatus.Pending,
+            status: BorrowStatus.Approved,
             createdAt: Date.now()
           });
         }
@@ -277,26 +259,6 @@ denyBorrow(book: BookData, requestId: number): Observable<void> {
       );
   }
 
-  // getBorrowRequests(): Observable<BorrowRequest[]> {
-  //   const reRequest$ = this.http.get<BorrowRequest[]>(`${this.url}/borrowRequests?reRequest=pending&_expand=book`);
-  //   const status$ = this.http.get<BorrowRequest[]>(`${this.url}/borrowRequests?status=pending&_expand=book`);
-
-  //   return forkJoin([reRequest$, status$]).pipe(
-  //     timeout(10000),
-  //     map(([reRequestList, statusList]) => {
-  //       const combined = [...reRequestList, ...statusList];
-  //       // Deduplicate by `id`
-  //       const unique = combined.filter(
-  //         (item, index, self) => index === self.findIndex(t => t.id === item.id)
-  //       );
-  //       return unique;
-  //     }),
-  //     tap((requests) => {
-  //       console.log('Fetched Borrow Requests:', requests);
-  //     })
-  //   );
-  // }
-
   getBorrowRequestsByUser(userId: string): Observable<BorrowRequest[]> {
     return this.http.get<BorrowRequest[]>(`${this.url}?userId=${userId}&_expand=book&_expand=user`);
   }
@@ -348,29 +310,80 @@ denyBorrow(book: BookData, requestId: number): Observable<void> {
     });
   }
 
-  updateRequestStatus(requestId: string | undefined, newStatus: 'approved' | 'denied' | 'returned') {
-    console.log('Updating request status for bookId:', requestId);
+  // updateRequestStatus(requestId: string | undefined, newStatus: 'approved' | 'denied' | 'returned', message?: string) {
+  //   console.log('Updating request status for bookId:', requestId);
 
-    return this.http.get<any>(`${this.url}/borrowRequests?bookId=${requestId}`).pipe(
-      switchMap((borrowRequests: any[]) => {
-        if (borrowRequests.length === 0) {
-          throw new Error('No borrow request found with that bookId');
-        }
+  //   return this.http.get<any>(`${this.url}/borrowRequests?bookId=${requestId}`).pipe(
+  //     switchMap((borrowRequests: any[]) => {
+  //       if (borrowRequests.length === 0) {
+  //         throw new Error('No borrow request found with that bookId');
+  //       }
 
-        const borrowRequest = borrowRequests[0]; // Assuming `bookId` is unique
-        console.log('Found borrow request:', borrowRequest); // D
-        const updatedRequest = { ...borrowRequest, status: newStatus };
+  //       const borrowRequest = borrowRequests[0]; // Assuming `bookId` is unique
+  //       console.log('Found borrow request:', borrowRequest); // D
+  //       const updatedRequest = {
+  //         ...borrowRequest,
+  //         status: newStatus,
+  //         message: message ?? borrowRequest.message,
+  //         reRequest: newStatus === 'returned' ? 'returned' : borrowRequest.reRequest};
 
-        console.log('Updating borrow request with new status:', updatedRequest);
-        // Now send a PATCH request to update the found request by id
+  //       console.log('Updating borrow request with new status:', updatedRequest);
+  //       // Now send a PATCH request to update the found request by id
+  //       return this.http.patch(`${this.url}/borrowRequests/${borrowRequest.id}`, updatedRequest);
+  //     }),
+  //     switchMap((updatedRequest) => {
+  //       console.log('Borrow request updated:', updatedRequest); // Debug log
+  //       return this.notificationSync.syncBorrowRequestToNotification(updatedRequest);  // Sync notifications if needed
+  //     })
+  //   );
+  // }
+
+  updateRequestStatus(
+    requestId: string | undefined,
+    newStatus: 'approved' | 'denied' | 'returned',
+    message?: string
+  ) {
+    if (!requestId) {
+      throw new Error('Invalid request ID');
+    }
+
+    return this.http.get<any[]>(`${this.url}/borrowRequests?bookId=${requestId}`).pipe(
+      switchMap((borrowRequests) => {
+        if (!borrowRequests.length) throw new Error('No borrow request found');
+        const borrowRequest = borrowRequests[0];
+
+        const updatedRequest = {
+          ...borrowRequest,
+          status: newStatus,
+          message: message ?? borrowRequest.message,
+          reRequest: newStatus === BorrowStatus.Returned ? 'returned' : borrowRequest.reRequest
+        };
+
         return this.http.patch(`${this.url}/borrowRequests/${borrowRequest.id}`, updatedRequest);
       }),
-      switchMap((updatedRequest) => {
-        console.log('Borrow request updated:', updatedRequest); // Debug log
-        return this.notificationSync.syncBorrowRequestToNotification(updatedRequest);  // Sync notifications if needed
+      switchMap((updatedRequest: any) => {
+        return this.http.get<BorrowRequest[]>(`${this.url}/userNotifications?bookId=${requestId}`).pipe(
+          switchMap((notifications) => {
+            if (!notifications.length) return of(updatedRequest); // fallback
+
+            const notificationToUpdate = notifications[0];
+            const updatedNotification = {
+              ...notificationToUpdate,
+              status: updatedRequest.status,
+              message: updatedRequest.message,
+              adminComment: updatedRequest.message
+            };
+
+            return this.http.patch(`${this.url}/userNotifications/${notificationToUpdate.id}`, updatedNotification);
+          }),
+          switchMap((patchedNotification) => {
+            return this.notificationSync.syncBorrowRequestToNotification(updatedRequest);
+          })
+        );
       })
     );
   }
+
 
   updateReIssueDetails(requestId: number, newDuration: number | undefined, newStatus: 'approved' | 'denied') {
     return this.http.patch(`${this.url}/borrowRequests/${requestId}`, { reRequest: newStatus, duration: newDuration}).pipe(

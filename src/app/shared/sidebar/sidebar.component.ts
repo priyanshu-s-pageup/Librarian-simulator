@@ -29,14 +29,16 @@ export class SidebarComponent implements OnInit {
   private userSubscription: Subscription = new Subscription();
 
   routes = [
-    {path: '/app-user-homepage', label: 'Home', icon: 'home', roles: ['user']},
+    {path: '/app-admin-homepage', label: 'Home', icon: 'home', roles: ['admin']},
     {path: '/user-list', label: 'User List', icon: 'group', roles: ['admin']},
     {path: '/book-list', label: 'Book List', icon: 'book', roles: ['admin']},
+    {path: '/app-user-activity', label: 'User Activity', icon: 'explore', roles: ['admin']},
     {path: '/app-admin-notify', label: 'Borrow Requests', icon: 'sms', roles: ['admin']},
+    {path: '/app-user-homepage', label: 'Home', icon: 'home', roles: ['user']},
     {path: '/explore-books', label: 'Explore Books', icon: 'explore', roles: ['user']},
     {path: '/app-my-books', label: 'My Books', icon: 'menu_book', roles: ['user']},
     {path: '/app-user-notify', label: 'My Requests', icon: 'sms', roles: ['user']},
-    {path: '/app-user-homepage', label: 'Settings', icon: 'settings', roles: ['user']},
+    {path: '/app-settings', label: 'Settings', icon: 'settings', roles: ['user']},
 
   ]
 

@@ -1,4 +1,5 @@
 import { BookData } from "../pages/user/explore-books/explore-books.component";
+import { BorrowStatus } from "./borrow-status.enum";
 
 export interface BorrowRequest {
   id: number;
@@ -18,8 +19,12 @@ export interface BorrowRequest {
   };
   duration: number;
   newDuration?: number;
+  startDate: Date;
+  deadline: Date;
+  newDeadline: Date;
   timeLeft: number;
-  status: 'pending' | 'approved' | 'denied' | 'returned';
-  reRequest?: 'pending' | 'approved' | 'denied' | 'returned';
-  createdAt: "2025-06-30T08:00:00.000Z",
+  status: BorrowStatus;
+  reRequest?: BorrowStatus;
+  createdAt: Date;
+  message: string;
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BookUpsertComponent } from './book-upsert/book-upsert.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { User } from '../../../auth/user.model';
 
 @Component({
   selector: 'app-book',
@@ -22,4 +23,5 @@ export interface Book {
   publishedYear: number;
   stockQuantity: number;
   status: 'available' | 'in-high-demand' | 'out-of-stock';
+  disabledReIssueUsers?: string[];
 }

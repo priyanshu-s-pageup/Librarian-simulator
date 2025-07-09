@@ -1,84 +1,79 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, delay, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment.development';
-import { UserNotification } from './user-notify.component';
+import { BorrowRequest } from '../../../models/borrow-request.model';
+import { Book } from '../../admin/book/book.component';
 
-// export interface UserNotification {
-//   id: number;
-//   bookTitle: string;
-//   status: 'approved' | 'denied';
-//   isRead: boolean;
-//   hasReRequested: boolean;
-//   message?: string;
-// }
+export interface BorrowRequestNotification {
+  id: number;
+  bookId: string;
+  status: 'approved' | 'denied' | 'pending' | 'returned';
+  hasReRequested: boolean;
+  isRead: boolean;
+  message?: string;
+  adminComment?: string;
+  book: {
+    id: string;
+    title: string;
+    author: string;
+    genre: string;
+  };
+  date: Date;
+}
 
 @Injectable({ providedIn: 'root' })
 export class UserNotificationService {
-  private url = environment.apiUrl;
-  private http = inject(HttpClient);
-  private readonly baseUrl = environment.apiUrl;
+  private readonly http = inject(HttpClient);
+  private readonly url = environment.apiUrl;
 
-  private notificationsSubject = new BehaviorSubject<UserNotification[]>([]);
+  private notificationsSubject = new BehaviorSubject<BorrowRequestNotification[]>([]);
   notifications$ = this.notificationsSubject.asObservable();
 
   constructor() {}
 
-  // getUserNotifications(): Observable<UserNotification[]> {
-  //   return this.http.get<UserNotification[]>(`${this.baseUrl}/userNotifications`).pipe(
-  //     tap(notifs => this.notificationsSubject.next(notifs)),
-  //     catchError(err => {
-  //       console.error('Failed to load notifications:', err);
-  //       return throwError(() => err);
-  //     })
-  //   );
-  // }
-
-getUserNotifications(userId: string | void) {
-  return this.http.get<any[]>(`${this.url}/userNotifications?userId=${userId}`).pipe(
-    switchMap(notifications => {
-      const bookIds = [...new Set(notifications.map(n => n.bookId))];
-      return this.http.get<any[]>(`${this.url}/books?id=${bookIds.join('&id=')}`).pipe(
-        map(books => {
-          return notifications.map(notification => {
-            const book = books.find(b => b.id === notification.bookId);
-            return {
-              ...notification,
-              book: {
-                id: book?.id || '',
-                title: book?.title || 'Unknown Book',
-                author: book?.author || 'Unknown Author',
-                genre: book?.genre || 'Unknown Genre'
-              },
-              date: new Date(notification.date || notification.createdAt || Date.now())
-            } as UserNotification;
-          }).sort((a, b) => b.date.getTime() - a.date.getTime()); // Sort here as well
-        })
-      );
-    })
-  );
-}
-
-  saveUserNotification(notification: UserNotification): Observable<UserNotification> {
-    // Ensure the date is set if not already
-    if (!notification.date) {
-      notification.date = new Date(); // Store the current timestamp as the date
-    }
-
-    return this.http.post<UserNotification>(`${this.url}/userNotifications`, notification);
+  getUserNotifications(userId: string | undefined): Observable<BorrowRequestNotification[]> {
+    return this.http.get<BorrowRequest[]>(`${this.url}/borrowRequests?userId=${userId}`).pipe(
+      switchMap((requests) => {
+        const bookIds = [...new Set(requests.map(r => r.bookId))];
+        const bookQuery = bookIds.map(id => `id=${id}`).join('&');
+        return this.http.get<Book[]>(`${this.url}/books?${bookQuery}`).pipe(
+          map((books) =>
+            requests.map((br) => {
+              const book = books.find(b => b.id === String(br.bookId));
+              return {
+                id: br.id,
+                bookId: String(br.bookId),
+                status: br.status,
+                hasReRequested: br.reRequest === 'approved',
+                // isRead: br.isRead ?? false,
+                message: br.message,
+                // adminComment: br.adminComment,
+                book: {
+                  id: book?.id ?? '',
+                  title: book?.title ?? 'Unknown Title',
+                  author: book?.author ?? 'Unknown Author',
+                  genre: book?.genre ?? 'Unknown Genre'
+                },
+                date: new Date(br.createdAt)
+              } as BorrowRequestNotification;
+            }).sort((a, b) => b.date.getTime() - a.date.getTime())
+          )
+        );
+      })
+    );
   }
 
-
-  markAsRead(notificationId: number): Observable<void> {
-    return this.http.patch<void>(`${this.baseUrl}/userNotifications/${notificationId}`, {
+  markAsRead(borrowRequestId: number): Observable<void> {
+    return this.http.patch<void>(`${this.url}/borrowRequests/${borrowRequestId}`, {
       isRead: true
     });
   }
 
-  sendReRequest(notificationId: number, message: string): Observable<void> {
-    return this.http.patch<void>(`${this.baseUrl}/userNotifications/${notificationId}`, {
-      hasReRequested: true,
+  sendReRequest(borrowRequestId: number, message: string): Observable<void> {
+    return this.http.patch<void>(`${this.url}/borrowRequests/${borrowRequestId}`, {
+      reRequest: 'pending',
       message
     });
   }

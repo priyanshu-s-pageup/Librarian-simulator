@@ -1,0 +1,162 @@
+/* Style for the dialog title (h2) */
+.mat-dialog-title {
+  font-size: 2rem; /* Larger font size for the title */
+  font-weight: 600; /* Bold the title */
+  color: #333; /* Dark text for readability */
+  text-align: center; /* Center align the title */
+  margin-left: 10px;
+  padding: 20px 0; /* Add top/bottom padding for spacing */
+  background-color: #4caf50; /* Green background for the title bar */
+  color: white; /* White text to contrast against the green */
+  border-radius: 8px 8px 0 0; /* Rounded top corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  padding-left: 20px;
+}
+
+h2 {
+  font-size: 2rem; /* Override the dynamic font size */
+  margin-bottom: 1rem; /* Add extra bottom margin */
+  margin-top: 1rem;
+  margin-left: 1rem;
+  color: #333; /* Change color to dark gray */
+
+}
+
+
+.mat-dialog-title .mat-icon {
+  vertical-align: middle;
+  margin-right: 10px; /* Space between icon and title text */
+  color: #fff; /* White icon to match the title */
+}
+
+/* Additional styling for dialog content */
+mat-dialog-content {
+  padding: 20px;
+  background-color: #fff; /* White background for content */
+  color: #555; /* Slightly lighter text for readability */
+}
+
+mat-dialog-actions {
+  padding: 4px;
+  background-color: #f9f9f9; /* Light gray for action buttons area */
+  border-radius: 0 0 8px 8px; /* Rounded bottom corners */
+  display: flex;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.user-details {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background for the user section */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.user-avatar img {
+  width: 90px; /* Increased size for a better look */
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover; /* Ensure the image fits within the circle */
+  border: 3px solid #4caf50; /* Green border for better visibility */
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #333; /* Slightly darker text for better readability */
+}
+
+.user-info h3 {
+  margin: 0;
+  font-size: 1.8rem; /* Larger name font */
+  color: #333; /* Dark color for the name */
+  font-weight: 600; /* Bolder name */
+}
+
+.user-info p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #555; /* Lighter color for the other text */
+}
+
+.user-info p strong {
+  color: #4caf50; /* Green for the labels to make it pop */
+}
+
+.user-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.user-actions button {
+  border-radius: 5px;
+  padding: 8px 16px;
+  font-weight: 500;
+  text-transform: capitalize;
+  min-width: 140px;
+}
+
+button.mat-raised-button {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+button.mat-raised-button.color-primary {
+  background-color: #4caf50; /* Green button for action */
+  color: white;
+}
+
+button.mat-raised-button.color-primary:hover {
+  background-color: #45a149; /* Slightly darker green on hover */
+}
+
+button.mat-raised-button.color-accent {
+  background-color: #2196f3; /* Blue button for secondary action */
+  color: white;
+}
+
+button.mat-raised-button.color-accent:hover {
+  background-color: #1976d2; /* Slightly darker blue on hover */
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 20px;
+}
+
+mat-dialog-actions button {
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+mat-dialog-actions button.mat-button {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+mat-dialog-actions button.mat-button:hover {
+  background-color: #e0e0e0;
+}
+
+mat-dialog-content {
+  padding: 20px;
+}
+
+.mat-spinner {
+  display: block;
+  margin: 30px auto;
+}
+
+mat-icon {
+  color: #4caf50; /* Green icon color */
+}

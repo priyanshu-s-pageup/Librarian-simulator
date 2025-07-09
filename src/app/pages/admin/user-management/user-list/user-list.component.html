@@ -52,7 +52,7 @@
 
   <!-- UI display cards -->
   <div class="user-cards" *ngIf="!isLoading && filteredUsers.length > 0">
-    <mat-card *ngFor="let user of filteredUsers" class="user-card">
+    <mat-card *ngFor="let user of filteredUsers" class="user-card" (click)="openUserDialog(user)">
       <div class="card-header">
         <div class="user-avatar">
           <img

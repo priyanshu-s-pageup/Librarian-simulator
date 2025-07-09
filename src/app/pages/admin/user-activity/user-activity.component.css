@@ -1,0 +1,63 @@
+/* Container for the activity logs */
+.user-activity-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading style */
+.user-activity-container h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Table styling */
+.activity-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.activity-table th, .activity-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.activity-table th {
+  background-color: #f1f1f1;
+  font-weight: bold;
+}
+
+.activity-table td {
+  font-size: 14px;
+}
+
+.activity-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Success and Failed status styling */
+.success {
+  color: green;
+  font-weight: bold;
+}
+
+.failed {
+  color: red;
+  font-weight: bold;
+}
+
+/* Empty state message */
+.empty-state {
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+}
+
+.empty-state i {
+  font-size: 24px;
+  color: #888;
+}

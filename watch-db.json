@@ -8,9 +8,28 @@
   ],
   "comments": [
     {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "bookId": "j2836c21",
+      "userId": "0501US25260",
+      "duration": 90,
+      "newDuration": 90,
+      "deadline": "2023-07-15T00:00:00.000Z",
+      "newDeadline": "2023-07-22T00:00:00.000Z",
+      "status": "approved",
+      "reRequest": "approved",
+      "createdAt": 1751635329737,
+      "id": "2"
+    },
+    {
+      "bookId": "x67abf09",
+      "userId": "0501US25260",
+      "duration": 90,
+      "newDuration": 90,
+      "deadline": "2023-07-16T00:00:00.000Z",
+      "newDeadline": "2023-07-27T00:00:00.000Z",
+      "status": "returned",
+      "reRequest": "approved",
+      "createdAt": 1751635334704,
+      "id": "3"
     }
   ],
   "profile": {

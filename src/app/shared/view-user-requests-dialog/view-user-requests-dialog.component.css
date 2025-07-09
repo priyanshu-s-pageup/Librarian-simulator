@@ -66,3 +66,16 @@
   background-color: #fff3e0;
   color: #ef6c00;
 }
+
+.dialog-container {
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.scrollable-content {
+  overflow-y: auto;
+  max-height: calc(100vh - 100px); /* Adjust based on header height */
+  padding-right: 8px; /* Optional: add spacing for scrollbar */
+}

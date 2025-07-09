@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed, DestroyRef } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, DestroyRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
@@ -15,6 +15,8 @@ import { finalize } from 'rxjs';
 import { BorrowNotificationService } from '../../../borrow-notification.service';
 import { Book } from '../../admin/book/book.component';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog.component';
+import { BorrowStatus } from '../../../models/borrow-status.enum';
+import { User } from '../../../auth/user.model';
 
 @Component({
   selector: 'app-my-books',
@@ -31,6 +33,11 @@ export class MyBooksComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private dialog = inject(MatDialog);
   private borrowService = inject(BorrowNotificationService);
+  public currentUser: User | null = null; // Track the current user
+  public isReIssueClicked = false;
+  // public book: Book | null = null;
+
+constructor(private cdr: ChangeDetectorRef) {}
 
   get currentUserId(): string | null {
     return this.authService.getCurrentUser()?.id || null;
@@ -74,6 +81,15 @@ export class MyBooksComponent implements OnInit {
       return;
     }
 
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
+
+    // Fetch the book data (you could also pass a book ID or other params)
+    // this.bookService.getBookById(1).subscribe((book: Book) => {
+    //   this.book = book;
+    // });
+
     this.borrowRequestService.getBorrowRequestsByUser(userId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
@@ -89,6 +105,31 @@ export class MyBooksComponent implements OnInit {
       });
   }
   openRequestDialog(book: Book) {
+
+    if (this.currentUser && book.disabledReIssueUsers?.includes(this.currentUser.id)) {
+      // Disable the Re-Issue button for the current user
+      this.isReIssueClicked = true;
+      console.log("IsReIssueClicked =", this.isReIssueClicked)
+    } else {
+      // Proceed with the normal request for other users
+      this.isReIssueClicked = false;
+      console.log("IsReIssueClicked =", this.isReIssueClicked)
+
+      if (this.currentUser && !book.disabledReIssueUsers?.includes(this.currentUser.id)){
+        book.disabledReIssueUsers?.push(this.currentUser.id);
+
+        // this.bookService.updateBook(book.id, { disabledReIssueUsers: book.disabledReIssueUsers }).subscribe(updatedBook => {
+        this.bookService.updateBook(book.id, { title: book.title, author: book.author, genre: book.genre, publishedYear: book.publishedYear, stockQuantity: book.stockQuantity, status: book.status, disabledReIssueUsers: book.disabledReIssueUsers }).subscribe(updatedBook => {
+        // this.bookService.updateDisabledReIssueUsers(book.id, this.currentUser.id).subscribe(updatedBook => {
+
+          if (this.currentUser && book.disabledReIssueUsers?.includes(this.currentUser.id)){
+            this.isReIssueClicked = true;
+          }
+
+          console.log('Book updated:', updatedBook)
+        })
+      }
+    }
     const userId = this.currentUserId;
     const dialogRef = this.dialog.open(BorrowDialogComponent, {
       width: '500px',
@@ -113,6 +154,7 @@ export class MyBooksComponent implements OnInit {
           this.processReRequest(book, userId, result.newDuration);
         }
       });
+    this.cdr.detectChanges();
   }
 
   private processReRequest(book: Book, userId: string | null, newDuration: number): void {
@@ -145,52 +187,29 @@ export class MyBooksComponent implements OnInit {
       });
   }
 
-  public returnBookie(){
-    // stock = stock + 1;
-    // clear and delete the notification
-  }
+public returnBook(requestId: string | undefined): void {
+  // Open the confirmation dialog
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      title: 'Confirm Book Return',
+      message: 'Are you sure you want to return this book?'
+    }
+  });
 
-  // public returnBook(requestId: string | undefined): void {
-  //   const updatedRequests = this.borrowRequests().map(br => {
-  //     if (br.status === 'approved' && String(br.bookId) === requestId) {
-  //       return { ...br, status: 'returned' as 'returned' };
-  //     }
-  //     return br;
-  //   });
-
-  //   this.borrowRequests.update(() => updatedRequests);
-
-  //   this.borrowService.updateRequestStatus(requestId, 'returned').subscribe({
-  //     next: () => {
-  //       console.log('Request status updated successfully in the backend');
-  //     },
-  //     error: (err) => {
-  //       console.error('Failed to update status in the backend:', err);
-  //     }
-  //   });
-
-  //   console.log('Book returned, updated request list:', updatedRequests);
-  // }
-
-  public returnBook(requestId: string | undefined): void {
-    // Open the confirmation dialog
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: 'Confirm Book Return',
-        message: 'Are you sure you want to return this book?'
-      }
-    });
-
-    // Handle the result of the dialog (whether user confirms or cancels)
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // User confirmed, proceed with the work
-        const updatedRequests = this.borrowRequests().map(br => {
-          if (br.status === 'approved' && String(br.bookId) === requestId) {
-            return { ...br, status: 'returned' as 'returned' };
-          }
-          return br;
-        });
+  // Handle the result of the dialog (whether user confirms or cancels)
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // User confirmed, proceed with the work
+      const updatedRequests = this.borrowRequests().map(br => {
+        if (br.status === 'approved' && String(br.bookId) === requestId) {
+          return {
+            ...br,
+            status: BorrowStatus.Returned,
+            reRequest: BorrowStatus.Returned // Add this line to update reRequest status
+          };
+        }
+        return br;
+      });
 
       const books = this.books(); // This is the current value of the signal
 
@@ -199,10 +218,10 @@ export class MyBooksComponent implements OnInit {
 
       if (bookToUpdate) {
         // Update stock of the book (stock + 1)
-        bookToUpdate.stockQuantity = bookToUpdate.stockQuantity + 1;
+        const updatedBook = { ...bookToUpdate, stockQuantity: bookToUpdate.stockQuantity + 1 };
 
         // Update the book's stock in the backend (via a service call)
-        this.bookService.updateBookStock(bookToUpdate.id, bookToUpdate.stockQuantity).subscribe({
+        this.bookService.updateBookStock(updatedBook.id, updatedBook).subscribe({
           next: () => {
             console.log('Stock updated successfully in the backend');
           },
@@ -212,25 +231,23 @@ export class MyBooksComponent implements OnInit {
         });
       }
 
-        this.borrowRequests.update(() => updatedRequests);
+      this.borrowRequests.update(() => updatedRequests);
 
-        // Call your backend service to update the request status
-        this.borrowService.updateRequestStatus(requestId, 'returned').subscribe({
-          next: () => {
-            console.log('Request status updated successfully in the backend');
-          },
-          error: (err) => {
-            console.error('Failed to update status in the backend:', err);
-          }
-        });
+      // Call your backend service to update the request status
+      this.borrowService.updateRequestStatus(requestId, 'returned').subscribe({
+        next: () => {
+          console.log('Request status updated successfully in the backend');
+        },
+        error: (err) => {
+          console.error('Failed to update status in the backend:', err);
+        }
+      });
 
-        console.log('Book returned, updated request list:', updatedRequests);
-      } else {
-        // User canceled, no action taken
-        console.log('Return action canceled.');
-      }
-    });
-  }
-
-
+      console.log('Book returned, updated request list:', updatedRequests);
+    } else {
+      // User canceled, no action taken
+      console.log('Return action canceled.');
+    }
+  });
+}
 }

@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Enter Denial Message</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Message (optional)</mat-label>
+    <textarea matInput [(ngModel)]="data.message" rows="4"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="warn" [mat-dialog-close]="data.message">Confirm</button>
+</mat-dialog-actions>

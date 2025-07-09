@@ -1,0 +1,29 @@
+<div class="user-activity-container">
+  <h2>User Activity Logs</h2>
+
+  <table class="activity-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Activity</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Loop through activityLogs to display each log -->
+      <tr *ngFor="let log of activityLogs">
+        <td>{{ log.date }}</td>
+        <td>{{ log.activity }}</td>
+        <td [ngClass]="{ 'success': log.status === 'Success', 'failed': log.status === 'Failed' }">
+          {{ log.status }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noLogs>
+    <div class="empty-state">
+      <p>No activity logs available.</p>
+    </div>
+  </ng-template>
+</div>
