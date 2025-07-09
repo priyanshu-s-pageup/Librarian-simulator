@@ -75,7 +75,7 @@ onLend(request: BorrowRequest): void {
 }
 
 onLendB(request: BorrowRequest): void {
-  this.borrowService.updateReIssueDetails(request.id, request.newDuration, 'approved').subscribe({
+  this.borrowService.updateReIssueDetails(request.id, request.createdAt, request.duration ,request.newDuration, 'approved').subscribe({
     next: () => {
       this.removeRequestFromUI(request.id);
     },
@@ -107,72 +107,6 @@ onDeny(request: BorrowRequest): void {
     }
   });
 }
-
-// onDeny(request: BorrowRequest): void {
-//   // Since we're dealing with an existing request, these should always exist
-//   const bookId = request.bookId;
-//   if (!bookId) {
-//     throw new Error('Invalid request: Missing book ID');
-//   }
-
-//   // This should always find a book since we're dealing with an existing request
-//   const currentBooks = this.books();
-//   const bookToUpdate = currentBooks.find(book => book.id === bookId);
-
-//   if (!bookToUpdate) {
-//     throw new Error(`Book with ID ${bookId} not found in local state`);
-//   }
-
-//   // 1. Optimistic UI update - increment stock by 1
-//   this.books.update(books =>
-//     books.map(book =>
-//       book.id === bookId
-//         ? { ...book, stockQuantity: book.stockQuantity + 1 }
-//         : book
-//     )
-//   );
-
-//   // 2. Update book stock in backend
-//   const updatedBook = {
-//     ...bookToUpdate,
-//     stockQuantity: bookToUpdate.stockQuantity + 1
-//   };
-
-//   this.bookService.updateBookStock(updatedBook.id, updatedBook).subscribe({
-//     next: () => console.log('Stock updated in backend'),
-//     error: (err) => {
-//       console.error('Failed to update stock in backend:', err);
-//       // Revert local changes
-//       this.books.update(books =>
-//         books.map(b =>
-//           b.id === bookId
-//             ? { ...b, stockQuantity: b.stockQuantity - 1 }
-//             : b
-//         )
-//       );
-//     }
-//   });
-
-//   // 3. Update request status to 'denied'
-//   this.borrowService.updateRequestStatus(request.id.toString(), 'denied').subscribe({
-//     next: () => {
-//       this.removeRequestFromUI(request.id);
-//       this.snackBar.open(
-//         `Request for "${request.book.title}" has been denied. Stock has been returned.`,
-//         'Close',
-//         this.snackBarConfig
-//       );
-//     },
-//     error: (err) => {
-//       console.error('Failed to deny request:', err);
-//       this.snackBar.open(
-//         'Failed to deny request',
-//         'Close',
-//         this.snackBarConfig
-//       );
-//     }
-//   });
-// }
 
 onDenyB(request: BorrowRequest): void {
   this.borrowService.updateReIssueDetails2(request.id, 'denied').subscribe({

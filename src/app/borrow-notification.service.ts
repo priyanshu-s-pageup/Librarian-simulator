@@ -48,6 +48,8 @@ export class BorrowNotificationService {
   readonly borrowRequested$ = this.borrowRequestedSubject.asObservable();
   readonly borrowApproved$ = this.borrowApprovedSubject.asObservable();
   readonly borrowDenied$ = this.borrowDeniedSubject.asObservable();
+  public currentDate = new Date();
+  public currentDeadline = new Date();
 
   get currentUserId(): string | null {
     return this.authService.getCurrentUser()?.id || null;
@@ -89,28 +91,27 @@ export class BorrowNotificationService {
       });
   }
 
-applyreRequest(book: Book, userId: string | null, newDuration: number): Observable<void> {
+applyreRequest(book: Book, userId: string | null, newDuration: number, newDeadline: Date): Observable<void> {
+  console.log("Yes its my work: ApplyreRequest")
   return this.http
     .get<BorrowRequest[]>(`${this.url}/borrowRequests?bookId=${book.id}&userId=${userId}&status=approved`)
     .pipe(
       switchMap((existingRequests) => {
         if (existingRequests.length > 0) {
           const approvedRequest = existingRequests[0];
-          // Mark as re-requested
           return this.http.patch<BorrowRequest>(`${this.url}/borrowRequests/${approvedRequest.id}`, {
             reRequest: BorrowStatus.Pending,
             newDuration,
-            createdAt: Date.now()
+            newDeadline,
           });
         } else {
-          // Optional fallback: create a new one (if none found — shouldn't usually happen)
           return this.http.post<BorrowRequest>(`${this.url}/borrowRequests`, {
             bookId: book.id,
             userId,
             newDuration,
+            newDeadline,
             reRequest: BorrowStatus.Pending,
             status: BorrowStatus.Approved,
-            createdAt: Date.now()
           });
         }
       }),
@@ -126,14 +127,25 @@ applyreRequest(book: Book, userId: string | null, newDuration: number): Observab
             author: book.author
           }
         };
+
+        const formattedDeadline = updatedRequest.newDeadline
+          ? new Intl.DateTimeFormat('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            }).format(new Date(updatedRequest.newDeadline))
+          : 'unknown date';
+
         this.updateRequests([...this.currentRequests, updatedRequest]);
         this.borrowRequestedSubject.next(updatedRequest);
+
         this.snackBar.open(
-          `Re-request for "${book.title}" submitted.`,
+          `Re-request for "${book.title}" submitted. New deadline: ${formattedDeadline}.`,
           'Close',
           this.snackBarConfig
         );
       }),
+
       map(() => void 0),
       catchError((err) => {
         this.snackBar.open('Failed to submit re-request.', 'Close', this.snackBarConfig);
@@ -385,8 +397,22 @@ denyBorrow(book: BookData, requestId: number): Observable<void> {
   }
 
 
-  updateReIssueDetails(requestId: number, newDuration: number | undefined, newStatus: 'approved' | 'denied') {
-    return this.http.patch(`${this.url}/borrowRequests/${requestId}`, { reRequest: newStatus, duration: newDuration}).pipe(
+  updateReIssueDetails(requestId: number, createdAt: Date | number, oldDuration: number, newDuration: number | undefined, newStatus: 'approved' | 'denied') {
+    const updatedDuration = oldDuration + (newDuration ?? 0);
+
+    const createdAtTime = new Date(createdAt).getTime();
+    this.currentDate.setTime(createdAtTime + (updatedDuration * 24 * 60 * 60 * 1000));
+    this.currentDeadline.setTime(createdAtTime + (oldDuration * 24 * 60 * 60 * 1000));
+
+    const prevDeadline = this.currentDeadline;
+    const updatedDeadline = this.currentDate;
+
+    return this.http.patch(`${this.url}/borrowRequests/${requestId}`, {
+      reRequest: newStatus,
+      duration: updatedDuration,
+      deadline: prevDeadline,
+      newDeadline: updatedDeadline
+    }).pipe(
       switchMap(updatedRequest =>
         this.notificationSync.syncBorrowRequestToNotification(updatedRequest)
       )

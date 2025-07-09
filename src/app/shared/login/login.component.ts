@@ -21,7 +21,7 @@ export class LoginComponent {
       if (user) {
         // Navigate based on role
         if (user.role === 'admin') {
-          this.router.navigate(['/book-list']);
+          this.router.navigate(['/app-admin-homepage']);
         } else {
           this.router.navigate(['/app-user-homepage']);
         }

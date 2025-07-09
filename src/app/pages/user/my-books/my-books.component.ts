@@ -35,6 +35,7 @@ export class MyBooksComponent implements OnInit {
   private borrowService = inject(BorrowNotificationService);
   public currentUser: User | null = null; // Track the current user
   public isReIssueClicked = false;
+  public currentDeadline = new Date();
   // public book: Book | null = null;
 
 constructor(private cdr: ChangeDetectorRef) {}
@@ -48,6 +49,8 @@ constructor(private cdr: ChangeDetectorRef) {}
   };
 
   borrowRequests = signal<BorrowRequest[]>([]);
+  borrowRequestDetails = signal<BorrowRequest | null>(null);
+
   public books = signal<Book[]>([]);
 
   myApprovedBooks = computed(() => {
@@ -56,6 +59,17 @@ constructor(private cdr: ChangeDetectorRef) {}
       .map(br => this.books().find(book => book.id === String(br.bookId)))
       .filter((book): book is Book => !!book);
   });
+
+  myApprovedBooksWithRequest = computed(() => {
+    return this.borrowRequests()
+      .filter(br => br.status === 'approved')
+      .map(br => {
+        const book = this.books().find(book => book.id === String(br.bookId));
+        return book ? { book, request: br } : null;
+      })
+      .filter((pair): pair is { book: Book; request: BorrowRequest } => !!pair);
+  });
+
 
   myDeadlineAlerts = computed(() => {
     // const a = 10;
@@ -84,11 +98,6 @@ constructor(private cdr: ChangeDetectorRef) {}
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
     });
-
-    // Fetch the book data (you could also pass a book ID or other params)
-    // this.bookService.getBookById(1).subscribe((book: Book) => {
-    //   this.book = book;
-    // });
 
     this.borrowRequestService.getBorrowRequestsByUser(userId)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -151,14 +160,14 @@ constructor(private cdr: ChangeDetectorRef) {}
       )
       .subscribe(result => {
         if (result?.newDuration) {
-          this.processReRequest(book, userId, result.newDuration);
+          this.processReRequest(book, userId, result.newDuration, result.newDeadline);
         }
       });
     this.cdr.detectChanges();
   }
 
-  private processReRequest(book: Book, userId: string | null, newDuration: number): void {
-    this.borrowService.applyreRequest(book, userId, newDuration)
+  private processReRequest(book: Book, userId: string | null, newDuration: number, newDeadline: Date): void {
+    this.borrowService.applyreRequest(book, userId, newDuration, newDeadline)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
@@ -250,4 +259,11 @@ public returnBook(requestId: string | undefined): void {
     }
   });
 }
+
+  public getDeadline(oldDuration: number, createdAt: Date | number) {
+    const createdAtTime = new Date(createdAt).getTime();
+    this.currentDeadline.setTime(createdAtTime + (oldDuration * 24 * 60 * 60 * 1000));
+    const prevDeadline = this.currentDeadline;
+    return prevDeadline;
+  }
 }

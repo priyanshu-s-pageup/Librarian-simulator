@@ -23,13 +23,13 @@
       "status": "available"
     },
     {
-      "id": "c5b47a11",
       "title": "Echoes of the Past",
       "author": "Frank Lambert",
       "genre": "fantasy",
       "publishedYear": 1994,
-      "stockQuantity": 12,
-      "status": "available"
+      "stockQuantity": 11,
+      "status": "available",
+      "id": "c5b47a11"
     },
     {
       "id": "d8a90f32",
@@ -105,13 +105,13 @@
       "status": "available"
     },
     {
-      "id": "l4827b9e",
       "title": "Chronicles of the Veil",
       "author": "Yvonne Blake",
       "genre": "sci-fi",
       "publishedYear": 2019,
-      "stockQuantity": 2,
-      "status": "available"
+      "stockQuantity": 1,
+      "status": "available",
+      "id": "l4827b9e"
     },
     {
       "id": "m591bcee",
@@ -137,7 +137,7 @@
       "author": "Brian Keller",
       "genre": "romance",
       "publishedYear": 2006,
-      "stockQuantity": 8,
+      "stockQuantity": 7,
       "status": "available"
     },
     {
@@ -169,13 +169,13 @@
       "isProcessing": false
     },
     {
-      "id": "u3d4f1aa",
       "title": "The Emerald Enclave",
       "author": "Olivia Frost",
       "genre": "fiction",
       "publishedYear": 1995,
       "stockQuantity": 13,
-      "status": "available"
+      "status": "available",
+      "id": "u3d4f1aa"
     },
     {
       "id": "v4e61cbb",
@@ -210,7 +210,7 @@
       "author": "Paul Rivers",
       "genre": "non-fiction",
       "publishedYear": 2004,
-      "stockQuantity": 3,
+      "stockQuantity": 2,
       "status": "available",
       "isProcessing": false
     },
@@ -231,7 +231,8 @@
       "publishedYear": 2001,
       "stockQuantity": 20,
       "status": "in-high-demand",
-      "id": "3w-lbV6"
+      "id": "3w-lbV6",
+      "isProcessing": false
     }
   ],
   "users": [
@@ -314,24 +315,77 @@
       "id": "_Wrrf15",
       "reRequest": "approved",
       "newDuration": 14,
-      "message": "Why do you even want to know about the third world??"
+      "message": ""
     },
     {
       "bookId": "3w-lbV6",
       "userId": "0501US25260",
       "duration": 5,
-      "status": "denied",
+      "status": "returned",
       "createdAt": 1752040758772,
       "id": "Xc8BDjJ",
-      "message": "This is during a test"
+      "message": "This is during a test",
+      "reRequest": "returned"
     },
     {
       "bookId": "u3d4f1aa",
       "userId": "0501US25260",
-      "duration": 24,
+      "duration": 52,
       "status": "approved",
-      "createdAt": 1752040851740,
-      "id": "rzxeqiX"
+      "createdAt": 1752061176614,
+      "id": "rzxeqiX",
+      "reRequest": "approved",
+      "newDuration": 1,
+      "newDeadline": "2025-08-30T11:39:36.614Z",
+      "deadline": 51
+    },
+    {
+      "bookId": "p8b1e1c4",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "pending",
+      "createdAt": 1752056786294,
+      "id": "b7bCI9r"
+    },
+    {
+      "bookId": "3w-lbV6",
+      "userId": "0501US25260",
+      "duration": 14,
+      "status": "pending",
+      "createdAt": 1752057725771,
+      "id": "DCKXtXQ"
+    },
+    {
+      "bookId": "c5b47a11",
+      "userId": "0501US25260",
+      "duration": 20,
+      "status": "approved",
+      "createdAt": 1752063192859,
+      "id": "fQsbD-q",
+      "reRequest": "approved",
+      "newDuration": 8,
+      "newDeadline": "2025-07-29T12:13:12.859Z",
+      "deadline": 12
+    },
+    {
+      "bookId": "l4827b9e",
+      "userId": "0501US25260",
+      "duration": 11,
+      "status": "approved",
+      "createdAt": 1752063976594,
+      "id": "cl18RQt",
+      "reRequest": "approved",
+      "newDuration": 1,
+      "newDeadline": "2025-07-20T12:26:16.594Z",
+      "deadline": "2025-07-19T12:26:16.594Z"
+    },
+    {
+      "bookId": "a90bc123",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "pending",
+      "createdAt": 1752065160913,
+      "id": "DC-GyWV"
     }
   ],
   "userNotifications": [
@@ -346,7 +400,7 @@
         "__zone_symbol__state": null,
         "__zone_symbol__value": []
       },
-      "date": "2025-07-09T06:22:25.409Z"
+      "date": "2025-07-09T12:51:06.390Z"
     }
   ]
 }

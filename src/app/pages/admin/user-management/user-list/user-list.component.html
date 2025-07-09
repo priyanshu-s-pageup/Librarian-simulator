@@ -57,9 +57,8 @@
         <div class="user-avatar">
           <img
             *ngIf="user.image; else avatarPlaceholder"
-            [src]="getSafeImageUrl(user.image)"
+            [src]="'https://avatar.iran.liara.run/public/5'"
             alt="User avatar"
-            (error)="handleImageError($event)"
           />
           <ng-template #avatarPlaceholder>
             <img [src]="getDefaultAvatar()" alt="Default avatar" />
