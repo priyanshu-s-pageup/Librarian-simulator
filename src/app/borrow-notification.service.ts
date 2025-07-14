@@ -1,5 +1,17 @@
-import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, catchError, map, Observable, Subject, switchMap, tap, throwError, lastValueFrom, forkJoin, of } from 'rxjs';
+import { Injectable, inject, signal } from '@angular/core';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  Observable,
+  Subject,
+  switchMap,
+  tap,
+  throwError,
+  lastValueFrom,
+  forkJoin,
+  of,
+} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment.development';
 import { BookData } from './pages/user/explore-books/explore-books.component';
@@ -11,7 +23,7 @@ import { AuthService } from './auth/auth.service';
 import { BorrowStatus } from './models/borrow-status.enum';
 // import { BorrowRequest } from './models/borrow-request.model';
 
-interface Book{
+interface Book {
   id?: string;
   title: string;
   author: string;
@@ -33,9 +45,12 @@ export class BorrowNotificationService {
 
   book: Book = <Book>{};
 
-
-  private readonly borrowRequestsSubject = new BehaviorSubject<BorrowRequest[]>([]);
-  private readonly borrowedBooksSubject = new BehaviorSubject<Set<string | undefined>>(new Set());
+  private readonly borrowRequestsSubject = new BehaviorSubject<BorrowRequest[]>(
+    []
+  );
+  private readonly borrowedBooksSubject = new BehaviorSubject<
+    Set<string | undefined>
+  >(new Set());
 
   // Event Subjects
   private readonly borrowRequestedSubject = new Subject<BorrowRequest>();
@@ -48,6 +63,7 @@ export class BorrowNotificationService {
   readonly borrowRequested$ = this.borrowRequestedSubject.asObservable();
   readonly borrowApproved$ = this.borrowApprovedSubject.asObservable();
   readonly borrowDenied$ = this.borrowDeniedSubject.asObservable();
+  public borrowRequests = signal<BorrowRequest[]>([]);
   public currentDate = new Date();
   public currentDeadline = new Date();
 
@@ -59,7 +75,11 @@ export class BorrowNotificationService {
     duration: 5000,
   };
 
-  constructor(private http: HttpClient, private notificationSync: NotificationSyncService, private authService: AuthService) {
+  constructor(
+    private http: HttpClient,
+    private notificationSync: NotificationSyncService,
+    private authService: AuthService
+  ) {
     this.initialize();
   }
 
@@ -69,7 +89,9 @@ export class BorrowNotificationService {
 
   private loadInitialRequests(): void {
     this.http
-      .get<BorrowRequest[]>(`${this.url}/borrowRequests?status=pending&_expand=book&_expand=user`)
+      .get<BorrowRequest[]>(
+        `${this.url}/borrowRequests?status=pending&_expand=book&_expand=user`
+      )
       .pipe(timeout(10000))
       .subscribe({
         next: (requests) => {
@@ -87,194 +109,258 @@ export class BorrowNotificationService {
         },
         complete: () => {
           console.log('Initial requests load completed'); // Debug
-        }
+        },
       });
   }
 
-applyreRequest(book: Book, userId: string | null, newDuration: number, newDeadline: Date): Observable<void> {
-  console.log("Yes its my work: ApplyreRequest")
-  return this.http
-    .get<BorrowRequest[]>(`${this.url}/borrowRequests?bookId=${book.id}&userId=${userId}&status=approved`)
-    .pipe(
-      switchMap((existingRequests) => {
-        if (existingRequests.length > 0) {
-          const approvedRequest = existingRequests[0];
-          return this.http.patch<BorrowRequest>(`${this.url}/borrowRequests/${approvedRequest.id}`, {
-            reRequest: BorrowStatus.Pending,
-            newDuration,
-            newDeadline,
-          });
-        } else {
-          return this.http.post<BorrowRequest>(`${this.url}/borrowRequests`, {
-            bookId: book.id,
-            userId,
-            newDuration,
-            newDeadline,
-            reRequest: BorrowStatus.Pending,
-            status: BorrowStatus.Approved,
-          });
-        }
-      }),
-      switchMap((savedRequest) =>
-        this.http.get<BorrowRequest>(`${this.url}/borrowRequests/${savedRequest.id}?_expand=book`)
-      ),
-      tap((fullRequest) => {
-        const updatedRequest: BorrowRequest = {
-          ...fullRequest,
-          book: {
-            id: book.id,
-            title: book.title,
-            author: book.author
-          }
-        };
-
-        const formattedDeadline = updatedRequest.newDeadline
-          ? new Intl.DateTimeFormat('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            }).format(new Date(updatedRequest.newDeadline))
-          : 'unknown date';
-
-        this.updateRequests([...this.currentRequests, updatedRequest]);
-        this.borrowRequestedSubject.next(updatedRequest);
-
-        this.snackBar.open(
-          `Re-request for "${book.title}" submitted. New deadline: ${formattedDeadline}.`,
-          'Close',
-          this.snackBarConfig
-        );
-      }),
-
-      map(() => void 0),
-      catchError((err) => {
-        this.snackBar.open('Failed to submit re-request.', 'Close', this.snackBarConfig);
-        return throwError(() => err);
-      })
-    );
-}
-
-
-requestBorrow(book: BookData, userId: string, duration: number): Observable<void> {
-  if (book.stockQuantity <= 0) {
-    this.snackBar.open('Cannot borrow: Book is out of stock.', 'Close', this.snackBarConfig);
-    return throwError(() => new Error('Book out of stock'));
-  }
-
-  return this.http
-    .post<BorrowRequest>(`${this.url}/borrowRequests`, {
-      bookId: book.id,
-      userId,
-      duration,
-      status: 'pending',
-      createdAt: Date.now()
-    })
-    .pipe(
-      switchMap((savedRequest) =>
-        this.http.get<BorrowRequest>(
-          `${this.url}/borrowRequests/${savedRequest.id}?_expand=book`
-        )
-      ),
-      tap((fullRequest) => {
-        const updatedRequest: BorrowRequest = {
-          ...fullRequest,
-          book: {
-            id: String(book.id),
-            title: book.title,
-            author: book.author,
-            stockQuantity: book.stockQuantity,
-            status: book.status
-          }
-        };
-        this.updateRequests([...this.currentRequests, updatedRequest]);
-        this.borrowRequestedSubject.next(updatedRequest);
-        this.snackBar.open(
-          `Borrow request for "${book.title}" submitted.`,
-          'Close',
-          this.snackBarConfig
-        );
-      }),
-      map(() => void 0),
-      catchError((err) => {
-        this.snackBar.open('Failed to submit borrow request.', 'Close', this.snackBarConfig);
-        return throwError(() => err);
-      })
-    );
-}
-
-approveBorrow(book: BookData,requestId: number): Observable<void> {
-  const userId = this.currentUserId;
-  return this.http
-    .patch<void>(`${this.url}/borrowRequests/${requestId}`, { status: 'approved' })
-    .pipe(
-      timeout(10000),
-      tap(() => {
-        const request = this.currentRequests.find((req) => req.id === requestId);
-        if (request) {
-          this.updateRequests(this.currentRequests.filter((req) => req.id !== requestId));
-          this.borrowApprovedSubject.next(request.bookId);
-          this.updateBorrowedBooks(request.bookId);
-          this.snackBar.open('Borrow request approved.', 'Close', this.snackBarConfig);
-          this.createUserNotification(book, 'approved', userId)
-        }
-      }),
-      catchError((err) => {
-        this.snackBar.open('Failed to approve request.', 'Close', this.snackBarConfig);
-        return throwError(() => err);
-      })
-    );
-}
-
-denyBorrow(book: BookData, requestId: number): Observable<void> {
-  const userId = this.currentUserId;
-  return this.http
-    .patch<void>(`${this.url}/borrowRequests/${requestId}`, { status: 'denied' })
-    .pipe(
-      timeout(10000),
-      tap(() => {
-        const request = this.currentRequests.find((req) => req.id === requestId);
-        if (request) {
-          this.updateRequests(this.currentRequests.filter((req) => req.id !== requestId));
-          this.borrowDeniedSubject.next(request.bookId);
-          this.snackBar.open('Borrow request denied.', 'Close', this.snackBarConfig);
-          this.createUserNotification(book, 'denied', userId);
-        }
-      }),
-      catchError((err) => {
-        this.snackBar.open('Failed to deny request.', 'Close', this.snackBarConfig);
-        return throwError(() => err);
-      })
-    );
-}
-
-  getBorrowRequests(): Observable<BorrowRequest[]> {
+  public applyreRequest(
+    book: Book,
+    userId: string | null,
+    newDuration: number,
+    newDeadline: Date
+  ): Observable<void> {
+    console.log('Yes its my work: ApplyreRequest');
     return this.http
-      // .get<BorrowRequest[]>(`${this.url}/borrowRequests?reRequest=pending&_expand=book`) [remove this line]
-      .get<BorrowRequest[]>(`${this.url}/borrowRequests?status=pending&_expand=book`)
+      .get<BorrowRequest[]>(
+        `${this.url}/borrowRequests?bookId=${book.id}&userId=${userId}&status=approved`
+      )
       .pipe(
-        timeout(10000),
-        tap((requests) => {
-          console.log('Fetched Borrow Requests:', requests); // Debug
+        switchMap((existingRequests) => {
+          if (existingRequests.length > 0) {
+            const approvedRequest = existingRequests[0];
+            return this.http.patch<BorrowRequest>(
+              `${this.url}/borrowRequests/${approvedRequest.id}`,
+              {
+                reRequest: BorrowStatus.Pending,
+                newDuration,
+                newDeadline,
+              }
+            );
+          } else {
+            return this.http.post<BorrowRequest>(`${this.url}/borrowRequests`, {
+              bookId: book.id,
+              userId,
+              newDuration,
+              newDeadline,
+              reRequest: BorrowStatus.Pending,
+              status: BorrowStatus.Approved,
+            });
+          }
+        }),
+        switchMap((savedRequest) =>
+          this.http.get<BorrowRequest>(
+            `${this.url}/borrowRequests/${savedRequest.id}?_expand=book`
+          )
+        ),
+        tap((fullRequest) => {
+          const updatedRequest: BorrowRequest = {
+            ...fullRequest,
+            book: {
+              id: book.id,
+              title: book.title,
+              author: book.author,
+            },
+          };
+
+          const formattedDeadline = updatedRequest.newDeadline
+            ? new Intl.DateTimeFormat('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              }).format(new Date(updatedRequest.newDeadline))
+            : 'unknown date';
+
+          this.updateRequests([...this.currentRequests, updatedRequest]);
+          this.borrowRequestedSubject.next(updatedRequest);
+
+          this.snackBar.open(
+            `Re-request for "${book.title}" submitted. New deadline: ${formattedDeadline}.`,
+            'Close',
+            this.snackBarConfig
+          );
+        }),
+
+        map(() => void 0),
+        catchError((err) => {
+          this.snackBar.open(
+            'Failed to submit re-request.',
+            'Close',
+            this.snackBarConfig
+          );
+          return throwError(() => err);
         })
       );
+  }
+
+  public requestBorrow(
+    book: BookData,
+    userId: string,
+    duration: number
+  ): Observable<void> {
+    if (book.stockQuantity <= 0) {
+      this.snackBar.open(
+        'Cannot borrow: Book is out of stock.',
+        'Close',
+        this.snackBarConfig
+      );
+      return throwError(() => new Error('Book out of stock'));
+    }
+
+    return this.http
+      .post<BorrowRequest>(`${this.url}/borrowRequests`, {
+        bookId: book.id,
+        userId,
+        duration,
+        status: 'pending',
+        createdAt: Date.now(),
+      })
+      .pipe(
+        switchMap((savedRequest) =>
+          this.http.get<BorrowRequest>(
+            `${this.url}/borrowRequests/${savedRequest.id}?_expand=book`
+          )
+        ),
+        tap((fullRequest) => {
+          const updatedRequest: BorrowRequest = {
+            ...fullRequest,
+            book: {
+              id: String(book.id),
+              title: book.title,
+              author: book.author,
+              stockQuantity: book.stockQuantity,
+              status: book.status,
+            },
+          };
+          this.updateRequests([...this.currentRequests, updatedRequest]);
+          this.borrowRequestedSubject.next(updatedRequest);
+          this.snackBar.open(
+            `Borrow request for "${book.title}" submitted.`,
+            'Close',
+            this.snackBarConfig
+          );
+        }),
+        map(() => void 0),
+        catchError((err) => {
+          this.snackBar.open(
+            'Failed to submit borrow request.',
+            'Close',
+            this.snackBarConfig
+          );
+          return throwError(() => err);
+        })
+      );
+  }
+
+  approveBorrow(book: BookData, requestId: number): Observable<void> {
+    const userId = this.currentUserId;
+    return this.http
+      .patch<void>(`${this.url}/borrowRequests/${requestId}`, {
+        status: 'approved',
+      })
+      .pipe(
+        timeout(10000),
+        tap(() => {
+          const request = this.currentRequests.find(
+            (req) => req.id === requestId
+          );
+          if (request) {
+            this.updateRequests(
+              this.currentRequests.filter((req) => req.id !== requestId)
+            );
+            this.borrowApprovedSubject.next(request.bookId);
+            this.updateBorrowedBooks(request.bookId);
+            this.snackBar.open(
+              'Borrow request approved.',
+              'Close',
+              this.snackBarConfig
+            );
+            this.createUserNotification(book, 'approved', userId);
+          }
+        }),
+        catchError((err) => {
+          this.snackBar.open(
+            'Failed to approve request.',
+            'Close',
+            this.snackBarConfig
+          );
+          return throwError(() => err);
+        })
+      );
+  }
+
+  denyBorrow(book: BookData, requestId: number): Observable<void> {
+    const userId = this.currentUserId;
+    return this.http
+      .patch<void>(`${this.url}/borrowRequests/${requestId}`, {
+        status: 'denied',
+      })
+      .pipe(
+        timeout(10000),
+        tap(() => {
+          const request = this.currentRequests.find(
+            (req) => req.id === requestId
+          );
+          if (request) {
+            this.updateRequests(
+              this.currentRequests.filter((req) => req.id !== requestId)
+            );
+            this.borrowDeniedSubject.next(request.bookId);
+            this.snackBar.open(
+              'Borrow request denied.',
+              'Close',
+              this.snackBarConfig
+            );
+            this.createUserNotification(book, 'denied', userId);
+          }
+        }),
+        catchError((err) => {
+          this.snackBar.open(
+            'Failed to deny request.',
+            'Close',
+            this.snackBarConfig
+          );
+          return throwError(() => err);
+        })
+      );
+  }
+
+  getBorrowRequests(): Observable<BorrowRequest[]> {
+    return (
+      this.http
+        // .get<BorrowRequest[]>(`${this.url}/borrowRequests?reRequest=pending&_expand=book`) [remove this line]
+        .get<BorrowRequest[]>(
+          `${this.url}/borrowRequests?status=pending&_expand=book`
+        )
+        .pipe(
+          timeout(10000),
+          tap((requests) => {
+            console.log('Fetched Borrow Requests:', requests); // Debug
+          })
+        )
+    );
   }
 
   getReIssueRequest(): Observable<BorrowRequest[]> {
-    return this.http
-      .get<BorrowRequest[]>(`${this.url}/borrowRequests?reRequest=pending&_expand=book`)
-      // .get<BorrowRequest[]>(`${this.url}/borrowRequests?status=pending&_expand=book`)
-      .pipe(
-        timeout(10000),
-        tap((requests) => {
-          console.log('Fetched ReIssue Requests:', requests); // Debug
-        })
-      );
+    return (
+      this.http
+        .get<BorrowRequest[]>(
+          `${this.url}/borrowRequests?reRequest=pending&_expand=book`
+        )
+        // .get<BorrowRequest[]>(`${this.url}/borrowRequests?status=pending&_expand=book`)
+        .pipe(
+          timeout(10000),
+          tap((requests) => {
+            console.log('Fetched ReIssue Requests:', requests); // Debug
+          })
+        )
+    );
   }
 
   getBorrowRequestsByUser(userId: string): Observable<BorrowRequest[]> {
-    return this.http.get<BorrowRequest[]>(`${this.url}?userId=${userId}&_expand=book&_expand=user`);
+    return this.http.get<BorrowRequest[]>(
+      `${this.url}?userId=${userId}&_expand=book&_expand=user`
+    );
   }
-
 
   private get currentRequests(): BorrowRequest[] {
     return this.borrowRequestsSubject.value;
@@ -292,63 +378,38 @@ denyBorrow(book: BookData, requestId: number): Observable<void> {
 
   emitBorrowDenied(bookId: string | undefined): void {
     this.borrowDeniedSubject.next(bookId);
-    this.snackBar.open(
-      'Borrow request denied.',
-      'Close',
-      this.snackBarConfig
-    );
+    this.snackBar.open('Borrow request denied.', 'Close', this.snackBarConfig);
   }
 
-  private bookStatusUpdated = new Subject<{bookId: number, status: 'available' | 'borrowed'}>();
+  private bookStatusUpdated = new Subject<{
+    bookId: number;
+    status: 'available' | 'borrowed';
+  }>();
   bookStatusUpdated$ = this.bookStatusUpdated.asObservable();
 
   updateBookStatus(bookId: number, status: 'available' | 'borrowed') {
-    this.bookStatusUpdated.next({bookId, status});
+    this.bookStatusUpdated.next({ bookId, status });
   }
 
-   createUserNotification(book: BookData, status: 'approved' | 'denied', userId: string | null): void {
+  createUserNotification(
+    book: BookData,
+    status: 'approved' | 'denied',
+    userId: string | null
+  ): void {
     const newNotif = {
       // bookTitle,
       bookId: book.id,
       userId,
       status,
       isRead: false,
-      hasReRequested: false
+      hasReRequested: false,
     };
 
     this.http.post(`${this.url}/userNotifications`, newNotif).subscribe({
       next: () => console.log('User notification created'),
-      error: (err) => console.error('Failed to create user notification', err)
+      error: (err) => console.error('Failed to create user notification', err),
     });
   }
-
-  // updateRequestStatus(requestId: string | undefined, newStatus: 'approved' | 'denied' | 'returned', message?: string) {
-  //   console.log('Updating request status for bookId:', requestId);
-
-  //   return this.http.get<any>(`${this.url}/borrowRequests?bookId=${requestId}`).pipe(
-  //     switchMap((borrowRequests: any[]) => {
-  //       if (borrowRequests.length === 0) {
-  //         throw new Error('No borrow request found with that bookId');
-  //       }
-
-  //       const borrowRequest = borrowRequests[0]; // Assuming `bookId` is unique
-  //       console.log('Found borrow request:', borrowRequest); // D
-  //       const updatedRequest = {
-  //         ...borrowRequest,
-  //         status: newStatus,
-  //         message: message ?? borrowRequest.message,
-  //         reRequest: newStatus === 'returned' ? 'returned' : borrowRequest.reRequest};
-
-  //       console.log('Updating borrow request with new status:', updatedRequest);
-  //       // Now send a PATCH request to update the found request by id
-  //       return this.http.patch(`${this.url}/borrowRequests/${borrowRequest.id}`, updatedRequest);
-  //     }),
-  //     switchMap((updatedRequest) => {
-  //       console.log('Borrow request updated:', updatedRequest); // Debug log
-  //       return this.notificationSync.syncBorrowRequestToNotification(updatedRequest);  // Sync notifications if needed
-  //     })
-  //   );
-  // }
 
   updateRequestStatus(
     requestId: string | undefined,
@@ -359,73 +420,104 @@ denyBorrow(book: BookData, requestId: number): Observable<void> {
       throw new Error('Invalid request ID');
     }
 
-    return this.http.get<any[]>(`${this.url}/borrowRequests?bookId=${requestId}`).pipe(
-      switchMap((borrowRequests) => {
-        if (!borrowRequests.length) throw new Error('No borrow request found');
-        const borrowRequest = borrowRequests[0];
+    return this.http
+      .get<any[]>(`${this.url}/borrowRequests?bookId=${requestId}`)
+      .pipe(
+        switchMap((borrowRequests) => {
+          if (!borrowRequests.length)
+            throw new Error('No borrow request found');
+          const borrowRequest = borrowRequests[borrowRequests.length - 1];
 
-        const updatedRequest = {
-          ...borrowRequest,
-          status: newStatus,
-          message: message ?? borrowRequest.message,
-          reRequest: newStatus === BorrowStatus.Returned ? 'returned' : borrowRequest.reRequest
-        };
+          const updatedRequest = {
+            ...borrowRequest,
+            status: newStatus,
+            message: message ?? borrowRequest.message,
+            reRequest:
+              newStatus === BorrowStatus.Returned
+                ? 'returned'
+                : borrowRequest.reRequest,
+          };
 
-        return this.http.patch(`${this.url}/borrowRequests/${borrowRequest.id}`, updatedRequest);
-      }),
-      switchMap((updatedRequest: any) => {
-        return this.http.get<BorrowRequest[]>(`${this.url}/userNotifications?bookId=${requestId}`).pipe(
-          switchMap((notifications) => {
-            if (!notifications.length) return of(updatedRequest); // fallback
+          return this.http.patch(
+            `${this.url}/borrowRequests/${borrowRequest.id}?status=pending`,
+            updatedRequest
+          );
+        }),
+        switchMap((updatedRequest: any) => {
+          return this.http
+            .get<BorrowRequest[]>(
+              `${this.url}/userNotifications?bookId=${requestId}`
+            )
+            .pipe(
+              switchMap((notifications) => {
+                if (!notifications.length) return of(updatedRequest); // fallback
 
-            const notificationToUpdate = notifications[0];
-            const updatedNotification = {
-              ...notificationToUpdate,
-              status: updatedRequest.status,
-              message: updatedRequest.message,
-              adminComment: updatedRequest.message
-            };
+                const notificationToUpdate = notifications[0];
+                const updatedNotification = {
+                  ...notificationToUpdate,
+                  status: updatedRequest.status,
+                  message: updatedRequest.message,
+                  adminComment: updatedRequest.message,
+                };
 
-            return this.http.patch(`${this.url}/userNotifications/${notificationToUpdate.id}`, updatedNotification);
-          }),
-          switchMap((patchedNotification) => {
-            return this.notificationSync.syncBorrowRequestToNotification(updatedRequest);
-          })
-        );
-      })
-    );
+                return this.http.patch(
+                  `${this.url}/userNotifications/${notificationToUpdate.id}`,
+                  updatedNotification
+                );
+              }),
+              switchMap((patchedNotification) => {
+                return this.notificationSync.syncBorrowRequestToNotification(
+                  updatedRequest
+                );
+              })
+            );
+        })
+      );
   }
 
-
-  updateReIssueDetails(requestId: number, createdAt: Date | number, oldDuration: number, newDuration: number | undefined, newStatus: 'approved' | 'denied') {
+  updateReIssueDetails(
+    requestId: number,
+    createdAt: Date | number,
+    oldDuration: number,
+    newDuration: number | undefined,
+    newStatus: 'approved' | 'denied'
+  ) {
     const updatedDuration = oldDuration + (newDuration ?? 0);
 
     const createdAtTime = new Date(createdAt).getTime();
-    this.currentDate.setTime(createdAtTime + (updatedDuration * 24 * 60 * 60 * 1000));
-    this.currentDeadline.setTime(createdAtTime + (oldDuration * 24 * 60 * 60 * 1000));
+    this.currentDate.setTime(
+      createdAtTime + updatedDuration * 24 * 60 * 60 * 1000
+    );
+    this.currentDeadline.setTime(
+      createdAtTime + oldDuration * 24 * 60 * 60 * 1000
+    );
 
     const prevDeadline = this.currentDeadline;
     const updatedDeadline = this.currentDate;
 
-    return this.http.patch(`${this.url}/borrowRequests/${requestId}`, {
-      reRequest: newStatus,
-      duration: updatedDuration,
-      deadline: prevDeadline,
-      newDeadline: updatedDeadline
-    }).pipe(
-      switchMap(updatedRequest =>
-        this.notificationSync.syncBorrowRequestToNotification(updatedRequest)
-      )
-    );
+    return this.http
+      .patch(`${this.url}/borrowRequests/${requestId}`, {
+        reRequest: newStatus,
+        duration: updatedDuration,
+        deadline: prevDeadline,
+        newDeadline: updatedDeadline,
+      })
+      .pipe(
+        switchMap((updatedRequest) =>
+          this.notificationSync.syncBorrowRequestToNotification(updatedRequest)
+        )
+      );
   }
 
   updateReIssueDetails2(requestId: number, newStatus: 'approved' | 'denied') {
-    return this.http.patch(`${this.url}/borrowRequests/${requestId}`, { reRequest: newStatus}).pipe(
-      switchMap(updatedRequest =>
-        this.notificationSync.syncBorrowRequestToNotification(updatedRequest)
-      )
-    );
+    return this.http
+      .patch(`${this.url}/borrowRequests/${requestId}`, {
+        reRequest: newStatus,
+      })
+      .pipe(
+        switchMap((updatedRequest) =>
+          this.notificationSync.syncBorrowRequestToNotification(updatedRequest)
+        )
+      );
   }
-
 }
-

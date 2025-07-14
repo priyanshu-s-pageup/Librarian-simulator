@@ -3,57 +3,67 @@
     <h2>My Requests</h2>
 
     <div class="filter-buttons">
-      <button mat-button
-              [class.active]="currentFilter() === 'all'"
-              (click)="setFilter('all')">
+      <button
+        mat-button
+        [class.active]="currentFilter() === 'all'"
+        (click)="setFilter('all')"
+      >
         All Requests
       </button>
-      <button mat-button
-              [class.active]="currentFilter() === 'approved'"
-              (click)="setFilter('approved')">
+      <button
+        mat-button
+        [class.active]="currentFilter() === 'approved'"
+        (click)="setFilter('approved')"
+      >
         Approved
       </button>
-      <button mat-button
-              [class.active]="currentFilter() === 'denied'"
-              (click)="setFilter('denied')">
+      <button
+        mat-button
+        [class.active]="currentFilter() === 'denied'"
+        (click)="setFilter('denied')"
+      >
         Denied
       </button>
-      <button mat-button
-              [class.active]="currentFilter() === 'pending'"
-              (click)="setFilter('pending')">
+      <button
+        mat-button
+        [class.active]="currentFilter() === 'pending'"
+        (click)="setFilter('pending')"
+      >
         Pending
       </button>
-      <button mat-button
-              [class.active]="currentFilter() === 'returned'"
-              (click)="setFilter('returned')">
+      <button
+        mat-button
+        [class.active]="currentFilter() === 'returned'"
+        (click)="setFilter('returned')"
+      >
         Returned
       </button>
     </div>
 
-    <button mat-button
-            class="sort-button"
-            (click)="toggleSortDirection()">
+    <button mat-button class="sort-button" (click)="toggleSortDirection()">
       <mat-icon>
-        {{ sortDirection() === 'desc' ? 'arrow_downward' : 'arrow_upward' }}
+        {{ sortDirection() === "desc" ? "arrow_downward" : "arrow_upward" }}
       </mat-icon>
-      {{ sortDirection() === 'desc' ? 'Newest First' : 'Oldest First' }}
+      {{ sortDirection() === "desc" ? "Newest First" : "Oldest First" }}
     </button>
-
   </div>
 
   <div *ngIf="filteredNotifications().length === 0" class="empty-state">
     <mat-icon>notifications_off</mat-icon>
-    <p>No {{currentFilter() === 'all' ? '' : currentFilter + ' '}}notifications found</p>
+    <p>
+      No {{ currentFilter() === "all" ? "" : currentFilter + " " }}notifications
+      found
+    </p>
   </div>
 
   <div class="notification-grid">
     <mat-card
       *ngFor="let notification of paginatedNotifications()"
       [ngClass]="{
-        'approved': notification.status === 'approved',
-        'denied': notification.status === 'denied',
-        'pending': notification.status === 'pending',
-        'returned': notification.status === 'returned'
+        approved: notification.status === 'approved',
+        denied: notification.status === 'denied',
+        pending: notification.status === 'pending',
+        returned: notification.status === 'returned'
       }"
       class="notification-card"
       (click)="openNotificationDialog(notification)"
@@ -61,25 +71,31 @@
       <mat-card-header>
         <div mat-card-avatar class="status-icon">
           <mat-icon>
-            {{ notification.status === 'approved' ? 'check_circle' :
-               notification.status === 'denied' ? 'cancel' :
-               notification.status === 'pending' ? 'schedule': 'home' }}
+            {{
+              notification.status === "approved"
+                ? "check_circle"
+                : notification.status === "denied"
+                ? "cancel"
+                : notification.status === "pending"
+                ? "schedule"
+                : "home"
+            }}
           </mat-icon>
         </div>
-      <mat-card-title>{{ notification.book.title }}</mat-card-title>
-      <mat-card-subtitle>
-        by {{ notification.book.author }}
-        <span class="date">{{ notification.date | date:'medium' }}</span>
-      </mat-card-subtitle>
-    </mat-card-header>
+        <mat-card-title>{{ notification.book.title }}</mat-card-title>
+        <mat-card-subtitle>
+          by {{ notification.book.author }}
+          <span class="date">{{ notification.date | date : "medium" }}</span>
+        </mat-card-subtitle>
+      </mat-card-header>
 
-    <mat-card-content>
-      <div class="book-details">
-        <div class="detail-item">
-          <mat-icon>category</mat-icon>
-          <span>{{ notification.book.genre | titlecase }}</span>
+      <mat-card-content>
+        <div class="book-details">
+          <div class="detail-item">
+            <mat-icon>category</mat-icon>
+            <span>{{ notification.book.genre | titlecase }}</span>
+          </div>
         </div>
-      </div>
 
         <div *ngIf="notification.message" class="user-message">
           <mat-icon>message</mat-icon>
@@ -90,48 +106,55 @@
           <mat-icon>admin_panel_settings</mat-icon>
           <p>Admin response: "{{ notification.adminComment }}"</p>
         </div> -->
-
       </mat-card-content>
     </mat-card>
   </div>
 
-
   <div class="pagination-container">
-
-
     <div class="pagination-controls" *ngIf="filteredNotifications().length > 0">
       <div class="items-per-page">
         <mat-form-field appearance="outline">
           <mat-label>Items per page</mat-label>
-          <mat-select [value]="itemsPerPage()" (selectionChange)="onItemsPerPageChange($event.value)">
-            <mat-option *ngFor="let option of itemsPerPageOptions" [value]="option">
+          <mat-select
+            [value]="itemsPerPage()"
+            (selectionChange)="onItemsPerPageChange($event.value)"
+          >
+            <mat-option
+              *ngFor="let option of itemsPerPageOptions"
+              [value]="option"
+            >
               {{ option }}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
-      <button mat-button
-              (click)="setPage(currentPage() - 1)"
-              [disabled]="currentPage() === 1">
+      <button
+        mat-button
+        (click)="setPage(currentPage() - 1)"
+        [disabled]="currentPage() === 1"
+      >
         Previous
       </button>
 
       <div class="page-numbers">
-        <button mat-button
-                *ngFor="let page of [].constructor(totalPages()); let i = index"
-                (click)="setPage(i + 1)"
-                [class.active]="currentPage() === i + 1">
+        <button
+          mat-button
+          *ngFor="let page of [].constructor(totalPages()); let i = index"
+          (click)="setPage(i + 1)"
+          [class.active]="currentPage() === i + 1"
+        >
           {{ i + 1 }}
         </button>
       </div>
 
-      <button mat-button
-              (click)="setPage(currentPage() + 1)"
-              [disabled]="currentPage() === totalPages()">
+      <button
+        mat-button
+        (click)="setPage(currentPage() + 1)"
+        [disabled]="currentPage() === totalPages()"
+      >
         Next
       </button>
     </div>
   </div>
-
 </div>

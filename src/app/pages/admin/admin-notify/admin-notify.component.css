@@ -99,3 +99,16 @@
   font-size: 12px;
   font-weight: bold;
 }
+
+.bell-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.bell-icon mat-icon {
+  font-size: 36px;
+  color: #000;
+}

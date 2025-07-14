@@ -19,10 +19,18 @@
       </div>
 
       <div class="book-body">
-        <p><strong>Return By:</strong>{{ borrowRequestDetails()?.duration}}</p>
+        <p><strong>Return By:</strong>{{ borrowRequestDetails()?.duration }}</p>
         <p><strong>Published:</strong> {{ book.publishedYear }}</p>
       </div>
-      <button (click)="openRequestDialog(book)" [disabled]="isReIssueClicked || (book?.disabledReIssueUsers?.includes(currentUser?.id || ''))">Re-Issue</button>
+      <button
+        (click)="openRequestDialog(book)"
+        [disabled]="
+          isReIssueClicked ||
+          book?.disabledReIssueUsers?.includes(currentUser?.id || '')
+        "
+      >
+        Re-Issue
+      </button>
       <button (click)="returnBook(book.id)">Return</button>
     </mat-card>
   </div>
@@ -32,7 +40,7 @@
 <div *ngIf="myDeadlineAlerts().length > 0">
   <h2 class="book-grid">Deadline this week:</h2>
   <div class="book-grid">
-    <mat-card class="book-card" *ngFor="let book of myDeadlineAlerts()" (click)="openRequestDialog(book)">
+    <mat-card class="book-card" *ngFor="let book of myDeadlineAlerts()">
       <div class="book-header">
         <div class="book-info">
           <h2 class="book-title">{{ book.title }}</h2>
@@ -45,10 +53,18 @@
       </div>
 
       <div class="book-body">
-        <p><strong>Return By:</strong>{{ borrowRequestDetails()?.duration}}</p>
+        <p><strong>Return By:</strong>{{ borrowRequestDetails()?.duration }}</p>
         <p><strong>Published:</strong> {{ book.publishedYear }}</p>
       </div>
-      <button (click)="openRequestDialog(book)" [disabled]="isReIssueClicked || (book?.disabledReIssueUsers?.includes(currentUser?.id || ''))">Re-Issue</button>
+      <button
+        (click)="openRequestDialog(book)"
+        [disabled]="
+          isReIssueClicked ||
+          book?.disabledReIssueUsers?.includes(currentUser?.id || '')
+        "
+      >
+        Re-Issue
+      </button>
       <button (click)="returnBook(book.id)">Return</button>
     </mat-card>
   </div>
@@ -57,8 +73,14 @@
 <!-- Approved Books section! -->
 <div *ngIf="myApprovedBooksWithRequest().length > 0">
   <h2 class="book-grid">Read Here:</h2>
-  <div class="book-grid" *ngIf="myApprovedBooksWithRequest().length > 0; else noBooks">
-    <mat-card class="book-card" *ngFor="let pair of myApprovedBooksWithRequest()">
+  <div
+    class="book-grid"
+    *ngIf="myApprovedBooksWithRequest().length > 0; else noBooks"
+  >
+    <mat-card
+      class="book-card"
+      *ngFor="let pair of myApprovedBooksWithRequest()"
+    >
       <div class="book-header">
         <div class="book-info">
           <h2 class="book-title">{{ pair.book.title }}</h2>
@@ -72,11 +94,20 @@
 
       <div class="book-body">
         <ng-container *ngIf="pair.request.newDeadline; else showDuration">
-          <p><strong>Return By:</strong> {{ pair.request.newDeadline | date: 'mediumDate'}}</p>
+          <p>
+            <strong>Return By:</strong>
+            {{ pair.request.newDeadline | date : "mediumDate" }}
+          </p>
         </ng-container>
         <ng-template #showDuration>
           <!-- <p><strong>Return By:</strong> {{ pair.request.createdAt | date: 'mediumDate' }}</p> -->
-          <p><strong>Return By:</strong> {{ getDeadline(pair.request.duration, pair.request.createdAt) | date: 'mediumDate' }}</p>
+          <p>
+            <strong>Return By:</strong>
+            {{
+              getDeadline(pair.request.duration, pair.request.createdAt)
+                | date : "mediumDate"
+            }}
+          </p>
         </ng-template>
 
         <p><strong>Published:</strong> {{ pair.book.publishedYear }}</p>
@@ -84,7 +115,10 @@
 
       <button
         (click)="openRequestDialog(pair.book)"
-        [disabled]="isReIssueClicked || (pair.book.disabledReIssueUsers?.includes(currentUser?.id || ''))"
+        [disabled]="
+          isReIssueClicked ||
+          pair.book.disabledReIssueUsers?.includes(currentUser?.id || '')
+        "
       >
         Re-Issue
       </button>
@@ -92,7 +126,6 @@
     </mat-card>
   </div>
 </div>
-
 
 <ng-template #noBooks>
   <p class="no-books-message">No approved books found.</p>

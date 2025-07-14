@@ -13,12 +13,21 @@ import { BorrowRequest } from '../../../models/borrow-request.model';
 import { User } from '../../../auth/user.model';
 import { ViewUserRequestsDialogComponent } from '../../../shared/view-user-requests-dialog/view-user-requests-dialog.component';
 import { FormsModule } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
+import { ReIssueDialogComponent } from '../../../shared/re-issue-dialog/re-issue-dialog.component';
 @Component({
   selector: 'app-admin-notify',
   standalone: true,
-  imports:[CommonModule, FormsModule, MatButtonModule, MatProgressSpinner, MatCard],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatButtonModule,
+    MatProgressSpinner,
+    MatCard,
+    MatIcon,
+  ],
   templateUrl: './admin-notify.component.html',
-  styleUrls: ['./admin-notify.component.css']
+  styleUrls: ['./admin-notify.component.css'],
 })
 export class AdminNotifyComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
@@ -41,56 +50,71 @@ export class AdminNotifyComponent implements OnInit {
   }
 
   uniqueUserIds = computed(() => {
-    const ids = this.borrowRequests().map(req => req.userId);
+    const ids = this.borrowRequests().map((req) => req.userId);
     return [...new Set(ids)];
   });
 
   loadRequestsWithUsers(): void {
-    this.borrowService.getBorrowRequests()
+    this.borrowService
+      .getBorrowRequests()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (requests) => {
           this.borrowRequests.set(requests);
-          const userIds = [...new Set(requests.map(req => req.userId))];
+          const userIds = [...new Set(requests.map((req) => req.userId))];
           this.loadUsers(userIds);
         },
         error: () => {
-          this.snackBar.open('Failed to load requests.', 'Close', this.snackBarConfig);
+          this.snackBar.open(
+            'Failed to load requests.',
+            'Close',
+            this.snackBarConfig
+          );
           this.isLoading.set(false);
-        }
+        },
       });
   }
 
   loadUsers(userIds: string[]): void {
-    const query = userIds.map(id => `id=${id}`).join('&');
-    this.http.get<User[]>(`http://localhost:3000/users?${query}`)
+    const query = userIds.map((id) => `id=${id}`).join('&');
+    this.http
+      .get<User[]>(`http://localhost:3000/users?${query}`)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(users => {
+      .subscribe((users) => {
         const map = new Map<string, User>();
-        users.forEach(user => map.set(user.id, user)); //why +user.id
+        users.forEach((user) => map.set(user.id, user)); //why +user.id
         this.userMap.set(map);
         this.isLoading.set(false);
       });
   }
 
+  openReIssueDialog() {
+    this.dialog.open(ReIssueDialogComponent, {
+      width: '400px', // Adjust the dialog width as necessary
+      data: {
+        // Any data you want to pass to the dialog component can be added here
+      },
+    });
+  }
 
   openUserDialog(userId: string): void {
     const dialogRef = this.dialog.open(ViewUserRequestsDialogComponent, {
       width: '500px',
-      data: { userId }
+      data: { userId },
     });
 
     dialogRef.componentInstance.allRequestsHandled.subscribe(() => {
       // Remove borrow requests for this user from the parent state
-      const remaining = this.borrowRequests().filter(req => req.userId !== userId);
+      const remaining = this.borrowRequests().filter(
+        (req) => req.userId !== userId
+      );
       this.borrowRequests.set(remaining);
     });
   }
 
   getUserRequestCount(userId: string): number {
-    return this.borrowRequests().filter(req => req.userId === userId).length;
+    return this.borrowRequests().filter((req) => req.userId === userId).length;
   }
-
 
   logout(): void {
     this.authService.logout();

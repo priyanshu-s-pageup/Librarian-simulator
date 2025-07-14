@@ -19,7 +19,7 @@
       "author": "Tara Lin",
       "genre": "historical",
       "publishedYear": 2011,
-      "stockQuantity": 11,
+      "stockQuantity": 5,
       "status": "available"
     },
     {
@@ -132,20 +132,20 @@
       "status": "available"
     },
     {
-      "id": "p8b1e1c4",
       "title": "Empire of Light",
       "author": "Brian Keller",
       "genre": "romance",
       "publishedYear": 2006,
       "stockQuantity": 7,
-      "status": "available"
+      "status": "available",
+      "id": "p8b1e1c4"
     },
     {
       "title": "Windswept Shores",
       "author": "Alice Morgan",
       "genre": "fiction",
       "publishedYear": 1999,
-      "stockQuantity": 8,
+      "stockQuantity": 7,
       "status": "available",
       "id": "q92af3cd"
     },
@@ -163,7 +163,7 @@
       "author": "Henry Talbot",
       "genre": "sci-fi",
       "publishedYear": 2014,
-      "stockQuantity": 5,
+      "stockQuantity": 4,
       "status": "available",
       "id": "t23fabe0",
       "isProcessing": false
@@ -192,7 +192,7 @@
       "author": "Jack Flynn",
       "genre": "historical",
       "publishedYear": 1993,
-      "stockQuantity": 15,
+      "stockQuantity": 14,
       "status": "available"
     },
     {
@@ -315,7 +315,7 @@
       "id": "_Wrrf15",
       "reRequest": "approved",
       "newDuration": 14,
-      "message": ""
+      "message": "Is this a success?"
     },
     {
       "bookId": "3w-lbV6",
@@ -334,26 +334,32 @@
       "status": "approved",
       "createdAt": 1752061176614,
       "id": "rzxeqiX",
-      "reRequest": "approved",
-      "newDuration": 1,
-      "newDeadline": "2025-08-30T11:39:36.614Z",
+      "reRequest": "pending",
+      "newDuration": 20,
+      "newDeadline": "2025-09-12T10:23:52.440Z",
       "deadline": 51
     },
     {
       "bookId": "p8b1e1c4",
       "userId": "0501US25260",
       "duration": 7,
-      "status": "pending",
+      "status": "approved",
       "createdAt": 1752056786294,
-      "id": "b7bCI9r"
+      "id": "b7bCI9r",
+      "reRequest": "pending",
+      "newDuration": 7,
+      "newDeadline": "2025-08-04T11:13:23.345Z"
     },
     {
       "bookId": "3w-lbV6",
       "userId": "0501US25260",
       "duration": 14,
-      "status": "pending",
+      "status": "approved",
       "createdAt": 1752057725771,
-      "id": "DCKXtXQ"
+      "id": "DCKXtXQ",
+      "reRequest": "pending",
+      "newDuration": 7,
+      "newDeadline": "2025-08-04T11:35:10.144Z"
     },
     {
       "bookId": "c5b47a11",
@@ -362,9 +368,9 @@
       "status": "approved",
       "createdAt": 1752063192859,
       "id": "fQsbD-q",
-      "reRequest": "approved",
-      "newDuration": 8,
-      "newDeadline": "2025-07-29T12:13:12.859Z",
+      "reRequest": "pending",
+      "newDuration": 7,
+      "newDeadline": "2025-08-04T11:35:48.152Z",
       "deadline": 12
     },
     {
@@ -374,23 +380,108 @@
       "status": "approved",
       "createdAt": 1752063976594,
       "id": "cl18RQt",
-      "reRequest": "approved",
-      "newDuration": 1,
-      "newDeadline": "2025-07-20T12:26:16.594Z",
+      "reRequest": "pending",
+      "newDuration": 20,
+      "newDeadline": "2025-09-12T11:31:21.951Z",
       "deadline": "2025-07-19T12:26:16.594Z"
     },
     {
       "bookId": "a90bc123",
       "userId": "0501US25260",
       "duration": 7,
-      "status": "pending",
+      "status": "denied",
       "createdAt": 1752065160913,
-      "id": "DC-GyWV"
+      "id": "DC-GyWV",
+      "message": "Please be done this time?!"
+    },
+    {
+      "bookId": "q92af3cd",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "denied",
+      "createdAt": 1752067783999,
+      "id": "z7HkCLt",
+      "message": "this is for monday test day\n"
+    },
+    {
+      "bookId": "w56aa3fe",
+      "userId": "0501US25260",
+      "duration": 99,
+      "status": "denied",
+      "createdAt": 1752067889020,
+      "id": "IhTLFKE",
+      "message": "again final test"
+    },
+    {
+      "bookId": "b3472ce1",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "denied",
+      "createdAt": 1752486220550,
+      "id": "4gmDOFe",
+      "message": "Okay stock, please get updated.."
+    },
+    {
+      "bookId": "b3472ce1",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "denied",
+      "createdAt": 1752486398424,
+      "id": "3V23e5t",
+      "message": "Okie try again"
+    },
+    {
+      "bookId": "b3472ce1",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "denied",
+      "createdAt": 1752486573400,
+      "id": "KkA1San",
+      "message": "again okie"
+    },
+    {
+      "bookId": "b3472ce1",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "denied",
+      "createdAt": 1752487388410,
+      "id": "pFOtVDM",
+      "message": "retry okie"
+    },
+    {
+      "bookId": "b3472ce1",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "denied",
+      "createdAt": 1752488247782,
+      "id": "l__2ej3",
+      "message": "hopefully done okie"
+    },
+    {
+      "bookId": "b3472ce1",
+      "userId": "0501US25260",
+      "duration": 7,
+      "status": "denied",
+      "createdAt": 1752488355608,
+      "id": "cDey9rq",
+      "message": "success okie"
+    },
+    {
+      "bookId": "t23fabe0",
+      "userId": "0501US25260",
+      "duration": 12,
+      "status": "approved",
+      "createdAt": 1752492440749,
+      "id": "1ElWGms",
+      "reRequest": "pending",
+      "newDuration": 22,
+      "newDeadline": "2025-09-18T12:21:24.207Z"
     }
   ],
   "userNotifications": [
     {
-      "status": "denied",
+      "status": "approved",
+      "reRequest": "approved",
       "bookId": "j2836c21",
       "userId": "0501US25260",
       "isRead": false,
@@ -400,7 +491,7 @@
         "__zone_symbol__state": null,
         "__zone_symbol__value": []
       },
-      "date": "2025-07-09T12:51:06.390Z"
+      "date": "2025-07-14T11:27:58.491Z"
     }
   ]
 }

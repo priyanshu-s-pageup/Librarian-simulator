@@ -8,67 +8,62 @@ import { User } from './user.model';
 @Injectable({
   providedIn: 'root',
 })
-
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(
-    JSON.parse(localStorage.getItem('currentUser') || 'null')
+    JSON.parse(sessionStorage.getItem('currentUser') || 'null')
   );
-  // Observable to expose to other components
-  currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
 
-  // currentUser$ = this.currentUserSubject.asObservable();
+  public currentUser$: Observable<User | null> =
+    this.currentUserSubject.asObservable();
+
   private apiUrl = 'http://localhost:3000/users';
-  private borrowedBooks = new Set<number>();
-
-  // currentUser$ = this.currentUserSubject = new BehaviorSubject<User | null>(
-  //   JSON.parse(localStorage.getItem('currentUser') || 'null')
-  // );
+  private borrowedBooks = new Set<number>(); //I don't remember where, but I know this had a meaningful purpose!
 
   constructor(private http: HttpClient, private router: Router) {
-    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    const user = JSON.parse(sessionStorage.getItem('currentUser') || 'null');
     if (user) {
       this.currentUserSubject.next(user);
     }
   }
 
-
-  login(email: string, password: string): Observable<User | null> {
-    return this.http.get<User[]>(`${this.apiUrl}?email=${email}&password=${password}`)
+  public login(email: string, password: string): Observable<User | null> {
+    return this.http
+      .get<User[]>(`${this.apiUrl}?email=${email}&password=${password}`)
       .pipe(
-        map(users => users[0] || null),
-        tap(user => {
+        map((users) => users[0] || null),
+        tap((user) => {
           if (user) {
-            localStorage.setItem('currentUser', JSON.stringify(user));
+            sessionStorage.setItem('currentUser', JSON.stringify(user));
             this.currentUserSubject.next(user);
           }
         })
       );
   }
 
-  logout() {
-    localStorage.removeItem('currentUser');
+  public logout() {
+    sessionStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
     this.router.navigate(['/login']);
   }
 
-  getCurrentUser(): User | null {
-    const user = localStorage.getItem('currentUser');
+  public getCurrentUser(): User | null {
+    const user = sessionStorage.getItem('currentUser');
     return user ? JSON.parse(user) : null;
   }
 
-  getUserRole(): string | null {
+  public getUserRole(): string | null {
     return this.getCurrentUser()?.role || null;
   }
 
-  isLoggedIn(): boolean {
+  public isLoggedIn(): boolean {
     return !!this.getCurrentUser();
   }
 
-  isAuthenticated(): boolean {
+  public isAuthenticated(): boolean {
     return !!this.currentUserSubject.value;
   }
 
-  get currentUserValue(): User | null {
+  public get currentUserValue(): User | null {
     return this.currentUserSubject.value;
   }
 }

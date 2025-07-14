@@ -3,11 +3,13 @@
 </div>
 
 <div *ngIf="!isLoading()">
+  <div class="bell-icon" (click)="openReIssueDialog()">
+    <mat-icon>notifications</mat-icon> <!-- Using Material Icon for Bell -->
+  </div>
+
   <h2>Borrow Requests</h2>
 
-  <div *ngIf="borrowRequests().length === 0">
-    No borrow requests available.
-  </div>
+  <div *ngIf="borrowRequests().length === 0">No borrow requests available.</div>
 
   <div class="user-grid">
     <div *ngFor="let userId of uniqueUserIds()" class="user-card-wrapper">
@@ -16,7 +18,11 @@
           <div class="badge" *ngIf="getUserRequestCount(userId) > 0">
             {{ getUserRequestCount(userId) }}
           </div>
-          <img src="https://avatar.iran.liara.run/public/18" alt="User Avatar" class="avatar" />
+          <img
+            src="https://avatar.iran.liara.run/public/18"
+            alt="User Avatar"
+            class="avatar"
+          />
           <h3>{{ user.name }}</h3>
           <p>{{ user.email }}</p>
           <p><strong>Contact:</strong> {{ user.contact }}</p>

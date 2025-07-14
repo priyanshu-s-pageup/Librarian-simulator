@@ -20,14 +20,21 @@ export class BookService {
 
   updateBookStock(bookId: string | undefined, book: Book): Observable<Book> {
     const url = `${this.apiUrl}/${bookId}`;
+    console.log('updatedBookStock successfully..');
     return this.http.put<Book>(url, book);
   }
 
-  updateBook(bookId: string | undefined, updatedData: Partial<Book>): Observable<Book> {
-    return this.http.put<Book>(`${this.apiUrl}/${bookId}`, updatedData);
+  updateBook(
+    bookId: string | undefined,
+    updatedData: Partial<Book>
+  ): Observable<Book> {
+    return this.http.patch<Book>(`${this.apiUrl}/${bookId}`, updatedData);
   }
 
-  updateDisabledReIssueUsers(bookId: string | undefined, userIdA: string): Observable<any> {
+  updateDisabledReIssueUsers(
+    bookId: string | undefined,
+    userIdA: string
+  ): Observable<any> {
     return this.http.get<Book>(`${this.apiUrl}/books/${bookId}`).pipe(
       switchMap((book) => {
         if (!book.disabledReIssueUsers) {
@@ -37,11 +44,9 @@ export class BookService {
         book.disabledReIssueUsers.push(userIdA);
 
         return this.http.patch<Book>(`${this.apiUrl}/books/${book.id}`, {
-          disabledReIssueUsers: book.disabledReIssueUsers
+          disabledReIssueUsers: book.disabledReIssueUsers,
         });
-      }),
+      })
     );
   }
-
-
 }
