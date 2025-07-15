@@ -4,7 +4,10 @@
 
 <div *ngIf="!isLoading()">
   <div class="bell-icon" (click)="openReIssueDialog()">
-    <mat-icon>notifications</mat-icon> <!-- Using Material Icon for Bell -->
+    <div class="badge" *ngIf="reIssueRequests.length > 0">
+      {{ reIssueRequests.length }}
+    </div>
+    <mat-icon>notifications</mat-icon>
   </div>
 
   <h2>Borrow Requests</h2>

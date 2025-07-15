@@ -1,13 +1,26 @@
 import { BookData } from "../pages/user/explore-books/explore-books.component";
 import { BorrowStatus } from "./borrow-status.enum";
 
+export interface ExtendedRequest {
+  reIssueId: number;
+  newDuration?: number;
+  newDeadline: Date;
+  timeLeft: number;
+  reRequest?: BorrowStatus;
+  reIssueMessage?: string;
+}
+
+import { BookData } from '../pages/user/explore-books/explore-books.component';
+import { BorrowStatus } from './borrow-status.enum';
+import { ExtendedRequest } from './extended-request.model';
+
 export interface BorrowRequest {
   id: number;
   bookId?: string;
   userId: string;
   books: BookData;
   book: {
-  id?: string;
+    id?: string;
     title: string;
     author: string;
     stockQuantity?: number;
@@ -18,13 +31,10 @@ export interface BorrowRequest {
     name: string;
   };
   duration: number;
-  newDuration?: number;
   startDate: Date;
   deadline: Date;
-  newDeadline: Date;
-  timeLeft: number;
   status: BorrowStatus;
-  reRequest?: BorrowStatus;
   createdAt: Date;
   message: string;
+  extendedRequest?: ExtendedRequest;
 }

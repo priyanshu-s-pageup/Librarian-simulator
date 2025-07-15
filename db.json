@@ -380,7 +380,7 @@
       "status": "approved",
       "createdAt": 1752063976594,
       "id": "cl18RQt",
-      "reRequest": "pending",
+      "reRequest": "denied",
       "newDuration": 20,
       "newDeadline": "2025-09-12T11:31:21.951Z",
       "deadline": "2025-07-19T12:26:16.594Z"
@@ -473,7 +473,7 @@
       "status": "approved",
       "createdAt": 1752492440749,
       "id": "1ElWGms",
-      "reRequest": "pending",
+      "reRequest": "denied",
       "newDuration": 22,
       "newDeadline": "2025-09-18T12:21:24.207Z"
     }
@@ -491,7 +491,7 @@
         "__zone_symbol__state": null,
         "__zone_symbol__value": []
       },
-      "date": "2025-07-14T11:27:58.491Z"
+      "date": "2025-07-15T09:53:57.422Z"
     }
   ]
 }

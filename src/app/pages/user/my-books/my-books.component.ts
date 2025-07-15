@@ -133,16 +133,19 @@ export class MyBooksComponent implements OnInit {
           }),
       });
   }
-  openRequestDialog(book: Book) {
+  public openRequestDialog(book: Book) {
     if (
       this.currentUser &&
       book.disabledReIssueUsers?.includes(this.currentUser.id)
     ) {
-      // Disable the Re-Issue button for the current user
+
+      // to disable re-Issue for current user
       this.isReIssueClicked = true;
       console.log('IsReIssueClicked =', this.isReIssueClicked);
+
     } else {
-      // Proceed with the normal request for other users
+
+      // continue with the normal requests for other users
       this.isReIssueClicked = false;
       console.log('IsReIssueClicked =', this.isReIssueClicked);
 

@@ -15,6 +15,7 @@ import { ViewUserRequestsDialogComponent } from '../../../shared/view-user-reque
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { ReIssueDialogComponent } from '../../../shared/re-issue-dialog/re-issue-dialog.component';
+import { BorrowStatus } from '../../../models/borrow-status.enum';
 @Component({
   selector: 'app-admin-notify',
   standalone: true,
@@ -37,16 +38,38 @@ export class AdminNotifyComponent implements OnInit {
   private authService = inject(AuthService);
   private http = inject(HttpClient);
 
-  borrowRequests = signal<BorrowRequest[]>([]);
-  userMap = signal<Map<string, User>>(new Map());
-  isLoading = signal(true);
-  currentUser = signal<User | null>(null);
+  public borrowRequests = signal<BorrowRequest[]>([]);
+  public reIssueRequests: BorrowRequest[] = [];
+
+  public userMap = signal<Map<string, User>>(new Map());
+  public isLoading = signal(true);
+  public currentUser = signal<User | null>(null);
+
+  public reIssueUserIds = signal<string[]>([]);
 
   private readonly snackBarConfig: MatSnackBarConfig = { duration: 4000 };
 
   ngOnInit(): void {
     this.currentUser.set(this.authService.getCurrentUser());
     this.loadRequestsWithUsers();
+    this.loadReIssueRequests();
+  }
+
+  public updateReIssueUserIds() {
+    const reIssuedIds = this.borrowRequests()
+      .filter((req) => req.reRequest)
+      .map((req) => req.userId);
+
+    this.reIssueUserIds.set(reIssuedIds);
+  }
+
+  public patchBorrowRequest(updatedRequest: BorrowRequest) {
+    const updatedRequests = this.borrowRequests().map((req) =>
+      req.userId === updatedRequest.userId ? updatedRequest : req
+    );
+    this.borrowRequests.set(updatedRequests);
+
+    this.updateReIssueUserIds.call(this);
   }
 
   uniqueUserIds = computed(() => {
@@ -75,6 +98,16 @@ export class AdminNotifyComponent implements OnInit {
       });
   }
 
+  private loadReIssueRequests(): void {
+    this.borrowService.getReIssueRequest().subscribe((allRequests) => {
+      console.log('All Requests: ', allRequests);
+      this.reIssueRequests = allRequests.filter(
+        (req) => req.reRequest === BorrowStatus.Pending
+      );
+      console.log("ReIssueRequests: (Kaddu)", this.reIssueRequests);
+    });
+  }
+
   loadUsers(userIds: string[]): void {
     const query = userIds.map((id) => `id=${id}`).join('&');
     this.http
@@ -88,12 +121,10 @@ export class AdminNotifyComponent implements OnInit {
       });
   }
 
-  openReIssueDialog() {
+  public openReIssueDialog() {
     this.dialog.open(ReIssueDialogComponent, {
-      width: '400px', // Adjust the dialog width as necessary
-      data: {
-        // Any data you want to pass to the dialog component can be added here
-      },
+      width: '500px',
+      data: {},
     });
   }
 
@@ -112,11 +143,17 @@ export class AdminNotifyComponent implements OnInit {
     });
   }
 
-  getUserRequestCount(userId: string): number {
+  public getUserRequestCount(userId: string): number {
     return this.borrowRequests().filter((req) => req.userId === userId).length;
   }
 
-  logout(): void {
+  public getReIssueRequestCount(): number {
+    return this.borrowRequests().filter(
+      (req) => req.reRequest === BorrowStatus.Pending
+    ).length;
+  }
+
+  public logout(): void {
     this.authService.logout();
   }
 }

@@ -192,11 +192,7 @@ export class BorrowNotificationService {
       );
   }
 
-  public requestBorrow(
-    book: BookData,
-    userId: string,
-    duration: number
-  ): Observable<void> {
+  public requestBorrow( book: BookData, userId: string, duration: number): Observable<void> {
     if (book.stockQuantity <= 0) {
       this.snackBar.open(
         'Cannot borrow: Book is out of stock.',
@@ -346,7 +342,6 @@ export class BorrowNotificationService {
         .get<BorrowRequest[]>(
           `${this.url}/borrowRequests?reRequest=pending&_expand=book`
         )
-        // .get<BorrowRequest[]>(`${this.url}/borrowRequests?status=pending&_expand=book`)
         .pipe(
           timeout(10000),
           tap((requests) => {

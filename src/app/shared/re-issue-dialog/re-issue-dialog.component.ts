@@ -22,14 +22,15 @@ export class ReIssueDialogComponent {
   }
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { userId: string },
+    @Inject(MAT_DIALOG_DATA) public data: { },
     private dialog: MatDialog
   ) {}
 
   private loadReIssueRequests(): void {
     this.borrowService.getReIssueRequest().subscribe((allRequests) => {
+      console.log('All Requests: ',allRequests);
       this.reIssueRequests = allRequests.filter(
-        (req) => req.userId === this.data.userId
+        (req) => req.reRequest === BorrowStatus.Pending
       );
     });
   }
