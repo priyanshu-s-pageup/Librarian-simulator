@@ -54,7 +54,7 @@ export class UserNotificationService {
                     id: br.id,
                     bookId: String(br.bookId),
                     status: br.status,
-                    hasReRequested: br.reRequest === 'approved',
+                    hasReRequested: br.extendedRequest?.reRequest === 'approved',
                     // isRead: br.isRead ?? false,
                     message: br.message,
                     // adminComment: br.adminComment,

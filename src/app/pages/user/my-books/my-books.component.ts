@@ -24,6 +24,7 @@ import { Book } from '../../admin/book/book.component';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog.component';
 import { BorrowStatus } from '../../../models/borrow-status.enum';
 import { User } from '../../../auth/user.model';
+import { ExtendedRequest } from '../../../models/extended-request.model';
 
 @Component({
   selector: 'app-my-books',
@@ -56,6 +57,7 @@ export class MyBooksComponent implements OnInit {
   };
 
   public borrowRequests = signal<BorrowRequest[]>([]);
+  public extededRequests = signal<ExtendedRequest[]>([]);
   public borrowRequestDetails = signal<BorrowRequest | null>(null);
 
   public books = signal<Book[]>([]);
@@ -204,23 +206,13 @@ export class MyBooksComponent implements OnInit {
       )
       .subscribe((result) => {
         if (result?.newDuration) {
-          this.processReRequest(
-            book,
-            userId,
-            result.newDuration,
-            result.newDeadline
-          );
+          this.processReRequest( book, userId, result.newDuration, result.newDeadline );
         }
       });
     this.cdr.detectChanges();
   }
 
-  private processReRequest(
-    book: Book,
-    userId: string | null,
-    newDuration: number,
-    newDeadline: Date
-  ): void {
+  private processReRequest( book: Book, userId: string | null, newDuration: number, newDeadline: Date ): void {
     this.borrowService
       .applyreRequest(book, userId, newDuration, newDeadline)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -267,7 +259,7 @@ export class MyBooksComponent implements OnInit {
             return {
               ...br,
               status: BorrowStatus.Returned,
-              reRequest: BorrowStatus.Returned,
+              // reRequest: BorrowStatus.Returned,
             };
           }
           return br;
@@ -302,7 +294,7 @@ export class MyBooksComponent implements OnInit {
 
         // Call your backend service to update the request status
         this.borrowService
-          .updateRequestStatus(requestId, 'returned')
+          .updateRequestStatusonReturn(requestId, 'returned')
           .subscribe({
             next: () => {
               console.log('Request status updated successfully in the backend');

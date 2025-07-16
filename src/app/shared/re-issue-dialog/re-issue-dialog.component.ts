@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Inject, inject, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, inject, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BorrowRequest } from '../../models/borrow-request.model';
 import { BorrowStatus } from '../../models/borrow-status.enum';
 import { BorrowNotificationService } from '../../borrow-notification.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { ExtendedRequest } from '../../models/extended-request.model';
 
 @Component({
   selector: 'app-re-issue-dialog',
@@ -14,36 +15,49 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 })
 export class ReIssueDialogComponent {
   private borrowService = inject(BorrowNotificationService);
-
   public reIssueRequests: BorrowRequest[] = [];
+  public a = signal<ExtendedRequest[]>([]);
 
   ngOnInit(): void {
     this.loadReIssueRequests();
   }
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { },
+    @Inject(MAT_DIALOG_DATA) public data: {},
     private dialog: MatDialog
   ) {}
 
-  private loadReIssueRequests(): void {
-    this.borrowService.getReIssueRequest().subscribe((allRequests) => {
-      console.log('All Requests: ',allRequests);
-      this.reIssueRequests = allRequests.filter(
-        (req) => req.reRequest === BorrowStatus.Pending
-      );
+  public loadReIssueRequests(): void {
+    this.borrowService.getIssueRequest().subscribe((allBooks) => {
+      this.a.set(allBooks)
     });
   }
 
-  filterReIssueRequests(): BorrowRequest[] {
-    return this.reIssueRequests.filter(
-      (request) => request.reRequest === BorrowStatus.Pending
-    );
+  // public newArray: ExtendedRequest[] = [...this.a()];
+
+
+  public filteredOnes(): ExtendedRequest[] {
+    const newArray: ExtendedRequest[] = [...this.a()];
+    const fillerbro = newArray.filter(
+      (noice) => noice.reRequest == BorrowStatus.Pending
+    )
+
+    console.log("newArray:", newArray);
+    console.log("Filtered Ji: ", fillerbro);
+
+    return fillerbro;
   }
 
-  public onLendB(request: BorrowRequest): void {
+
+
+  public onLendB(request: ExtendedRequest): void {
     this.borrowService
-      .updateReIssueDetails( request.id, request.createdAt, request.duration, request.newDuration, 'approved')
+      .updateReIssueDetails(
+        request.id,
+        request.newDeadline,
+        request.newDuration,
+        BorrowStatus.Approved
+      )
       .subscribe({
         next: () => {
           this.removeRequestFromUI(request.id);
@@ -54,8 +68,8 @@ export class ReIssueDialogComponent {
       });
   }
 
-  public onDenyB(request: BorrowRequest): void {
-    this.borrowService.updateReIssueDetails2(request.id, 'denied').subscribe({
+  public onDenyB(request: ExtendedRequest): void {
+    this.borrowService.updateReIssueDetails2(request.id, BorrowStatus.Denied).subscribe({
       next: () => {
         this.removeRequestFromUI(request.id);
       },
@@ -67,21 +81,21 @@ export class ReIssueDialogComponent {
 
   @Output() allRequestsHandled = new EventEmitter<void>();
 
-  private removeRequestFromUI(requestId: number): void {
-    this.reIssueRequests = this.reIssueRequests.filter(
+  private removeRequestFromUI(requestId: string | undefined): void {
+    const newArray: ExtendedRequest[] = [...this.a()];
+    this.a.set(newArray.filter(
       (req) => req.id !== requestId
-    );
-    this.reIssueRequests = this.reIssueRequests.filter(
+    ));
+    this.a.set(newArray.filter(
       (req) => req.id !== requestId
-    );
+    ));
 
-    if (this.reIssueRequests.length === 0) {
+    if (this.a().length === 0) {
       this.allRequestsHandled.emit(); //
     }
 
-    if (this.reIssueRequests.length === 0) {
+    if (this.a().length === 0) {
       this.allRequestsHandled.emit(); //
     }
   }
-
 }

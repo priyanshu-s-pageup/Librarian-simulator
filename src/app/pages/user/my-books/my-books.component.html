@@ -93,10 +93,10 @@
       </div>
 
       <div class="book-body">
-        <ng-container *ngIf="pair.request.newDeadline; else showDuration">
+        <ng-container *ngIf="pair.request.extendedRequest?.newDeadline; else showDuration">
           <p>
             <strong>Return By:</strong>
-            {{ pair.request.newDeadline | date : "mediumDate" }}
+            {{ pair.request.extendedRequest?.newDeadline| date : "mediumDate" }}
           </p>
         </ng-container>
         <ng-template #showDuration>

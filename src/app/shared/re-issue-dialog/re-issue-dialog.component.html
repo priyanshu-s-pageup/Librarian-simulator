@@ -1,17 +1,17 @@
 <div class="dialog-container">
   <div class="dialog-header">
     <h2>Requested Books</h2>
-    <p *ngIf="reIssueRequests.length > 0">Total Requests: {{ reIssueRequests.length }}</p>
+    <p *ngIf="a().length > 0">Total Requests: {{ a().length }}</p>
   </div>
 
-  <div *ngIf="reIssueRequests.length === 0" class="no-requests">
+  <div *ngIf="a().length === 0" class="no-requests">
     No re-Issue requests found.
   </div>
 
   <div class="scrollable-content">
 
     <!-- For Re-Issue -->
-    <div *ngFor="let request of filterReIssueRequests()" class="book-card">
+    <div *ngFor="let request of filteredOnes()" class="book-card">
       <div class="card-header">
         <h3>{{ request.book.title }}</h3>
         <div class="card-actions">
@@ -23,7 +23,7 @@
       <div class="card-body">
         <p><strong>Author:</strong> {{ request.book.author }}</p>
         <p><strong>newDuration:</strong> {{ request.newDuration }} days</p>
-        <span class="status" [ngClass]="request.book.status">{{ request.book.status }}</span>
+        <span class="status" [ngClass]="request.reRequest">{{ request.book.status }}</span>
       </div>
     </div>
   </div>

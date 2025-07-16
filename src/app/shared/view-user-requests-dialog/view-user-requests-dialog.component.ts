@@ -73,15 +73,21 @@ export class ViewUserRequestsDialogComponent implements OnInit {
   }
 
   filterPendingRequests(): BorrowRequest[] {
-    return this.borrowRequests.filter(
+    const pend = this.borrowRequests.filter(
       (request) => request.status == BorrowStatus.Pending
     );
+
+    console.log("Pending Ji: ", pend);
+    return pend;
   }
 
   filterReIssueRequests(): BorrowRequest[] {
-    return this.reIssueRequests.filter(
-      (request) => request.reRequest === BorrowStatus.Pending
+    const filter = this.reIssueRequests.filter(
+      (request) => request.extendedRequest?.reRequest === BorrowStatus.Pending
     );
+
+    console.log("ReIssue Ji: ", filter);
+    return filter;
   }
 
   private loadRequests(): void {
@@ -107,25 +113,6 @@ export class ViewUserRequestsDialogComponent implements OnInit {
       .subscribe({
         next: () => {
           console.log('Request status updated to approved');
-          this.removeRequestFromUI(request.id);
-        },
-        error: (err) => {
-          console.error('Failed to approve request:', err);
-        },
-      });
-  }
-
-  public onLendB(request: BorrowRequest): void {
-    this.borrowService
-      .updateReIssueDetails(
-        request.id,
-        request.createdAt,
-        request.duration,
-        request.newDuration,
-        'approved'
-      )
-      .subscribe({
-        next: () => {
           this.removeRequestFromUI(request.id);
         },
         error: (err) => {
@@ -185,17 +172,6 @@ export class ViewUserRequestsDialogComponent implements OnInit {
             },
           });
       }
-    });
-  }
-
-  public onDenyB(request: BorrowRequest): void {
-    this.borrowService.updateReIssueDetails2(request.id, 'denied').subscribe({
-      next: () => {
-        this.removeRequestFromUI(request.id);
-      },
-      error: (err) => {
-        console.error('Failed to deny request:', err);
-      },
     });
   }
 

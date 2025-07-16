@@ -242,7 +242,7 @@ export class UserNotifyComponent implements OnInit {
           bookId: String(br.bookId),
           status: br.status,
           // isRead: br.isRead ?? false,
-          hasReRequested: br.reRequest === 'approved',
+          hasReRequested: br.extendedRequest?.reRequest === 'approved',
           message: br.message,
           // adminComment: br.adminComment,
           book: {

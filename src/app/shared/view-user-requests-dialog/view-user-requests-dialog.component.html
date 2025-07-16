@@ -34,14 +34,14 @@
       <div class="card-header">
         <h3>{{ request.book.title }}</h3>
         <div class="card-actions">
-          <button mat-raised-button color="primary" (click)="onLendB(request)">Re-Issue</button>
-          <button mat-raised-button color="warn" (click)="onDenyB(request)">Deny</button>
+          <button mat-raised-button color="primary" (click)="onLend(request)">Re-Issue</button>
+          <button mat-raised-button color="warn" (click)="onDeny(request)">Deny</button>
         </div>
       </div>
 
       <div class="card-body">
         <p><strong>Author:</strong> {{ request.book.author }}</p>
-        <p><strong>newDuration:</strong> {{ request.newDuration }} days</p>
+        <p><strong>newDuration:</strong> {{ request.extendedRequest?.newDuration }} days</p>
         <span class="status" [ngClass]="request.book.status">{{ request.book.status }}</span>
       </div>
     </div>

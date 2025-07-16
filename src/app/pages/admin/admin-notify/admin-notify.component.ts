@@ -57,7 +57,7 @@ export class AdminNotifyComponent implements OnInit {
 
   public updateReIssueUserIds() {
     const reIssuedIds = this.borrowRequests()
-      .filter((req) => req.reRequest)
+      .filter((req) => req.extendedRequest?.reRequest)
       .map((req) => req.userId);
 
     this.reIssueUserIds.set(reIssuedIds);
@@ -102,9 +102,9 @@ export class AdminNotifyComponent implements OnInit {
     this.borrowService.getReIssueRequest().subscribe((allRequests) => {
       console.log('All Requests: ', allRequests);
       this.reIssueRequests = allRequests.filter(
-        (req) => req.reRequest === BorrowStatus.Pending
+        (req) => req.extendedRequest?.reRequest === BorrowStatus.Pending
       );
-      console.log("ReIssueRequests: (Kaddu)", this.reIssueRequests);
+      console.log("ReIssueRequests:", this.reIssueRequests);
     });
   }
 
@@ -149,7 +149,7 @@ export class AdminNotifyComponent implements OnInit {
 
   public getReIssueRequestCount(): number {
     return this.borrowRequests().filter(
-      (req) => req.reRequest === BorrowStatus.Pending
+      (req) => req.extendedRequest?.reRequest === BorrowStatus.Pending
     ).length;
   }
 

@@ -19,7 +19,7 @@
       "author": "Tara Lin",
       "genre": "historical",
       "publishedYear": 2011,
-      "stockQuantity": 5,
+      "stockQuantity": 4,
       "status": "available"
     },
     {
@@ -55,7 +55,7 @@
       "author": "Ella Vance",
       "genre": "fiction",
       "publishedYear": 1998,
-      "stockQuantity": 8,
+      "stockQuantity": 7,
       "status": "available"
     },
     {
@@ -109,7 +109,7 @@
       "author": "Yvonne Blake",
       "genre": "sci-fi",
       "publishedYear": 2019,
-      "stockQuantity": 1,
+      "stockQuantity": 0,
       "status": "available",
       "id": "l4827b9e"
     },
@@ -136,7 +136,7 @@
       "author": "Brian Keller",
       "genre": "romance",
       "publishedYear": 2006,
-      "stockQuantity": 7,
+      "stockQuantity": 6,
       "status": "available",
       "id": "p8b1e1c4"
     },
@@ -210,7 +210,7 @@
       "author": "Paul Rivers",
       "genre": "non-fiction",
       "publishedYear": 2004,
-      "stockQuantity": 2,
+      "stockQuantity": 5,
       "status": "available",
       "isProcessing": false
     },
@@ -291,191 +291,183 @@
       "status": "returned",
       "createdAt": 1752039830538,
       "id": "IY4XZsx",
-      "reRequest": "returned",
-      "newDuration": 26,
       "message": "No more borrow.. Sorry!"
     },
     {
-      "bookId": "j2836c21",
+      "bookId": "a90bc123",
       "userId": "0501US25260",
-      "duration": 7,
-      "status": "denied",
-      "createdAt": 1751882449338,
-      "id": "QsKx-Fp",
-      "reRequest": "approved",
-      "newDuration": 7,
-      "message": "No more borrow.. Sorry again!"
+      "duration": 27,
+      "status": "approved",
+      "createdAt": 1752579405552,
+      "id": "_PB2hYE",
+      "updatedAt": "2025-07-15T11:38:26.116Z"
     },
     {
       "bookId": "a90bc123",
-      "userId": "0519US25101",
-      "duration": 14,
-      "status": "denied",
-      "createdAt": 1751969036796,
-      "id": "_Wrrf15",
-      "reRequest": "approved",
-      "newDuration": 14,
-      "message": "Is this a success?"
-    },
-    {
-      "bookId": "3w-lbV6",
       "userId": "0501US25260",
-      "duration": 5,
+      "duration": 29,
       "status": "returned",
-      "createdAt": 1752040758772,
-      "id": "Xc8BDjJ",
-      "message": "This is during a test",
+      "createdAt": 1752580537134,
+      "id": "qI1xOJ1",
+      "message": "My test series continues",
       "reRequest": "returned"
     },
     {
-      "bookId": "u3d4f1aa",
+      "bookId": "c12def45",
       "userId": "0501US25260",
-      "duration": 52,
+      "duration": 31,
+      "status": "returned",
+      "createdAt": 1752581792011,
+      "id": "ICJeSkV"
+    },
+    {
+      "bookId": "f4b2d61f",
+      "userId": "0501US25260",
+      "duration": 41,
       "status": "approved",
-      "createdAt": 1752061176614,
-      "id": "rzxeqiX",
-      "reRequest": "pending",
-      "newDuration": 20,
-      "newDeadline": "2025-09-12T10:23:52.440Z",
-      "deadline": 51
+      "createdAt": 1752646911098,
+      "id": "tpdmwcW"
     },
     {
       "bookId": "p8b1e1c4",
       "userId": "0501US25260",
-      "duration": 7,
+      "duration": 29,
       "status": "approved",
-      "createdAt": 1752056786294,
-      "id": "b7bCI9r",
-      "reRequest": "pending",
-      "newDuration": 7,
-      "newDeadline": "2025-08-04T11:13:23.345Z"
-    },
-    {
-      "bookId": "3w-lbV6",
-      "userId": "0501US25260",
-      "duration": 14,
-      "status": "approved",
-      "createdAt": 1752057725771,
-      "id": "DCKXtXQ",
-      "reRequest": "pending",
-      "newDuration": 7,
-      "newDeadline": "2025-08-04T11:35:10.144Z"
-    },
-    {
-      "bookId": "c5b47a11",
-      "userId": "0501US25260",
-      "duration": 20,
-      "status": "approved",
-      "createdAt": 1752063192859,
-      "id": "fQsbD-q",
-      "reRequest": "pending",
-      "newDuration": 7,
-      "newDeadline": "2025-08-04T11:35:48.152Z",
-      "deadline": 12
-    },
-    {
-      "bookId": "l4827b9e",
-      "userId": "0501US25260",
-      "duration": 11,
-      "status": "approved",
-      "createdAt": 1752063976594,
-      "id": "cl18RQt",
-      "reRequest": "denied",
-      "newDuration": 20,
-      "newDeadline": "2025-09-12T11:31:21.951Z",
-      "deadline": "2025-07-19T12:26:16.594Z"
+      "createdAt": 1752654847240,
+      "id": "FleGxmY"
     },
     {
       "bookId": "a90bc123",
       "userId": "0501US25260",
-      "duration": 7,
-      "status": "denied",
-      "createdAt": 1752065160913,
-      "id": "DC-GyWV",
-      "message": "Please be done this time?!"
-    },
-    {
-      "bookId": "q92af3cd",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "denied",
-      "createdAt": 1752067783999,
-      "id": "z7HkCLt",
-      "message": "this is for monday test day\n"
-    },
-    {
-      "bookId": "w56aa3fe",
-      "userId": "0501US25260",
-      "duration": 99,
-      "status": "denied",
-      "createdAt": 1752067889020,
-      "id": "IhTLFKE",
-      "message": "again final test"
-    },
-    {
-      "bookId": "b3472ce1",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "denied",
-      "createdAt": 1752486220550,
-      "id": "4gmDOFe",
-      "message": "Okay stock, please get updated.."
-    },
-    {
-      "bookId": "b3472ce1",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "denied",
-      "createdAt": 1752486398424,
-      "id": "3V23e5t",
-      "message": "Okie try again"
-    },
-    {
-      "bookId": "b3472ce1",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "denied",
-      "createdAt": 1752486573400,
-      "id": "KkA1San",
-      "message": "again okie"
-    },
-    {
-      "bookId": "b3472ce1",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "denied",
-      "createdAt": 1752487388410,
-      "id": "pFOtVDM",
-      "message": "retry okie"
-    },
-    {
-      "bookId": "b3472ce1",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "denied",
-      "createdAt": 1752488247782,
-      "id": "l__2ej3",
-      "message": "hopefully done okie"
-    },
-    {
-      "bookId": "b3472ce1",
-      "userId": "0501US25260",
-      "duration": 7,
-      "status": "denied",
-      "createdAt": 1752488355608,
-      "id": "cDey9rq",
-      "message": "success okie"
-    },
-    {
-      "bookId": "t23fabe0",
-      "userId": "0501US25260",
-      "duration": 12,
+      "duration": 30,
       "status": "approved",
-      "createdAt": 1752492440749,
-      "id": "1ElWGms",
+      "createdAt": 1752667201656,
+      "id": "ZuwR7XR"
+    },
+    {
+      "bookId": "l4827b9e",
+      "userId": "0501US25260",
+      "duration": 10,
+      "status": "approved",
+      "createdAt": 1752670836247,
+      "id": "EKykNbS"
+    },
+    {
+      "bookId": "b3472ce1",
+      "userId": "0501US25260",
+      "duration": 10,
+      "status": "approved",
+      "createdAt": 1752670946620,
+      "id": "C3-9Nmz"
+    }
+  ],
+  "extendedRequests": [
+    {
+      "reIssueId": "tpdmwcW",
+      "bookId": "f4b2d61f",
+      "userId": "0501US25260",
+      "reRequest": "approved",
+      "newDuration": 4,
+      "newDeadline": "2025-08-01T07:05:28.613Z",
+      "timeLeft": 15,
+      "reIssueMessage": "",
+      "id": 1,
+      "oldDeadline": "2025-07-28T07:05:28.613Z"
+    },
+    {
+      "reIssueId": "_PB2hYE",
+      "bookId": "a90bc123",
+      "userId": "0501US25260",
       "reRequest": "denied",
-      "newDuration": 22,
-      "newDeadline": "2025-09-18T12:21:24.207Z"
+      "newDuration": 12,
+      "newDeadline": "2025-08-21T10:37:44.290Z",
+      "timeLeft": 35,
+      "reIssueMessage": "",
+      "id": 2
+    },
+    {
+      "reIssueId": "ZuwR7XR",
+      "bookId": "a90bc123",
+      "userId": "0501US25260",
+      "reRequest": "denied",
+      "newDuration": 10,
+      "newDeadline": "2025-08-15T12:01:10.155Z",
+      "timeLeft": 29,
+      "reIssueMessage": "",
+      "book": {
+        "id": "a90bc123",
+        "title": "A World Between",
+        "author": "Paul Rivers",
+        "genre": "non-fiction",
+        "publishedYear": 2004,
+        "stockQuantity": 5,
+        "status": "available",
+        "isProcessing": false
+      },
+      "id": 3
+    },
+    {
+      "reIssueId": "FleGxmY",
+      "bookId": "p8b1e1c4",
+      "userId": "0501US25260",
+      "reRequest": "approved",
+      "newDuration": 10,
+      "newDeadline": "2025-08-25T12:29:06.296Z",
+      "timeLeft": 39,
+      "reIssueMessage": "",
+      "book": {
+        "title": "Empire of Light",
+        "author": "Brian Keller",
+        "genre": "romance",
+        "publishedYear": 2006,
+        "stockQuantity": 6,
+        "status": "available",
+        "id": "p8b1e1c4"
+      },
+      "id": 4,
+      "oldDeadline": "2025-08-15T12:29:06.296Z"
+    },
+    {
+      "reIssueId": "EKykNbS",
+      "bookId": "l4827b9e",
+      "userId": "0501US25260",
+      "reRequest": "approved",
+      "newDuration": 2,
+      "newDeadline": "2025-07-24T13:00:58.034Z",
+      "timeLeft": 7,
+      "reIssueMessage": "",
+      "book": {
+        "title": "Chronicles of the Veil",
+        "author": "Yvonne Blake",
+        "genre": "sci-fi",
+        "publishedYear": 2019,
+        "stockQuantity": 0,
+        "status": "available",
+        "id": "l4827b9e"
+      },
+      "id": 5,
+      "oldDeadline": "2025-07-22T13:00:58.034Z"
+    },
+    {
+      "reIssueId": "C3-9Nmz",
+      "bookId": "b3472ce1",
+      "userId": "0501US25260",
+      "reRequest": "approved",
+      "newDuration": 5,
+      "newDeadline": "2025-08-05T13:03:00.543Z",
+      "timeLeft": 19,
+      "reIssueMessage": "",
+      "book": {
+        "id": "b3472ce1",
+        "title": "Journey Through Shadows",
+        "author": "Tara Lin",
+        "genre": "historical",
+        "publishedYear": 2011,
+        "stockQuantity": 4,
+        "status": "available"
+      },
+      "id": 6,
+      "oldDeadline": "2025-07-31T13:03:00.543Z"
     }
   ],
   "userNotifications": [
@@ -491,7 +483,7 @@
         "__zone_symbol__state": null,
         "__zone_symbol__value": []
       },
-      "date": "2025-07-15T09:53:57.422Z"
+      "date": "2025-07-16T13:03:41.575Z"
     }
   ]
 }
