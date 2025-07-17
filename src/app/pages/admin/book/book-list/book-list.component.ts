@@ -5,6 +5,7 @@ import { debounceTime, Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CommonService } from '../../../../common.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-book-list',
@@ -12,7 +13,6 @@ import { CommonService } from '../../../../common.service';
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.css'],
 })
-
 export class BookListComponent implements OnInit {
   books: Book[] = [];
   searchTerm: string = '';
@@ -23,7 +23,6 @@ export class BookListComponent implements OnInit {
   totalBooks: number = 0;
   pageNumbers: number[] = [];
   loading: boolean = false; // Add this at the top of your class
-
 
   pageSizeOptions: number[] = [5, 10, 15, 20, 50];
 
@@ -40,10 +39,7 @@ export class BookListComponent implements OnInit {
   private searchSubject: Subject<string> = new Subject<string>();
   itemToDelete: Book | null = null;
 
-  constructor(
-    private CommonService: CommonService,
-    private router: Router
-  ) {}
+  constructor(private CommonService: CommonService, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchBooks();
@@ -56,53 +52,50 @@ export class BookListComponent implements OnInit {
     });
   }
 
-
   get totalPages(): number {
-    return this.totalBooks>0 ? Math.ceil(this.totalBooks / this.pageSize) : 1;
+    return this.totalBooks > 0 ? Math.ceil(this.totalBooks / this.pageSize) : 1;
   }
 
   fetchBooks(): void {
     this.loading = true;
-    this.CommonService
-      .getBookDetails(
-        this.currentPage,
-        this.pageSize,
-        this.currentSortField,
-        this.currentSortOrder,
-        this.searchTerm
-      )
-      .subscribe({
-        next: (response) => {
-          const data = response.body as Book[];
-          this.books = data;
-          const totalCount = response.headers.get('X-Total-Count');
-          this.totalBooks = totalCount ? +totalCount : 0;
-          this.calculatePagination();
-        },
-        error: (error) => {
-          console.error('Error fetching books', error);
-        },
-        complete: () => {
-          this.loading = false;
-        }
-      });
+    this.CommonService.getBookDetails(
+      this.currentPage,
+      this.pageSize,
+      this.currentSortField,
+      this.currentSortOrder,
+      this.searchTerm
+    ).subscribe({
+      next: (response) => {
+        const data = response.body as Book[];
+        this.books = data;
+        const totalCount = response.headers.get('X-Total-Count');
+        this.totalBooks = totalCount ? +totalCount : 0;
+        this.calculatePagination();
+      },
+      error: (error) => {
+        console.error('Error fetching books', error);
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
   }
 
   // Status display helper methods
   getStatusDisplay(status: string): string {
-    const statusMap: {[key: string]: string} = {
-      'available': 'Available',
+    const statusMap: { [key: string]: string } = {
+      available: 'Available',
       'in-high-demand': 'High Demand',
-      'out-of-stock': 'Out of Stock'
+      'out-of-stock': 'Out of Stock',
     };
     return statusMap[status] || status;
   }
 
   getStatusClass(status: string): string {
-    const classMap: {[key: string]: string} = {
-      'available': 'status-available',
+    const classMap: { [key: string]: string } = {
+      available: 'status-available',
       'in-high-demand': 'status-high-demand',
-      'out-of-stock': 'status-out-of-stock'
+      'out-of-stock': 'status-out-of-stock',
     };
     return classMap[status] || '';
   }
@@ -126,7 +119,6 @@ export class BookListComponent implements OnInit {
   sort(field: string): void {
     if (this.currentSortField === field) {
       this.currentSortOrder = this.currentSortOrder === 'ASC' ? 'DESC' : 'ASC';
-
     } else {
       this.currentSortField = field;
       this.currentSortOrder = 'ASC';
@@ -134,8 +126,6 @@ export class BookListComponent implements OnInit {
 
     this.currentPage = 1;
     this.fetchBooks();
-
-
   }
 
   getSortIcon(field: string): string {
@@ -144,7 +134,6 @@ export class BookListComponent implements OnInit {
     }
     return 'fa-sort';
   }
-
 
   previousPage(): void {
     if (this.currentPage > 1) {
@@ -155,14 +144,21 @@ export class BookListComponent implements OnInit {
 
   nextPage(): void {
     const maxPage = Math.ceil(this.totalBooks / this.pageSize);
-    console.log("totalBooks:", this.totalBooks, "pageSize:", this.pageSize, "maxPage:", maxPage);
+    console.log(
+      'totalBooks:',
+      this.totalBooks,
+      'pageSize:',
+      this.pageSize,
+      'maxPage:',
+      maxPage
+    );
 
     if (this.currentPage < maxPage) {
       this.currentPage++;
-      console.log("next clicked. current page: ", this.currentPage);
+      console.log('next clicked. current page: ', this.currentPage);
       this.fetchBooks();
     } else {
-      console.log("No more pages to load");
+      console.log('No more pages to load');
     }
   }
 
@@ -186,7 +182,13 @@ export class BookListComponent implements OnInit {
 
     this.CommonService.deleteBook(id).subscribe({
       next: () => this.fetchBooks(),
-      error: (err) => console.error('Delete failed:', err)
+      error: (err) => console.error('Delete failed:', err),
     });
+  }
+
+  // Logic to handle file upload:
+
+  public uploadFile() {
+    this.router.navigate(['/book-file-upload']); //sample
   }
 }

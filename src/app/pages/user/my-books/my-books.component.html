@@ -71,59 +71,64 @@
 </div>
 
 <!-- Approved Books section! -->
-<div *ngIf="myApprovedBooksWithRequest().length > 0">
-  <h2 class="book-grid">Read Here:</h2>
-  <div
-    class="book-grid"
-    *ngIf="myApprovedBooksWithRequest().length > 0; else noBooks"
-  >
-    <mat-card
-      class="book-card"
-      *ngFor="let pair of myApprovedBooksWithRequest()"
+<div >
+  <div *ngIf="myApprovedBooksWithRequestA().length > 0">
+    <h2 class="book-grid">Read Here:</h2>
+    <div
+      class="book-grid"
+      *ngIf="myApprovedBooksWithRequestA().length > 0; else noBooks"
     >
-      <div class="book-header">
-        <div class="book-info">
-          <h2 class="book-title">{{ pair.book.title }}</h2>
-          <p class="book-author">by {{ pair.book.author }}</p>
-        </div>
-        <div class="book-meta">
-          <mat-icon color="primary">book</mat-icon>
-          <span class="book-genre">{{ pair.book.genre }}</span>
-        </div>
-      </div>
-
-      <div class="book-body">
-        <ng-container *ngIf="pair.request.extendedRequest?.newDeadline; else showDuration">
-          <p>
-            <strong>Return By:</strong>
-            {{ pair.request.extendedRequest?.newDeadline| date : "mediumDate" }}
-          </p>
-        </ng-container>
-        <ng-template #showDuration>
-          <!-- <p><strong>Return By:</strong> {{ pair.request.createdAt | date: 'mediumDate' }}</p> -->
-          <p>
-            <strong>Return By:</strong>
-            {{
-              getDeadline(pair.request.duration, pair.request.createdAt)
-                | date : "mediumDate"
-            }}
-          </p>
-        </ng-template>
-
-        <p><strong>Published:</strong> {{ pair.book.publishedYear }}</p>
-      </div>
-
-      <button
-        (click)="openRequestDialog(pair.book)"
-        [disabled]="
-          isReIssueClicked ||
-          pair.book.disabledReIssueUsers?.includes(currentUser?.id || '')
-        "
+      <mat-card
+        class="book-card"
+        *ngFor="let pair of myApprovedBooksWithRequestA()"
       >
-        Re-Issue
-      </button>
-      <button (click)="returnBook(pair.book.id)">Return</button>
-    </mat-card>
+        <div class="book-header">
+          <div class="book-info">
+            <h2 class="book-title">{{ pair.book.title }}</h2>
+            <p class="book-author">by {{ pair.book.author }}</p>
+          </div>
+          <div class="book-meta">
+            <mat-icon color="primary">book</mat-icon>
+            <span class="book-genre">{{ pair.book.genre }}</span>
+          </div>
+        </div>
+
+        <div class="book-body">
+          <div *ngIf="isLoading">Loading...</div>
+          <div *ngIf="!isLoading">
+          <ng-container *ngIf="pair.extended.newDeadline; else showDuration">
+            <p>
+              <strong>Return By:</strong>
+              {{ pair.extended.newDeadline | date : "mediumDate" }}
+            </p>
+          </ng-container>
+          <ng-template #showDuration>
+            <!-- <p><strong>Return By:</strong> {{ pair.request.createdAt | date: 'mediumDate' }}</p> -->
+            <p>
+              <strong>Return By:</strong>
+              {{
+                getDeadline(pair.request.duration, pair.request.createdAt)
+                  | date : "mediumDate"
+              }}
+            </p>
+          </ng-template>
+          </div>
+
+          <p><strong>Published:</strong> {{ pair.book.publishedYear }}</p>
+        </div>
+
+        <button
+          (click)="openRequestDialog(pair.book)"
+          [disabled]="
+            isReIssueClicked ||
+            pair.book.disabledReIssueUsers?.includes(currentUser?.id || '')
+          "
+        >
+          Re-Issue
+        </button>
+        <button (click)="returnBook(pair.book.id)">Return</button>
+      </mat-card>
+    </div>
   </div>
 </div>
 

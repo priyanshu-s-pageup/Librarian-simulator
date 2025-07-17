@@ -3,15 +3,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, switchMap } from 'rxjs';
 import { Book } from './book.component';
+import { ExtendedRequest } from '../../../models/extended-request.model';
 
 @Injectable({ providedIn: 'root' })
 export class BookService {
+  private readonly url = 'http://localhost:3000/extendedRequests'
   private readonly apiUrl = 'http://localhost:3000/books';
 
   constructor(private http: HttpClient) {}
 
   getAllBooks(): Observable<Book[]> {
     return this.http.get<Book[]>(this.apiUrl);
+  }
+
+  getAllExtended(): Observable<ExtendedRequest[]> {
+    return this.http.get<ExtendedRequest[]>(this.url);
   }
 
   getBookById(bookId: string): Observable<Book> {

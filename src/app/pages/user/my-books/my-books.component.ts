@@ -18,7 +18,7 @@ import { BookService } from '../../admin/book/book.service';
 import { MatIcon } from '@angular/material/icon';
 import { BorrowDialogComponent } from '../../../shared/borrow-dialog/borrow-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { finalize } from 'rxjs';
+import { BehaviorSubject, finalize } from 'rxjs';
 import { BorrowNotificationService } from '../../../borrow-notification.service';
 import { Book } from '../../admin/book/book.component';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog.component';
@@ -44,6 +44,8 @@ export class MyBooksComponent implements OnInit {
   public currentUser: User | null = null; // Track the current user
   public isReIssueClicked = false;
   public currentDeadline = new Date();
+
+  public isLoading = true;
   // public book: Book | null = null;
 
   constructor(private cdr: ChangeDetectorRef) {}
@@ -56,10 +58,10 @@ export class MyBooksComponent implements OnInit {
     duration: 5000,
   };
 
-  public borrowRequests = signal<BorrowRequest[]>([]);
-  public extededRequests = signal<ExtendedRequest[]>([]);
+  public extendedRequests = signal<ExtendedRequest[]>([]);
   public borrowRequestDetails = signal<BorrowRequest | null>(null);
 
+  public borrowRequests = signal<BorrowRequest[]>([]);
   public books = signal<Book[]>([]);
 
   myApprovedBooks = computed(() => {
@@ -71,14 +73,36 @@ export class MyBooksComponent implements OnInit {
       .filter((book): book is Book => !!book);
   });
 
-  myApprovedBooksWithRequest = computed(() => {
+  public myApprovedBooksWithRequestA = computed(() => {
+
+    this.isLoading = false;
+
     return this.borrowRequests()
       .filter((br) => br.status === 'approved')
       .map((br) => {
         const book = this.books().find((book) => book.id === String(br.bookId));
-        return book ? { book, request: br } : null;
+        const extendedRequestsForBook = (this.extendedRequests() ?? []).filter(
+          (er) => er.bookId === String(br.bookId)
+        );
+
+        console.log("extendedRequestsForBook: ",extendedRequestsForBook)
+        console.log("Length Ji: ", extendedRequestsForBook.length)
+
+        const extendedRequest = extendedRequestsForBook.length
+          ? extendedRequestsForBook[extendedRequestsForBook.length - 1]
+          : undefined;
+        console.log("extendedRequest: ",extendedRequest);
+
+        if (book) {
+          return {
+            book,
+            request: br,
+            extended: extendedRequest
+          };
+        }
+        return null;
       })
-      .filter((pair): pair is { book: Book; request: BorrowRequest } => !!pair);
+      .filter((pair): pair is { book: Book; request: BorrowRequest; extended: ExtendedRequest} => !!pair); // Filter out nulls
   });
 
   myDeadlineAlerts = computed(() => {
@@ -134,19 +158,27 @@ export class MyBooksComponent implements OnInit {
             duration: 3000,
           }),
       });
+
+    this.bookService
+      .getAllExtended()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (extended) => this.extendedRequests.set(extended),
+        error: () =>
+          this.snackBar.open('Failed to load books', 'Close', {
+            duration: 3000,
+          }),
+      });
   }
   public openRequestDialog(book: Book) {
     if (
       this.currentUser &&
       book.disabledReIssueUsers?.includes(this.currentUser.id)
     ) {
-
       // to disable re-Issue for current user
       this.isReIssueClicked = true;
       console.log('IsReIssueClicked =', this.isReIssueClicked);
-
     } else {
-
       // continue with the normal requests for other users
       this.isReIssueClicked = false;
       console.log('IsReIssueClicked =', this.isReIssueClicked);
@@ -206,13 +238,23 @@ export class MyBooksComponent implements OnInit {
       )
       .subscribe((result) => {
         if (result?.newDuration) {
-          this.processReRequest( book, userId, result.newDuration, result.newDeadline );
+          this.processReRequest(
+            book,
+            userId,
+            result.newDuration,
+            result.newDeadline
+          );
         }
       });
     this.cdr.detectChanges();
   }
 
-  private processReRequest( book: Book, userId: string | null, newDuration: number, newDeadline: Date ): void {
+  private processReRequest(
+    book: Book,
+    userId: string | null,
+    newDuration: number,
+    newDeadline: Date
+  ): void {
     this.borrowService
       .applyreRequest(book, userId, newDuration, newDeadline)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -319,5 +361,14 @@ export class MyBooksComponent implements OnInit {
     );
     const prevDeadline = this.currentDeadline;
     return prevDeadline;
+  }
+
+  // public extendedRequestSubject = new BehaviorSubject<ExtendedRequest>({newDuration: 0});
+
+  public getCalculatedDeadline(pair: any): number {
+    console.log('Here Ji:', pair.request.ExtendedRequest?.newDuration);
+    return (
+      pair.request.duration + (pair.request.extendedRequest?.newDuration || 0)
+    );
   }
 }

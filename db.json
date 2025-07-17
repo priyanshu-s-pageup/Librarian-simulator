@@ -6,7 +6,7 @@
       "author": "Rachel Moore",
       "genre": "romance",
       "publishedYear": 2003,
-      "stockQuantity": 13,
+      "stockQuantity": 12,
       "status": "available",
       "disabledReIssueUsers": [
         "0501US25260",
@@ -37,7 +37,7 @@
       "author": "Grace Holloway",
       "genre": "mystery",
       "publishedYear": 2023,
-      "stockQuantity": 16,
+      "stockQuantity": 15,
       "status": "available"
     },
     {
@@ -64,7 +64,7 @@
       "author": "David Stone",
       "genre": "mystery",
       "publishedYear": 2018,
-      "stockQuantity": 19,
+      "stockQuantity": 18,
       "status": "available"
     },
     {
@@ -192,7 +192,7 @@
       "author": "Jack Flynn",
       "genre": "historical",
       "publishedYear": 1993,
-      "stockQuantity": 14,
+      "stockQuantity": 13,
       "status": "available"
     },
     {
@@ -220,7 +220,7 @@
       "author": "Charlotte Grey",
       "genre": "mystery",
       "publishedYear": 1990,
-      "stockQuantity": 1,
+      "stockQuantity": 0,
       "status": "available",
       "isProcessing": false
     },
@@ -229,7 +229,7 @@
       "author": "Myself",
       "genre": "non-fiction",
       "publishedYear": 2001,
-      "stockQuantity": 20,
+      "stockQuantity": 18,
       "status": "in-high-demand",
       "id": "3w-lbV6",
       "isProcessing": false
@@ -359,6 +359,62 @@
       "status": "approved",
       "createdAt": 1752670946620,
       "id": "C3-9Nmz"
+    },
+    {
+      "bookId": "c12def45",
+      "userId": "0501US25260",
+      "duration": 20,
+      "status": "approved",
+      "createdAt": 1752737310545,
+      "id": "vHNB4zv"
+    },
+    {
+      "bookId": "d8a90f32",
+      "userId": "0501US25260",
+      "duration": 10,
+      "status": "pending",
+      "createdAt": 1752737458772,
+      "id": "s0WVL_v"
+    },
+    {
+      "bookId": "w56aa3fe",
+      "userId": "0501US25260",
+      "duration": 15,
+      "status": "pending",
+      "createdAt": 1752737465086,
+      "id": "4j2TrKs"
+    },
+    {
+      "bookId": "g5f61b91",
+      "userId": "0519US25101",
+      "duration": 20,
+      "status": "pending",
+      "createdAt": 1752737495805,
+      "id": "Lxkw_6z"
+    },
+    {
+      "bookId": "a1f9d3e2",
+      "userId": "0519US25101",
+      "duration": 25,
+      "status": "pending",
+      "createdAt": 1752737501086,
+      "id": "fuziL4W"
+    },
+    {
+      "bookId": "3w-lbV6",
+      "userId": "0501US25260",
+      "duration": 20,
+      "status": "approved",
+      "createdAt": 1752746572743,
+      "id": "p43Lypa"
+    },
+    {
+      "bookId": "3w-lbV6",
+      "userId": "0501US25260",
+      "duration": 40,
+      "status": "approved",
+      "createdAt": 1752752104611,
+      "id": "_jrO1Gn"
     }
   ],
   "extendedRequests": [
@@ -468,6 +524,93 @@
       },
       "id": 6,
       "oldDeadline": "2025-07-31T13:03:00.543Z"
+    },
+    {
+      "reIssueId": "vHNB4zv",
+      "bookId": "c12def45",
+      "userId": "0501US25260",
+      "reRequest": "approved",
+      "newDuration": 10,
+      "newDeadline": "2025-08-26T07:29:31.601Z",
+      "timeLeft": 40,
+      "reIssueMessage": "",
+      "book": {
+        "id": "c12def45",
+        "title": "Ashes of Tomorrow",
+        "author": "Charlotte Grey",
+        "genre": "mystery",
+        "publishedYear": 1990,
+        "stockQuantity": 0,
+        "status": "available",
+        "isProcessing": false
+      },
+      "id": 7,
+      "oldDeadline": "2025-08-16T07:29:31.601Z"
+    },
+    {
+      "reIssueId": "p43Lypa",
+      "bookId": "3w-lbV6",
+      "userId": "0501US25260",
+      "reRequest": "pending",
+      "newDuration": 4,
+      "newDeadline": "2025-07-29T10:03:28.995Z",
+      "timeLeft": 12,
+      "reIssueMessage": "",
+      "book": {
+        "title": "AAABBB",
+        "author": "Myself",
+        "genre": "non-fiction",
+        "publishedYear": 2001,
+        "stockQuantity": 19,
+        "status": "in-high-demand",
+        "id": "3w-lbV6",
+        "isProcessing": false
+      },
+      "id": 8
+    },
+    {
+      "reIssueId": "p43Lypa",
+      "bookId": "3w-lbV6",
+      "userId": "0501US25260",
+      "reRequest": "approved",
+      "newDuration": 10,
+      "newDeadline": "2025-08-26T11:27:46.950Z",
+      "timeLeft": 40,
+      "reIssueMessage": "",
+      "book": {
+        "title": "AAABBB",
+        "author": "Myself",
+        "genre": "non-fiction",
+        "publishedYear": 2001,
+        "stockQuantity": 19,
+        "status": "in-high-demand",
+        "id": "3w-lbV6",
+        "isProcessing": false
+      },
+      "id": 9,
+      "oldDeadline": "2025-08-16T11:27:46.950Z"
+    },
+    {
+      "reIssueId": "_jrO1Gn",
+      "bookId": "3w-lbV6",
+      "userId": "0501US25260",
+      "reRequest": "approved",
+      "newDuration": 4,
+      "newDeadline": "2025-08-02T12:01:44.271Z",
+      "timeLeft": 16,
+      "reIssueMessage": "",
+      "book": {
+        "title": "AAABBB",
+        "author": "Myself",
+        "genre": "non-fiction",
+        "publishedYear": 2001,
+        "stockQuantity": 18,
+        "status": "in-high-demand",
+        "id": "3w-lbV6",
+        "isProcessing": false
+      },
+      "id": 10,
+      "oldDeadline": "2025-07-29T12:01:44.271Z"
     }
   ],
   "userNotifications": [
@@ -483,7 +626,7 @@
         "__zone_symbol__state": null,
         "__zone_symbol__value": []
       },
-      "date": "2025-07-16T13:03:41.575Z"
+      "date": "2025-07-17T12:01:58.634Z"
     }
   ]
 }
