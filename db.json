@@ -6,12 +6,9 @@
       "author": "Rachel Moore",
       "genre": "romance",
       "publishedYear": 2003,
-      "stockQuantity": 12,
+      "stockQuantity": 100,
       "status": "available",
-      "disabledReIssueUsers": [
-        "0501US25260",
-        "0519US25101"
-      ]
+      "disabledReIssueUsers": []
     },
     {
       "id": "b3472ce1",
@@ -19,17 +16,19 @@
       "author": "Tara Lin",
       "genre": "historical",
       "publishedYear": 2011,
-      "stockQuantity": 4,
-      "status": "available"
+      "stockQuantity": 100,
+      "status": "available",
+      "disabledReIssueUsers": []
     },
     {
       "title": "Echoes of the Past",
       "author": "Frank Lambert",
       "genre": "fantasy",
       "publishedYear": 1994,
-      "stockQuantity": 11,
+      "stockQuantity": 100,
       "status": "available",
-      "id": "c5b47a11"
+      "id": "c5b47a11",
+      "disabledReIssueUsers": []
     },
     {
       "id": "d8a90f32",
@@ -37,8 +36,9 @@
       "author": "Grace Holloway",
       "genre": "mystery",
       "publishedYear": 2023,
-      "stockQuantity": 15,
-      "status": "available"
+      "stockQuantity": 100,
+      "status": "available",
+      "disabledReIssueUsers": []
     },
     {
       "id": "e23a1bce",
@@ -46,8 +46,9 @@
       "author": "Nathan Cross",
       "genre": "non-fiction",
       "publishedYear": 2000,
-      "stockQuantity": 12,
-      "status": "available"
+      "stockQuantity": 100,
+      "status": "available",
+      "disabledReIssueUsers": []
     },
     {
       "id": "f4b2d61f",
@@ -55,8 +56,9 @@
       "author": "Ella Vance",
       "genre": "fiction",
       "publishedYear": 1998,
-      "stockQuantity": 7,
-      "status": "available"
+      "stockQuantity": 100,
+      "status": "available",
+      "disabledReIssueUsers": []
     },
     {
       "id": "g5f61b91",
@@ -64,8 +66,9 @@
       "author": "David Stone",
       "genre": "mystery",
       "publishedYear": 2018,
-      "stockQuantity": 18,
-      "status": "available"
+      "stockQuantity": 100,
+      "status": "available",
+      "disabledReIssueUsers": []
     },
     {
       "id": "h983cc01",
@@ -73,8 +76,9 @@
       "author": "Paul Rivers",
       "genre": "fiction",
       "publishedYear": 1997,
-      "stockQuantity": 50,
-      "status": "out-of-stock"
+      "stockQuantity": 100,
+      "status": "out-of-stock",
+      "disabledReIssueUsers": []
     },
     {
       "id": "i1e28bf3",
@@ -82,8 +86,9 @@
       "author": "Liam Archer",
       "genre": "fantasy",
       "publishedYear": 2007,
-      "stockQuantity": 17,
-      "status": "available"
+      "stockQuantity": 100,
+      "status": "available",
+      "disabledReIssueUsers": []
     },
     {
       "id": "j2836c21",
@@ -91,9 +96,10 @@
       "author": "Charlotte Grey",
       "genre": "fantasy",
       "publishedYear": 2025,
-      "stockQuantity": 98,
+      "stockQuantity": 100,
       "status": "in-high-demand",
-      "isProcessing": false
+      "isProcessing": false,
+      "disabledReIssueUsers": []
     },
     {
       "id": "k3741afc",
@@ -101,17 +107,19 @@
       "author": "Ulysses Grant",
       "genre": "fiction",
       "publishedYear": 1992,
-      "stockQuantity": 12,
-      "status": "available"
+      "stockQuantity": 100,
+      "status": "available",
+      "disabledReIssueUsers": []
     },
     {
       "title": "Chronicles of the Veil",
       "author": "Yvonne Blake",
       "genre": "sci-fi",
       "publishedYear": 2019,
-      "stockQuantity": 0,
+      "stockQuantity": 100,
       "status": "available",
-      "id": "l4827b9e"
+      "id": "l4827b9e",
+      "disabledReIssueUsers": []
     },
     {
       "id": "m591bcee",
@@ -119,8 +127,9 @@
       "author": "Zachary Miles",
       "genre": "mystery",
       "publishedYear": 2001,
-      "stockQuantity": 14,
-      "status": "available"
+      "stockQuantity": 100,
+      "status": "available",
+      "disabledReIssueUsers": []
     },
     {
       "id": "o74cc931",
@@ -128,111 +137,29 @@
       "author": "Xander Poe",
       "genre": "non-fiction",
       "publishedYear": 2012,
-      "stockQuantity": 17,
-      "status": "available"
+      "stockQuantity": 100,
+      "status": "available",
+      "disabledReIssueUsers": []
     },
     {
       "title": "Empire of Light",
       "author": "Brian Keller",
       "genre": "romance",
       "publishedYear": 2006,
-      "stockQuantity": 6,
+      "stockQuantity": 100,
       "status": "available",
-      "id": "p8b1e1c4"
+      "id": "p8b1e1c4",
+      "disabledReIssueUsers": []
     },
     {
       "title": "Windswept Shores",
       "author": "Alice Morgan",
       "genre": "fiction",
       "publishedYear": 1999,
-      "stockQuantity": 7,
+      "stockQuantity": 100,
       "status": "available",
-      "id": "q92af3cd"
-    },
-    {
-      "id": "r10b57ef",
-      "title": "The Obsidian Mirror",
-      "author": "Kara Benson",
-      "genre": "fantasy",
-      "publishedYear": 2020,
-      "stockQuantity": 15,
-      "status": "available"
-    },
-    {
-      "title": "Feathers and Flames",
-      "author": "Henry Talbot",
-      "genre": "sci-fi",
-      "publishedYear": 2014,
-      "stockQuantity": 4,
-      "status": "available",
-      "id": "t23fabe0",
-      "isProcessing": false
-    },
-    {
-      "title": "The Emerald Enclave",
-      "author": "Olivia Frost",
-      "genre": "fiction",
-      "publishedYear": 1995,
-      "stockQuantity": 13,
-      "status": "available",
-      "id": "u3d4f1aa"
-    },
-    {
-      "id": "v4e61cbb",
-      "title": "Song of the Phoenix",
-      "author": "Vera King",
-      "genre": "fantasy",
-      "publishedYear": 2008,
-      "stockQuantity": 13,
-      "status": "available"
-    },
-    {
-      "id": "w56aa3fe",
-      "title": "The Shadow Thief",
-      "author": "Jack Flynn",
-      "genre": "historical",
-      "publishedYear": 1993,
-      "stockQuantity": 13,
-      "status": "available"
-    },
-    {
-      "id": "z89bcdf1",
-      "title": "The Iron Pact",
-      "author": "Zachary Miles",
-      "genre": "romance",
-      "publishedYear": 1991,
-      "stockQuantity": 7,
-      "status": "available"
-    },
-    {
-      "id": "a90bc123",
-      "title": "A World Between",
-      "author": "Paul Rivers",
-      "genre": "non-fiction",
-      "publishedYear": 2004,
-      "stockQuantity": 5,
-      "status": "available",
-      "isProcessing": false
-    },
-    {
-      "id": "c12def45",
-      "title": "Ashes of Tomorrow",
-      "author": "Charlotte Grey",
-      "genre": "mystery",
-      "publishedYear": 1990,
-      "stockQuantity": 0,
-      "status": "available",
-      "isProcessing": false
-    },
-    {
-      "title": "AAABBB",
-      "author": "Myself",
-      "genre": "non-fiction",
-      "publishedYear": 2001,
-      "stockQuantity": 18,
-      "status": "in-high-demand",
-      "id": "3w-lbV6",
-      "isProcessing": false
+      "id": "q92af3cd",
+      "disabledReIssueUsers": []
     }
   ],
   "users": [

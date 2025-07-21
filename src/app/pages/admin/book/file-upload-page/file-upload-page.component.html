@@ -1,0 +1,50 @@
+<div class="upload-container" [class.is-editing]>
+  <!-- Direct file upload input without any ViewChild logic -->
+  <div *ngIf="!isFileUploaded">
+    <input class="file-button" type="file" (change)="onFileSelected($event)" accept=".csv, .xlsx" />
+  </div>
+
+  <!-- Show file content in a table once uploaded -->
+  <div *ngIf="isFileUploaded">
+    <div class="buttons">
+      <h2 style="white-space: nowrap;">Edit & Upload</h2>
+      <input type="file" (change)="onFileSelected($event)" accept=".csv, .xlsx" />
+      <button class="edit-button" (click)="toggleEdit()">
+        {{ isEditing ? 'Cancel' : 'Edit' }}
+      </button>
+      <button (click)="upsertData()">Upsert</button>
+    </div>
+
+    <div *ngIf="editErrors.length > 0" class="error-banner">
+      There are {{ editErrors.length }} validation errors. Please fix them before upserting.
+    </div>
+
+    <table border="1" class="file-data-table">
+      <thead>
+        <tr>
+          <th *ngFor="let header of excelData[0]">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of excelData.slice(1); let rowIndex = index">
+          <td *ngFor="let cell of row; let colIndex = index">
+            <span *ngIf="!isEditing">{{ cell }}</span>
+
+            <div *ngIf="isEditing" class="edit-cell">
+              <input
+                [ngModel]="excelData[rowIndex + 1][colIndex]"
+                (ngModelChange)="onCellChange(rowIndex + 1, colIndex, $event)"
+                [class.error]="getError(rowIndex + 1, colIndex)"
+                type="text"
+              />
+              <div *ngIf="getError(rowIndex + 1, colIndex)" class="error-message">
+                {{ getError(rowIndex + 1, colIndex) }}
+              </div>
+            </div>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

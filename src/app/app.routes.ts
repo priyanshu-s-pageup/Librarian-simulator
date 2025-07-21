@@ -13,6 +13,7 @@ import { MyBooksComponent } from './pages/user/my-books/my-books.component';
 import { UserHomepageComponent } from './pages/user/user-homepage/user-homepage.component';
 import { AdminHomepageComponent } from './pages/admin/admin-homepage/admin-homepage.component';
 import { UserActivityComponent } from './pages/admin/user-activity/user-activity.component';
+import { FileUploadPageComponent } from './pages/admin/book/file-upload-page/file-upload-page.component';
 // import { MyBooksComponent } from './pages/user/my-books/my-books.component';
 // import { UserHomepageComponent } from './pages/user/user-homepage/user-homepage.component';
 // import { SettingsPanelComponent } from './shared/settings-panel/settings-panel.component';
@@ -37,6 +38,8 @@ export const routes: Routes = [
 
     {path: 'app-admin-homepage', component: AdminHomepageComponent, canActivate: [AuthGuard, RoleGuard], data: {role: 'admin'}},
     {path: 'app-user-activity', component: UserActivityComponent, canActivate: [AuthGuard, RoleGuard], data: {role: 'admin'}},
+
+    {path: 'app-file-upload-page', component: FileUploadPageComponent, canActivate: [AuthGuard, RoleGuard], data: {role: 'admin'}},
 
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];

@@ -1,0 +1,233 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f4f4f9;
+}
+
+/* Upload Container */
+.upload-container {
+  position: absolute;
+  margin-left: 75px;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  /* margin: 0 auto; */
+}
+
+/* Upload Button */
+.upload-button {
+  padding: 12px 20px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+/* Upload button on hover */
+.upload-button:hover {
+  background-color: #45a049;
+}
+
+/* Button moves to top-right when uploaded */
+.upload-in-progress {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+/* File Button */
+
+.file-button {
+  padding: 12px 12px;
+  color: white;
+  background-color: #008CBA;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 230px;
+  transition: background-color 0.3s ease;
+}
+
+/* Button hover effect (optional) */
+.file-button:hover {
+  background-color: #005f73;
+}
+
+/* Upsert Button */
+.buttons {
+  position: relative;
+  top: 5px;
+  right: 10px;
+  left: 300px;
+  /* margin-left: 50px; */
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttons h2 {
+  width: auto;
+  margin-right: 140px;
+}
+
+.buttons input {
+  padding: 12px 20px;
+  background-color: #008CBA;
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  margin-right: 10px; /* Adds gap between buttons */
+}
+
+.edit-button {
+  padding: 12px 20px;
+  background-color: #008CBA;
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  margin-right: 10px; /* Adds gap between buttons */
+}
+
+.buttons button {
+  padding: 12px 20px;
+  background-color: #008CBA;
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+/* Upsert button on hover */
+.buttons button:hover {
+ background-color: #007B9E;
+}
+
+/* File Data Table */
+.file-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.file-data-table th, .file-data-table td {
+  text-align: center;
+  padding: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* white-space: nowrap; */
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+
+.file-data-table th {
+  background-color: #f2f2f2;
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+  color: #333;
+  border: 1px solid #ddd;
+  /* table-layout: fixed; */
+}
+
+.file-data-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.file-data-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.file-data-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.file-data-table input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.file-data-table input:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+/* Error button */
+
+.error-banner {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  border-left: 4px solid #c62828;
+}
+
+.edit-cell {
+  position: relative;
+  /* table-layout: fixed; */
+}
+
+.edit-cell input {
+  width: 100%;
+  box-sizing: border-box; /* Include padding in width calculation */
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.is-editing .file-data-table {
+  border: 2px solid #2196F3;
+}
+
+.error-message {
+  color: #c62828;
+  font-size: 0.8em;
+  margin-top: 4px;
+}
+
+input.error {
+  border-color: #c62828 !important;
+  background-color: #ffebee;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.edit-button {
+  background-color: #2196F3;
+  /* ... existing styles ... */
+}
+
+.edit-button:hover {
+  background-color: #0b7dda;
+}
+
+.upsert-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

@@ -189,6 +189,6 @@ export class BookListComponent implements OnInit {
   // Logic to handle file upload:
 
   public uploadFile() {
-    this.router.navigate(['/book-file-upload']); //sample
+    this.router.navigate(['/app-file-upload-page']); //sample
   }
 }

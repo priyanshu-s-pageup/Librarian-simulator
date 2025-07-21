@@ -46,28 +46,28 @@
       });
     }
 
-getBooks(
-  searchTerm: string,
-  page: number,
-  pageSize: number,
-  sortField: string,
-  sortOrder: 'ASC' | 'DESC'
-): Observable<HttpResponse<BookData[]>> {
-  let params = new HttpParams()
-    .set('_page', page.toString())
-    .set('_limit', pageSize.toString())
-    .set('_sort', sortField)
-    .set('_order', sortOrder.toLowerCase());
+    getBooks(
+      searchTerm: string,
+      page: number,
+      pageSize: number,
+      sortField: string,
+      sortOrder: 'ASC' | 'DESC'
+    ): Observable<HttpResponse<BookData[]>> {
+      let params = new HttpParams()
+        .set('_page', page.toString())
+        .set('_limit', pageSize.toString())
+        .set('_sort', sortField)
+        .set('_order', sortOrder.toLowerCase());
 
-  if (searchTerm) {
-    params = params.set('q', searchTerm);
-  }
+      if (searchTerm) {
+        params = params.set('q', searchTerm);
+      }
 
-  return this.http.get<BookData[]>(`${this.url}/books`, {
-    params,
-    observe: 'response'
-  });
-}
+      return this.http.get<BookData[]>(`${this.url}/books`, {
+        params,
+        observe: 'response'
+      });
+    }
 
     deleteBook(id: string): Observable<any> {
       return this.http.delete(`${this.url}/books/${id}`);
@@ -100,36 +100,37 @@ getBooks(
       );
     }
 
-updateBookStock(bookId: string, quantityChange: number): Observable<Book> {
-  return this.http.get<Book>(`${this.url}/books/${bookId}`).pipe(
-    switchMap((currentBook) => {
-      const newQuantity = currentBook.stockQuantity + quantityChange;
-      if (newQuantity < 0) {
-        return throwError(
-          () =>
-            new HttpErrorResponse({
-              status: 400,
-              error: { message: 'Insufficient stock' }
-            })
-        );
-      }
-      const newStatus =
-        newQuantity === 0
-          ? 'out-of-stock'
-          : newQuantity <= 3
-          ? 'in-high-demand'
-          : 'available';
-      return this.http.patch<Book>(`${this.url}/books/${bookId}`, {
-        stockQuantity: newQuantity,
-        status: newStatus
-      });
-    }),
-    catchError((err) => {
-      console.error('Error updating book stock:', err);
-      return throwError(() => err);
-    })
-  );
-}
+    updateBookStock(bookId: string, quantityChange: number): Observable<Book> {
+      return this.http.get<Book>(`${this.url}/books/${bookId}`).pipe(
+        switchMap((currentBook) => {
+          const newQuantity = currentBook.stockQuantity + quantityChange;
+          if (newQuantity < 0) {
+            return throwError(
+              () =>
+                new HttpErrorResponse({
+                  status: 400,
+                  error: { message: 'Insufficient stock' }
+                })
+            );
+          }
+          const newStatus =
+            newQuantity === 0
+              ? 'out-of-stock'
+              : newQuantity <= 3
+              ? 'in-high-demand'
+              : 'available';
+          return this.http.patch<Book>(`${this.url}/books/${bookId}`, {
+            stockQuantity: newQuantity,
+            status: newStatus
+          });
+        }),
+        catchError((err) => {
+          console.error('Error updating book stock:', err);
+          return throwError(() => err);
+        })
+      );
+    }
+
     processLend(bookId: string): Observable<Book> {
       return this.http.post<Book>(`${this.url}/books/${bookId}/lend`, {});
     }
