@@ -40,6 +40,10 @@ export class AuthService {
       );
   }
 
+  public getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.apiUrl);
+  }
+
   public logout() {
     sessionStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);

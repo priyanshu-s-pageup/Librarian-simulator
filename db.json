@@ -116,7 +116,7 @@
       "author": "Yvonne Blake",
       "genre": "sci-fi",
       "publishedYear": 2019,
-      "stockQuantity": 100,
+      "stockQuantity": 99,
       "status": "available",
       "id": "l4827b9e",
       "disabledReIssueUsers": []
@@ -212,136 +212,12 @@
   ],
   "borrowRequests": [
     {
-      "bookId": "t23fabe0",
-      "userId": "0501US25260",
-      "duration": 26,
-      "status": "returned",
-      "createdAt": 1752039830538,
-      "id": "IY4XZsx",
-      "message": "No more borrow.. Sorry!"
-    },
-    {
-      "bookId": "a90bc123",
-      "userId": "0501US25260",
-      "duration": 27,
-      "status": "approved",
-      "createdAt": 1752579405552,
-      "id": "_PB2hYE",
-      "updatedAt": "2025-07-15T11:38:26.116Z"
-    },
-    {
-      "bookId": "a90bc123",
-      "userId": "0501US25260",
-      "duration": 29,
-      "status": "returned",
-      "createdAt": 1752580537134,
-      "id": "qI1xOJ1",
-      "message": "My test series continues",
-      "reRequest": "returned"
-    },
-    {
-      "bookId": "c12def45",
-      "userId": "0501US25260",
-      "duration": 31,
-      "status": "returned",
-      "createdAt": 1752581792011,
-      "id": "ICJeSkV"
-    },
-    {
-      "bookId": "f4b2d61f",
-      "userId": "0501US25260",
-      "duration": 41,
-      "status": "approved",
-      "createdAt": 1752646911098,
-      "id": "tpdmwcW"
-    },
-    {
-      "bookId": "p8b1e1c4",
-      "userId": "0501US25260",
-      "duration": 29,
-      "status": "approved",
-      "createdAt": 1752654847240,
-      "id": "FleGxmY"
-    },
-    {
-      "bookId": "a90bc123",
-      "userId": "0501US25260",
-      "duration": 30,
-      "status": "approved",
-      "createdAt": 1752667201656,
-      "id": "ZuwR7XR"
-    },
-    {
-      "bookId": "l4827b9e",
-      "userId": "0501US25260",
-      "duration": 10,
-      "status": "approved",
-      "createdAt": 1752670836247,
-      "id": "EKykNbS"
-    },
-    {
-      "bookId": "b3472ce1",
-      "userId": "0501US25260",
-      "duration": 10,
-      "status": "approved",
-      "createdAt": 1752670946620,
-      "id": "C3-9Nmz"
-    },
-    {
-      "bookId": "c12def45",
-      "userId": "0501US25260",
-      "duration": 20,
-      "status": "approved",
-      "createdAt": 1752737310545,
-      "id": "vHNB4zv"
-    },
-    {
       "bookId": "d8a90f32",
       "userId": "0501US25260",
       "duration": 10,
       "status": "pending",
       "createdAt": 1752737458772,
       "id": "s0WVL_v"
-    },
-    {
-      "bookId": "w56aa3fe",
-      "userId": "0501US25260",
-      "duration": 15,
-      "status": "pending",
-      "createdAt": 1752737465086,
-      "id": "4j2TrKs"
-    },
-    {
-      "bookId": "g5f61b91",
-      "userId": "0519US25101",
-      "duration": 20,
-      "status": "pending",
-      "createdAt": 1752737495805,
-      "id": "Lxkw_6z"
-    },
-    {
-      "bookId": "a1f9d3e2",
-      "userId": "0519US25101",
-      "duration": 25,
-      "status": "pending",
-      "createdAt": 1752737501086,
-      "id": "fuziL4W"
-    },
-    {
-      "bookId": "3w-lbV6",
-      "userId": "0501US25260",
-      "duration": 20,
-      "status": "approved",
-      "createdAt": 1752746572743,
-      "id": "p43Lypa"
-    },
-    {
-      "bookId": "3w-lbV6",
-      "userId": "0501US25260",
-      "duration": 40,
-      "status": "approved",
-      "createdAt": 1752752104611,
-      "id": "_jrO1Gn"
     }
   ],
   "extendedRequests": [

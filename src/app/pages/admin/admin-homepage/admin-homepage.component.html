@@ -7,11 +7,11 @@
       </div>
       <div class="welcome-message">
         <h1>Welcome, {{ currentUser?.name }}!</h1>
-        <p class="text-muted">Your Library Dashboard</p>
+        <p class="text-muted">This is your admin Dashboard</p>
       </div>
     </div>
     <div class="quick-stats">
-      <div class="stat-card">
+      <div class="stat-card" (click)="openUserList()">
         <div class="stat-icon">
           <i class="fas fa-users"></i>
         </div>
@@ -20,7 +20,7 @@
           <p>Total Users</p>
         </div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" (click)="openBookList()">
         <div class="stat-icon">
           <i class="fas fa-book"></i>
         </div>
@@ -29,7 +29,7 @@
           <p>Total Books</p>
         </div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" (click)="openBorrowRequests()">
         <div class="stat-icon">
           <i class="fas fa-clock"></i>
         </div>
@@ -69,44 +69,53 @@
     </div>
   </div>
 
-  <!-- Recently Added Books Section -->
+  <!-- Most In-Demand Books Section -->
   <div class="recent-books-section">
-    <h2>Recently Added Books</h2>
-    <div class="books-grid" *ngIf="recentBooks.length > 0; else noRecentBooks">
-      <div class="book-card" *ngFor="let book of recentBooks()">
+    <h2>Most In-Demand Books</h2>
+    <div class="books-grid" *ngIf="mostDemandedBooks().length > 0; else noDemandedBooks">
+      <div class="book-card" *ngFor="let book of mostDemandedBooks()">
         <div class="book-cover">
           <img [src]="'https://cdn.venngage.com/template/thumbnail/small/003681fb-175a-4465-b5a8-de28f2517a6b.webp'" alt="Book Cover">
         </div>
         <div class="book-info">
           <h3>{{ book.title }}</h3>
           <p class="author">{{ book.author }}</p>
-          <p class="stock">{{ book.stockQuantity }} Available</p>
+          <p class="stock"><strong>Stock:</strong> {{ book.stockQuantity }}</p>
+          <p class="requests"><strong>Requests:</strong> {{ book.requestCount }}</p>
         </div>
       </div>
     </div>
-    <ng-template #noRecentBooks>
+    <ng-template #noDemandedBooks>
       <div class="empty-state">
         <i class="fas fa-book-open"></i>
-        <p>No recently added books found</p>
+        <p>No in-demand books found at the moment.</p>
       </div>
     </ng-template>
   </div>
 
-  <!-- User Management Section -->
-  <div class="user-management-section">
-    <h2>User Management</h2>
-    <div class="user-list">
-      <div class="user-card" *ngFor="let user of users">
+  <!-- Active Users Section -->
+  <div class="active-users-section">
+    <h2>Active Users</h2>
+    <div class="user-list" *ngIf="activeUsers().length > 0; else noActiveUsers">
+      <div class="user-card" *ngFor="let user of activeUsers()">
+        <div class="user-avatar">
+          <img [src]="'https://www.w3schools.com/howto/img_avatar.png'" alt="User Avatar">
+        </div>
         <div class="user-info">
           <h3>{{ user.name }}</h3>
-          <p>Email: {{ user.email }}</p>
-          <p>Role: {{ user.role }}</p>
+          <p class="email">Email: {{ user.email }}</p>
+          <p class="role">Role: <span class="badge">{{ user.role }}</span></p>
         </div>
         <div class="actions">
-          <button class="btn btn-sm btn-primary">View Details</button>
-          <button class="btn btn-sm btn-outline-secondary">Deactivate</button>
+          <button class="btn btn-sm btn-primary" (click)="openUserDialog(user)" >View Profile</button>
         </div>
       </div>
     </div>
   </div>
+  <ng-template #noActiveUsers>
+    <div class="empty-state">
+      <i class="fas fa-user-clock"></i>
+      <p>No active users at the moment.</p>
+    </div>
+  </ng-template>
 </div>

@@ -13,6 +13,7 @@ export interface BorrowRequest {
     author: string;
     stockQuantity?: number;
     status?: 'available' | 'in-high-demand' | 'out-of-stock';
+    genre?: string;
   };
   user: {
     id: string;

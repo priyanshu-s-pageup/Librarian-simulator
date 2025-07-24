@@ -100,6 +100,7 @@ export class BorrowNotificationService {
           console.log('Initial Borrow Requests:', requests); // debug check
           this.borrowRequestsSubject.next(requests);
         },
+
         error: (err: unknown) => {
           console.error('Error loading initial requests:', err);
           this.snackBar.open(
@@ -114,96 +115,6 @@ export class BorrowNotificationService {
         },
       });
   }
-
-  // public applyreRequest(
-  //   book: Book,
-  //   userId: string | null,
-  //   newDuration: number,
-  //   newDeadline: Date
-  // ): Observable<void> {
-  //   console.log('Yes its my work: ApplyreRequest');
-
-  //   return this.http
-  //     .get<BorrowRequest[]>(
-  //       `${this.url}/borrowRequests?bookId=${book.id}&userId=${userId}&status=approved`
-  //     )
-  //     .pipe(
-  //       switchMap((existingRequests) => {
-  //         if (existingRequests.length > 0) {
-  //           const approvedRequest =
-  //             existingRequests[existingRequests.length - 1];
-
-  //           const extendedRequestPayload = {
-  //             reIssueId: approvedRequest.id, // Generate a new reIssueId or use a UUID
-  //             bookId: approvedRequest.bookId,
-  //             userId: userId,
-  //             reRequest: BorrowStatus.Pending, // Pending as default status
-  //             newDuration,
-  //             newDeadline,
-  //             timeLeft: this.calculateTimeLeft(newDeadline), // Calculate timeLeft based on the new deadline
-  //             reIssueMessage: '', // You can pass the message if needed
-  //           };
-
-  //           // Create a new ExtendedRequest entry
-  //           return this.http.post(
-  //             `${this.url}/extendedRequests`,
-  //             extendedRequestPayload
-  //           );
-  //         } else {
-  //           return this.http.post<BorrowRequest>(`${this.url}/borrowRequests`, {
-  //             bookId: book.id,
-  //             userId,
-  //             newDuration,
-  //             newDeadline,
-  //             reRequest: BorrowStatus.Pending,
-  //             status: BorrowStatus.Approved,
-  //           });
-  //         }
-  //       }),
-  //       switchMap((existingRequests) =>
-  //         this.http.get<BorrowRequest>(
-  //           `${this.url}/borrowRequests/${existingRequests.id}?_expand=book`
-  //         )
-  //       ),
-  //       tap((fullRequest) => {
-  //         const updatedRequest: BorrowRequest = {
-  //           ...fullRequest,
-  //           book: {
-  //             id: book.id,
-  //             title: book.title,
-  //             author: book.author,
-  //           },
-  //         };
-
-  //         const formattedDeadline = updatedRequest.extendedRequest?.newDeadline
-  //           ? new Intl.DateTimeFormat('en-US', {
-  //               year: 'numeric',
-  //               month: 'long',
-  //               day: 'numeric',
-  //             }).format(new Date(updatedRequest.extendedRequest?.newDeadline))
-  //           : 'unknown date';
-
-  //         this.updateRequests([...this.currentRequests, updatedRequest]);
-  //         this.borrowRequestedSubject.next(updatedRequest);
-
-  //         this.snackBar.open(
-  //           `Re-request for "${book.title}" submitted. New deadline: ${formattedDeadline}.`,
-  //           'Close',
-  //           this.snackBarConfig
-  //         );
-  //       }),
-
-  //       map(() => void 0),
-  //       catchError((err) => {
-  //         this.snackBar.open(
-  //           'Failed to submit re-request.',
-  //           'Close',
-  //           this.snackBarConfig
-  //         );
-  //         return throwError(() => err);
-  //       })
-  //     );
-  // }
 
   public applyreRequest(
     book: Book,
@@ -292,85 +203,6 @@ export class BorrowNotificationService {
 
     return timeLeftInDays;
   }
-
-  // public applyreRequest(
-  //   book: Book,
-  //   userId: string | null,
-  //   newDuration: number,
-  //   newDeadline: Date
-  // ): Observable<void> {
-  //   console.log('Yes its my work: ApplyreRequest');
-  //   return this.http
-  //     .get<BorrowRequest[]>(
-  //       `${this.url}/borrowRequests?bookId=${book.id}&userId=${userId}&status=approved`
-  //     )
-  //     .pipe(
-  //       switchMap((existingRequests) => {
-  //         if (existingRequests.length > 0) {
-  //           const approvedRequest = existingRequests[0];
-  //           return this.http.patch<BorrowRequest>(
-  //             `${this.url}/borrowRequests/${approvedRequest.id}`,
-  //             {
-  //               reRequest: BorrowStatus.Pending,
-  //               newDuration,
-  //               newDeadline,
-  //             }
-  //           );
-  //         } else {
-  //           return this.http.post<BorrowRequest>(`${this.url}/borrowRequests`, {
-  //             bookId: book.id,
-  //             userId,
-  //             newDuration,
-  //             newDeadline,
-  //             reRequest: BorrowStatus.Pending,
-  //             status: BorrowStatus.Approved,
-  //           });
-  //         }
-  //       }),
-  //       switchMap((savedRequest) =>
-  //         this.http.get<BorrowRequest>(
-  //           `${this.url}/borrowRequests/${savedRequest.id}?_expand=book`
-  //         )
-  //       ),
-  //       tap((fullRequest) => {
-  //         const updatedRequest: BorrowRequest = {
-  //           ...fullRequest,
-  //           book: {
-  //             id: book.id,
-  //             title: book.title,
-  //             author: book.author,
-  //           },
-  //         };
-
-  //         const formattedDeadline = updatedRequest.extendedRequest?.newDeadline
-  //           ? new Intl.DateTimeFormat('en-US', {
-  //               year: 'numeric',
-  //               month: 'long',
-  //               day: 'numeric',
-  //             }).format(new Date(updatedRequest.extendedRequest?.newDeadline))
-  //           : 'unknown date';
-
-  //         this.updateRequests([...this.currentRequests, updatedRequest]);
-  //         this.borrowRequestedSubject.next(updatedRequest);
-
-  //         this.snackBar.open(
-  //           `Re-request for "${book.title}" submitted. New deadline: ${formattedDeadline}.`,
-  //           'Close',
-  //           this.snackBarConfig
-  //         );
-  //       }),
-
-  //       map(() => void 0),
-  //       catchError((err) => {
-  //         this.snackBar.open(
-  //           'Failed to submit re-request.',
-  //           'Close',
-  //           this.snackBarConfig
-  //         );
-  //         return throwError(() => err);
-  //       })
-  //     );
-  // }
 
   public requestBorrow(
     book: BookData,
@@ -533,23 +365,6 @@ export class BorrowNotificationService {
         )
     )
   }
-
-  // getReIssueRequest(): Observable<ExtendedRequest[]> {
-  //   return this.http
-  //     .get<ExtendedRequest[]>(
-  //       `${this.url}/extendedRequests?reRequest=pending&_expand=book`
-  //     )
-  //     .pipe(
-  //       timeout(10000),
-  //       tap((requests) => {
-  //         console.log('Fetched ReIssue Requests:', requests); // Debug
-  //       }),
-  //       catchError((err) => {
-  //         console.error('Error fetching extended reIssue Requests:', err);
-  //         return throwError(() => err);
-  //       })
-  //     );
-  // }
 
   public getReIssueRequest(): Observable<BorrowRequest[]> {
     return this.http

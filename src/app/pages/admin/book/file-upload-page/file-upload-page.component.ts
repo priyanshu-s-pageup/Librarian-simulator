@@ -64,7 +64,9 @@ export class FileUploadPageComponent implements OnInit {
 
       // Convert sheet to JSON (array of arrays)
       this.excelData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      console.log('Excel Data:', this.excelData);
       this.originalData = JSON.parse(JSON.stringify(this.excelData)); // Deep copy
+      console.log('Original Data:', this.originalData);
       this.isFileUploaded = true;
       this.isEditing = false;
       this.editErrors = [];

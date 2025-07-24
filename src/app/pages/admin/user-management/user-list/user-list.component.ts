@@ -75,7 +75,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
 
-  public constructor(
+  constructor(
     private readonly commonService: CommonService,
     private readonly dialog: MatDialog,
     private readonly snackBar: MatSnackBar

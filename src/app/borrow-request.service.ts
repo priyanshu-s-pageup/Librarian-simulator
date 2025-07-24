@@ -14,6 +14,10 @@ export class BorrowRequestService {
     return this.http.get<BorrowRequest[]>(`${this.apiUrl}?userId=${userId}`);
   }
 
+  getAllBorrowRequests(): Observable<BorrowRequest[]> {
+    return this.http.get<BorrowRequest[]>(`${this.apiUrl}?_expand=book`);
+  }
+
 
   createBorrowRequest(request: BorrowRequest) {
     return this.http.post<BorrowRequest>('http://localhost:3000/borrowRequests', request);
